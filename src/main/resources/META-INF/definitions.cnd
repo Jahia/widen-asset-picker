@@ -1,0 +1,8 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<widenpkmix = 'http://modules.se.jahia.org/widen-picker/mix/1.0'>
+<widenpknt = 'http://modules.se.jahia.org/widen-picker/nt/1.0'>
+<widenpk = 'http://modules.se.jahia.org/widen-picker/1.0'>
+
+[widenpknt:widenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
+ - widenAsset (weakreference, picker[type='custom',config='widenAsset']) mandatory multiple internationalized indexed=no noqueryorder nofulltext

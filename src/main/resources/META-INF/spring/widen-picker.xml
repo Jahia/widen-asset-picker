@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
+        <property name="javascriptResources">
+            <list>
+                <value>/modules/widen-picker/javascript/edit-mode/widen-asset-picker.js</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="widenAsset" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
+        <property name="titleKey" value="label.widenAsset@resources.widen-picker"/>
+        <property name="customPickerConfiguration">
+            <bean class="org.jahia.ajax.gwt.client.widget.content.CustomPickerConfiguration">
+                <property name="initMethodName" value="widenPickerInit"/>
+                <property name="loadFieldValueMethodName" value="widenPickerLoad"/>
+                <property name="getFieldValueFromPickerMethodName" value="widenPickerGet"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>
