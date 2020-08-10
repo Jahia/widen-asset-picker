@@ -1,58 +1,56 @@
-function getCustomProductPickerData () {
-    console.log("getCustomProductPickerData !");
-    // var frm = document.getElementById("cioProductPickerFrame");
-    //
-    // if (!frm) {
-    //     return undefined;
-    // }
-    //
-    // var fw = frm.contentWindow;
-    // if(!fw || !fw.productPickerData) {
-    //     return undefined;
-    // }
-    //
-    // return fw.productPickerData;
+const __widenFrameID__ = "widenAssetPickerFrame";
+
+function getCustomWidenPickerFrameWindow () {
+    const frame = document.getElementById(__widenFrameID__);
+    if (!frame)
+        return undefined;
+
+    return frame.contentWindow;
+}
+
+function getCustomWidenPickerInterface () {
+    console.log("getCustomWidenPickerInterface !");
+    const frameWindow = getCustomWidenPickerFrameWindow();
+    if(!frameWindow || !frameWindow.widenPickerInterface) {
+        return undefined;
+    }
+    return frameWindow.widenPickerInterface;
 }
 
 
 function widenPickerInit(data) {
     console.log("widenPickerInit !");
     const iframe = `<iframe 
-            id="widenAssetPickerFrame" width="100%" height="100%" frameborder="0"
+            id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
             src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
     return $.parseHTML(iframe)[0];
-
-
-
-    // return $.parseHTML("<iframe id=\"cioProductPickerFrame\" width=\"100%\" height=\"100%\" frameborder='0' src=\""+jahiaGWTParameters.contextPath + jahiaGWTParameters.servletPath + "/editframe/default/" + jahiaGWTParameters.lang + "/sites/" + jahiaGWTParameters.siteKey + ".widen-asset-edit-picker.html\"/>")[0];
 }
 
+//called when the picker is loaded
 function widenPickerLoad(data) {
-    console.log("widenPickerLoad !");
-    // var pickerData = getCustomProductPickerData();
-    // var $data = data;
-    // if(pickerData !== undefined) {
-    //     pickerData.load(data);
-    // } else {
-    //     var frm = document.getElementById("cioProductPickerFrame");
-    //
-    //     if (frm !== undefined) {
-    //         var fw = frm.contentWindow;
-    //         if(fw !== undefined) {
-    //             fw.addEventListener("load",function (event) {
-    //                 console.log('iframe is completely loaded');
-    //                 pickerData = getCustomProductPickerData();
-    //                 pickerData.load($data);
-    //             });
-    //         }
-    //     }
-    // }
+    console.log("widenPickerLoad ! data -> ",data);
+    const $data = data;
+
+    let pickerInterface = getCustomWidenPickerInterface();
+    if(pickerInterface !== undefined) {
+        pickerInterface.load(data);
+    } else {
+        const frameWindow = getCustomWidenPickerFrameWindow();
+        if(frameWindow !== undefined) {
+            frameWindow.addEventListener("load", event => {
+                console.log('iframe picker is completely loaded');
+                pickerInterface = getCustomWidenPickerInterface();
+                pickerInterface.load($data);
+            });
+        }
+    }
 }
 
+//called when click the picker save button
 function widenPickerGet() {
     console.log("widenPickerGet !");
-    // var pickerData = getCustomProductPickerData();
-    // if(pickerData !== undefined) {
-    //     return pickerData.get();
-    // }
+    const pickerInterface = getCustomWidenPickerInterface();
+    if(pickerInterface !== undefined) {
+        return pickerInterface.data;
+    }
 }
