@@ -1,0 +1,6 @@
+{
+  "extends": "@jahia",
+  "plugins": [
+    "json"
+  ]
+}

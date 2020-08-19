@@ -1,0 +1,6 @@
+node
+node_modules
+target
+src/main/resources/javascript/apps
+src/javascript/publicPath.js
+webpack.config.js
