@@ -1,5 +1,5 @@
-import React from 'react';
-import {registry} from '@jahia/ui-extender';
+// Import React from 'react';
+// Import {registry} from '@jahia/ui-extender';
 
 // TODO register needed elements here!
 
