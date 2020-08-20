@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Get manifest
@@ -50,17 +50,30 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
-                    test: /\.s[ac]ss$/i,
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader']
+                },
+                {
+                    test: /\.scss$/i,
+                    sideEffects: true,
                     use: [
                         'style-loader',
+                        // Translates CSS into CommonJS
                         {
-                            loader:'css-loader',
+                            loader: 'css-loader',
                             options: {
-                                modules: true
+                                modules: {
+                                    mode: 'local'
+                                }
                             }
                         },
+                        // Compiles Sass to CSS
                         'sass-loader'
                     ]
+                },
+                {
+                    test: /\.(png|svg)$/,
+                    loaders: ['file-loader']
                 }
             ]
         },
