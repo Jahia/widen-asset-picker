@@ -1,0 +1,9 @@
+{
+  "name": "eent:markdownField",
+  "fields": [
+    {
+      "name": "markDownText",
+      "selectorType": "Markdown"
+    }
+  ]
+}
