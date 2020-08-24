@@ -4,5 +4,16 @@
 <widenpknt = 'http://modules.se.jahia.org/widen-picker/nt/1.0'>
 <widenpk = 'http://modules.se.jahia.org/widen-picker/1.0'>
 
+
+
+[widenpkmix:widenPiker] > jmix:templateMixin mixin
+  extends = widenpknt:widenAssetTest
+  - widenpk:widenAsset (weakreference, picker[type='custom',config='widenAsset']) internationalized indexed=no noqueryorder nofulltext
+
+[widenpkmix:imagePicker] > jmix:templateMixin mixin
+  extends = widenpknt:widenAssetTest
+- widenpk:jContentAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
+
+
 [widenpknt:widenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
- - widenAsset (weakreference, picker[type='custom',config='widenAsset']) mandatory multiple internationalized indexed=no noqueryorder nofulltext
+- widenpk:asset (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no

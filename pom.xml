@@ -89,6 +89,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <_dsannotations>
+                            org.jahia.se.modules.picker.widen.initializers.*
+                        </_dsannotations>
                         <Jahia-Depends>default</Jahia-Depends>
                     </instructions>
                 </configuration>

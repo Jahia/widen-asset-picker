@@ -22,10 +22,13 @@
 <template:addResources type="javascript" resources="REACTBuildApp/main.5189246e.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
+<c:set var="token" value="1234"/>
+
 <div id="${targetId}">Loading ...</div>
 
 <script>
     const context={
+        widenAuthorization:"Bearer ${token}"
     };
 
     window.addEventListener("DOMContentLoaded", event => {
@@ -35,13 +38,13 @@
         <c:when test="${renderContext.editMode}" >
             setTimeout(() => {
                 window.widenPicker("${targetId}",context);
-                //voir pkoi j'ai besoin du context ici...
+                //voir pkoi j'ai besoin du context ci-apres ?...
                 window.widenPickerInterface.context = context;
             },500);
         </c:when>
         <c:otherwise>
             window.widenPicker("${targetId}",context);
-            //voir pkoi j'ai besoin du context ici...
+            //voir pkoi j'ai besoin du context ci-apres ?...
             window.widenPickerInterface.context = context;
         </c:otherwise>
         </c:choose>
