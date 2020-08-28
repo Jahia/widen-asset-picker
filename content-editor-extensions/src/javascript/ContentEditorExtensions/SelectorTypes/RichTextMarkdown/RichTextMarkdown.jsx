@@ -26,6 +26,7 @@ const RichTextMarkdown = ({field, id, value, onChange}) => {
             id={id}
             name={field.name}
             value={valueText || (value && converter.turndown(value))}
+            readOnly={field.readOnly}
             style={{height: '500px', width: '100%'}}
             config={config}
             renderHTML={text => {
