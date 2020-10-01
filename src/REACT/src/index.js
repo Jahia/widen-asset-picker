@@ -4,6 +4,10 @@ import './index.css';
 import App from 'components/App';
 import * as serviceWorker from 'misc/serviceWorker';
 
+import AjvError from "components/Error/Ajv";
+import {contextValidator} from "douane";
+import {Store} from "components/Store";
+
 const widenPickerInterface = {
     _context: {},
     _data: [],
@@ -58,12 +62,47 @@ const widenPickerInterface = {
 };
 
 const render = (target,context) =>{
-    ReactDOM.render(
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>,
-        document.getElementById(target)
-    );
+    try{
+        // console.log("context : ",JSON.stringify(context));
+        context = contextValidator(context);
+        const headers={};
+        // if(context.gql_authorization)
+        //     headers.Authorization=context.gql_authorization;
+
+        // const client = new ApolloClient({
+        //     uri:context.gql_endpoint,
+        //     headers
+        // })
+
+        ReactDOM.render(
+            <React.StrictMode>
+                <Store context={context}>
+                    {/*<ApolloProvider client={client}>*/}
+                        <App />
+                    {/*</ApolloProvider>*/}
+                </Store>
+            </React.StrictMode>,
+            document.getElementById(target)
+        );
+
+    }catch(e){
+        console.error("error : ",e);
+        //TODO create a generic error handler
+        ReactDOM.render(
+            <AjvError
+                item={e.item}
+                errors={e.errors}
+            />,
+            document.getElementById(target)
+        );
+    }
+
+    // ReactDOM.render(
+    //     <React.StrictMode>
+    //         <App />
+    //     </React.StrictMode>,
+    //     document.getElementById(target)
+    // );
 }
 
 window.widenPicker = render;

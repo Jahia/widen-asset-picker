@@ -1,0 +1,67 @@
+.pT4{
+  &__filter,&__context {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    li {
+      margin-right: .5rem;
+      margin-bottom: .5rem;
+    }
+
+    .btn {
+      text-transform: initial;
+      letter-spacing: initial;
+      &.btn-outline-primary{
+        color:$blue;
+        border-width: 1px;
+        //box-shadow: 0 3px 3px 0 rgba(0,0,0,.2);
+        &:hover{
+          color:$white;
+        }
+      }
+
+    }
+
+    .badge {
+      margin-left: .5rem;
+
+      &-highlight{
+        font-size: 1.5rem;
+        box-shadow: 0 3px 3px 0 rgba(0,0,0,.2);
+      }
+    }
+  }
+
+  &__filter{
+    button{
+      box-shadow: 0 3px 3px 0 rgba(0,0,0,.2) !important;
+    }
+  }
+
+  &__context{
+    .item{
+      box-shadow: 0 3px 3px 0 rgba(0,0,0,.2);
+      text-transform: capitalize;
+      display: inline-block;
+      //font-weight: 400;
+      color: $danger;
+      text-align: center;
+      vertical-align: middle;
+      //cursor: pointer;
+      user-select: none;
+      background-color: transparent;
+      border: 1px solid $danger;
+      //border-top-color: transparent;
+      //border-right-color: transparent;
+      //border-bottom-color: transparent;
+      //border-left-color: transparent;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: .25rem;
+      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+  }
+}

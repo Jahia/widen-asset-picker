@@ -18,8 +18,8 @@
 <%--@elvariable id="workspace" type="java.lang.String"--%>
 
 <template:addResources type="css" resources="REACTBuildApp/main.a83a45f0.chunk.css" />
-<template:addResources type="javascript" resources="REACTBuildApp/2.855051b8.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.5189246e.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/2.6d8644af.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.0d19d275.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
 <c:set var="token" value="1234"/>

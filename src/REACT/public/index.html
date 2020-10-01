@@ -31,13 +31,11 @@
     <div id="root"></div>
     <script>
       const context={
-        widenAuthorization:"Bearer 1234",
-        //"https://api.widencollective.com/v2/"
-        widenEndPoint:{
-          protocol:"https",
-          // port:"",
-          domain:"api.widencollective.com",
-          version:"v2"
+        widen:{
+          url:"https://api.widencollective.com",
+          version:"v2",
+          site:"virbac",
+          token:"ba4d0a71907a17aff9ebddc1fc91fd3a"
         }
       };
       window.addEventListener("DOMContentLoaded", (event) => window.widenPicker("root",context) );
