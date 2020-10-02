@@ -17,7 +17,7 @@ const init = context => {
             Authorization:`Bearer ${context.widen.site}/${context.widen.token}`
         },
         responseType:"json",
-        timeout:1000
+        timeout:3000
     });
     // widenEngine.interceptors.request.use((config) => {
     //     config.params = config.params || {};
@@ -43,17 +43,18 @@ const init = context => {
     //     return config;
     // });
 
-    // const {resultPerPage} = context.widen;
+    const {lazyLoad,resultPerPage} = context.widen;
 
     return {
         context,
         //locale:context.widen.locale.search,
         error:null,
         isLoading:false,
-        //needToFetch:!lazyLoad,//false,
-        needToFetch:false,
+        needToFetch:!lazyLoad,//false,
+        //needToFetch:false,
         // profileEngine,
         // userProfile:{},
+        selectedItem:{},
         widenEngine,
         searchAnswers:[],
         searchIframe:null,//not needed if I use searchAnswers
@@ -96,46 +97,33 @@ const reducer = (state, action) => {
                 needToFetch:true
             }
         }
-        case "UPDATE_SEARCH_CONTEXTS": {
-            const {searchContexts,profileId,sessionId} = payload;
-            const {lazyLoad} = state.context.widen;
-            console.debug("[STORE] UPDATE_SEARCH_CONTEXTS - searchContexts: ",searchContexts,"; profileId : ",profileId,"; sessionId : ",sessionId);
-
-            const {context} = state;
-            context.gql_variables.profileId=profileId;
-            context.gql_variables.sessionId=sessionId;
-
-            //search context is loaded only one time
-            //I update needToFetch here to be sure widen received the context
-            let needToFetch=state.needToFetch;
-            if(!lazyLoad)
-                needToFetch=true;
-
+        case "UPDATE_SELECTED_ITEM": {
+            const {url} = payload;
+            console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
+            //TODO populate the interface object with the url.
             return {
                 ...state,
-                context,
-                searchContexts,
-                needToFetch
+                selectedItem:payload
             };
         }
         case "UPDATE_SEARCH_RESULTS": {
             console.debug("[STORE] UPDATE_SEARCH_RESULTS - searchResults: ",payload.searchResults);
             //sort,start_answer
-            const {filters,catalogs,answers,banners,available_answers_count} = payload.searchResults
+            const {items,total_count} = payload.searchResults
             const {searchResultPerPage,searchResultPageIndex} = state;
             let {searchResultMaxPage} = state;
-            const searchResultAvailableAnswersCount = available_answers_count;
+            const searchResultAvailableAnswersCount = total_count;
 
             //TODO si catalogue empty gerer le cas avec un boolean
 
             //refine calatog based on existing filters !
-            catalogs.map(facet => {
-                facet.list.map(filter => {
-                    filter.id = getRandomString(8,"#aA");
-                    return filter;
-                })
-                return facet;
-            });
+            // catalogs.map(facet => {
+            //     facet.list.map(filter => {
+            //         filter.id = getRandomString(8,"#aA");
+            //         return filter;
+            //     })
+            //     return facet;
+            // });
 
             //new search
             if(searchResultPageIndex === 1)
@@ -143,10 +131,10 @@ const reducer = (state, action) => {
 
             return {
                 ...state,
-                searchAnswers:answers,
-                searchFacets:catalogs,
-                searchFilters:filters,
-                searchBanners:banners || [],
+                searchAnswers:items,
+                // searchFacets:catalogs,
+                // searchFilters:filters,
+                // searchBanners:banners || [],
                 searchResultAvailableAnswersCount,
                 searchResultMaxPage,
                 needToFetch:false

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Card} from 'react-bootstrap';
 import {StoreContext} from "contexts";
+import get from "lodash.get";
 
 const Decote=({discount,price}) => {
 
@@ -29,34 +30,45 @@ Decote.propTypes={
 }
 
 const Item=({item})=>{
+console.log("[Item] item : ",item);
+    const { state,dispatch } = React.useContext(StoreContext);
+    const {selectedItem} = state //TODO locale is needed for the date format
+    const {thumbnails,created_date,filename,id,embeds} = item;
+    const thumbnailURL = get(thumbnails,"160px.url",null);
+    const url = get(embeds,"templated.url",null);
 
-    const { state } = React.useContext(StoreContext);
-    const {locale} = state
-    const {meta} = item;
-    const [imagePath] = meta.photo;
-    const discount = meta.type_com.includes("Promotion");
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(created_date);
+    date = date.toLocaleDateString('fr-FR', options);
 
-    let [price] = meta.prix;
-    price = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(price);
+    const active = selectedItem.id===id?"active":"";
+    const handleClick = () =>
+        dispatch({
+            case:"UPDATE_SELECTED_ITEM",
+            payload:{
+                id,
+                url
+            }
+        });
 
     return(
-        <Card>
-            {imagePath &&
-            <Card.Img variant="top" src={`https://www.promod.fr${imagePath}`}/>
+        <Card className={active} onClick={handleClick}>
+            {thumbnailURL &&
+            <Card.Img variant="top" src={thumbnailURL}/>
             }
             <Card.Body>
-                <Card.Title>{meta.libelle}</Card.Title>
+                <Card.Title>{filename}</Card.Title>
                 {/*<Card.Text>*/}
                 {/*    {meta.description}*/}
                 {/*</Card.Text>*/}
             </Card.Body>
             <Card.Footer className="text-center">
-                {discount &&
-                    <Decote
-                        discount={meta.decote}
-                        price={meta.prix_barre}/>
-                }
-                {price}
+                {/*{discount &&*/}
+                {/*    <Decote*/}
+                {/*        discount={meta.decote}*/}
+                {/*        price={meta.prix_barre}/>*/}
+                {/*}*/}
+                {date}
             </Card.Footer>
         </Card>
     )

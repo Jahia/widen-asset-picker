@@ -52,9 +52,9 @@ const paging = ({searchResultPerPage,searchResultPageIndex}) => {
 
 const fetchSearchData = async ({path = "/",state,dispatch}) => {
     const {
-        searchEngine,
+        widenEngine,
         searchQuery,
-        searchContexts,
+        //searchContexts,
         searchFacets,
         searchFilters,
         searchResultPerPage,
@@ -70,9 +70,10 @@ const fetchSearchData = async ({path = "/",state,dispatch}) => {
     // console.log("searchQuery : ",searchQuery);
     const params = {
         query:searchQuery,
-        ...computeSearchContext({searchContexts}),
-        ...computeFacetContext({searchFacets}),
-        ...computeFilterContext({searchFilters}),
+        expand:"embeds,thumbnails",
+        // ...computeSearchContext({searchContexts}),
+        // ...computeFacetContext({searchFacets}),
+        // ...computeFilterContext({searchFilters}),
         ...paging({searchResultPerPage,searchResultPageIndex})
     }
 
@@ -80,7 +81,7 @@ const fetchSearchData = async ({path = "/",state,dispatch}) => {
 
     try {
         //TODO test response.status===200 || 204? sinon throw Error(response.status)
-        const response = await searchEngine(path, {params})
+        const response = await widenEngine(path, {params})
         dispatch({
             case: "UPDATE_SEARCH_RESULTS",
             payload: {

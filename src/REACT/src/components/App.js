@@ -16,8 +16,46 @@ import Paging from "components/Paging";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { faSyncAlt,faFile,faSearch,faPowerOff,faBan,faTimes,faUserCheck,faUserTag,faCrosshairs,faChevronLeft,faChevronRight,faHashtag,faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane,faFileAlt,faCheckCircle,faThumbsUp,faUserCircle,faAddressCard} from '@fortawesome/free-regular-svg-icons';
+
+library.add(
+    fab,
+    faSearch,
+    faPowerOff,
+    faCheckCircle,
+    faThumbsUp,
+    faBan,
+    faTimes,
+    faUserCheck,
+    faUserTag,
+    faUserCircle,
+    faAddressCard,
+    faCrosshairs,
+    faChevronLeft,
+    faChevronRight,
+    faHashtag,
+    faEllipsisH,
+    faFile,
+    faFileAlt,
+    faSyncAlt,
+    faPaperPlane
+);
+
+const errorMsg = 'Oups something get wrong';
+const Error= ({e}) => {
+    return(
+        <>
+            <h1>{errorMsg}</h1>
+            <p>{e.message}</p>
+        </>
+    );
+}
+
 const App = (props) => {
-    const { state, dispatch } = React.useContext(StoreContext);
+    const {state, dispatch} = React.useContext(StoreContext);
     const {
         context,
         error,
@@ -34,15 +72,15 @@ const App = (props) => {
 
         const _fetchData = async () =>
             await fetchSearchData({
-                path:"/",
+                path: "/assets/search",
                 state,
                 dispatch
             });
 
-        if(needToFetch)
+        if (needToFetch)
             _fetchData();
 
-    },[needToFetch])
+    }, [needToFetch])
 
     if (error) return <Error e={error}/>;
 
@@ -52,7 +90,7 @@ const App = (props) => {
                 <Col>
                     <SearchForm/>
                     {/*<CurrentFilter/>*/}
-                    {/*<Paging/>*/}
+                    <Paging/>
                 </Col>
             </Row>
             <Row>
@@ -61,9 +99,9 @@ const App = (props) => {
                     <img className="pT4__spinner" src={spinner}/>
                     }
                     {!isLoading &&
-                    <div className={`pT4__result ${isLoading?"":"fade-in"}`}>
+                    <div className={`pT4__result ${isLoading ? "" : "fade-in"}`}>
                         {
-                            searchAnswers.map( item =>
+                            searchAnswers.map(item =>
                                 <Item
                                     key={item.id}
                                     item={item}
@@ -72,8 +110,8 @@ const App = (props) => {
                             )
                         }
                     </div>
-                    // searchIframe &&
-                    // <iframe frameBorder="0" src={searchIframe} width="100%" height="700px"></iframe>
+                        // searchIframe &&
+                        // <iframe frameBorder="0" src={searchIframe} width="100%" height="700px"></iframe>
                     }
                 </Col>
                 <Col xs="4" sm="3" md="4" lg="3">
@@ -91,151 +129,124 @@ const App = (props) => {
         </Container>
     );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const [query, setQuery] = React.useState();
-    const [categories, setCategories] = React.useState([]);
-  const [iframe, setIframe] = React.useState();
-    const [search, setSearch] = React.useState({
-        url:"/integrations/url",
-        params: {
-            hideSearchBar: true,
-            query: query
-        }
-    });
-    // const [isLoading, setIsLoading] = React.useState(false);
-    const [isError, setIsError] = React.useState(false);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-        const categories = await widen.get("/categories");
-        console.log("categories : ",categories)
-        setCategories(get(categories,"data.items",[]));
-    };
-
-    fetchData();
-
-  },[]);
-
-    React.useEffect(() => {
-        if(search.params.query){
-            const fetchData = async () => {
-                setIframe(false);
-                setIsError(false);
-                setIsLoading(true);
-                try {
-                    const instantSearch = await widen.get(search.url,{params:search.params});
-                    console.log("instantSearch : ", instantSearch.data);
-                    //const frameURL = URL.createObjectURL(instantSearch.data);
-                    setIframe(instantSearch.data.url);
-                } catch (error) {
-                    setIsError(true);
-                }
-                setIsLoading(false);
-            };
-            fetchData();
-        }
-    },[search])
-
-
-    window.addEventListener('message', event =>{
-        //TODO verifier si j'ai un event.data.items[0].embed_code sinon laisser passer
-        // console.log("message : ",event.data);
-        // const embedCode = event.data.items[0].embed_code;
-        // console.log(embedCode);
-
-        // Insert embedCode into user’s html content
-        // Close iframe
-    })
-
-  const handleChange = (e) =>{
-      const value= e.target.value;
-      console.log("value : ",value);
-      setQuery(value);
-  }
-  const handleSearch = () =>{
-      console.log("handleSearch query : ",query);
-        const params = {...search.params,query}
-      setSearch({...search,params});
-  }
-
-  const handleCategory = (e,category) => {
-      console.log("handleCategory category : ",category);
-      e.preventDefault();
-      // const _query = `${query}&assetcategory:${category.id}`;//encodeURI();
-      // const params = {...search.params,query:_query}
-      const params = {...search.params,assetcategory:category.id};
-      setSearch({...search,params});
-  }
-
-  return (
-      <Container fluid>
-          <Row>
-              <Col>
-                  <ul>
-                  {categories.map(category =>
-                      <li key={category.id}>
-                          <a href="#" onClick={ e => handleCategory(e,category)}>
-                              {category.name}
-                          </a>
-                      </li>
-                    )}
-                  </ul>
-              </Col>
-              <Col xs={10}>
-                  {isError && <div>Something went wrong ...</div>}
-
-                  <InputGroup className="mb-3">
-                      <FormControl
-                          placeholder="Search text"
-                          onChange={handleChange}
-                      />
-                      <InputGroup.Append>
-                          <Button
-                              variant="outline-secondary"
-                              onClick={handleSearch}>
-                              Search
-                          </Button>
-                      </InputGroup.Append>
-                  </InputGroup>
-                  {isLoading &&
-                    <img src={spinner}/>
-                  }
-                  {/*<img src={spinner}/>*/}
-                  {iframe &&
-                      <iframe frameBorder="0" src={iframe} width="100%" height="700px"></iframe>
-                  }
-              </Col>
-          </Row>
-      </Container>
-
-
-  );
+    //
+    //   const [query, setQuery] = React.useState();
+    //   const [categories, setCategories] = React.useState([]);
+    // const [iframe, setIframe] = React.useState();
+    //   const [search, setSearch] = React.useState({
+    //       url:"/integrations/url",
+    //       params: {
+    //           hideSearchBar: true,
+    //           query: query
+    //       }
+    //   });
+    //   // const [isLoading, setIsLoading] = React.useState(false);
+    //   const [isError, setIsError] = React.useState(false);
+    //
+    // React.useEffect(() => {
+    //   const fetchData = async () => {
+    //       const categories = await widen.get("/categories");
+    //       console.log("categories : ",categories)
+    //       setCategories(get(categories,"data.items",[]));
+    //   };
+    //
+    //   fetchData();
+    //
+    // },[]);
+    //
+    //   React.useEffect(() => {
+    //       if(search.params.query){
+    //           const fetchData = async () => {
+    //               setIframe(false);
+    //               setIsError(false);
+    //               setIsLoading(true);
+    //               try {
+    //                   const instantSearch = await widen.get(search.url,{params:search.params});
+    //                   console.log("instantSearch : ", instantSearch.data);
+    //                   //const frameURL = URL.createObjectURL(instantSearch.data);
+    //                   setIframe(instantSearch.data.url);
+    //               } catch (error) {
+    //                   setIsError(true);
+    //               }
+    //               setIsLoading(false);
+    //           };
+    //           fetchData();
+    //       }
+    //   },[search])
+    //
+    //
+    //   window.addEventListener('message', event =>{
+    //       //TODO verifier si j'ai un event.data.items[0].embed_code sinon laisser passer
+    //       // console.log("message : ",event.data);
+    //       // const embedCode = event.data.items[0].embed_code;
+    //       // console.log(embedCode);
+    //
+    //       // Insert embedCode into user’s html content
+    //       // Close iframe
+    //   })
+    //
+    // const handleChange = (e) =>{
+    //     const value= e.target.value;
+    //     console.log("value : ",value);
+    //     setQuery(value);
+    // }
+    // const handleSearch = () =>{
+    //     console.log("handleSearch query : ",query);
+    //       const params = {...search.params,query}
+    //     setSearch({...search,params});
+    // }
+    //
+    // const handleCategory = (e,category) => {
+    //     console.log("handleCategory category : ",category);
+    //     e.preventDefault();
+    //     // const _query = `${query}&assetcategory:${category.id}`;//encodeURI();
+    //     // const params = {...search.params,query:_query}
+    //     const params = {...search.params,assetcategory:category.id};
+    //     setSearch({...search,params});
+    // }
+    //
+    // return (
+    //     <Container fluid>
+    //         <Row>
+    //             <Col>
+    //                 <ul>
+    //                 {categories.map(category =>
+    //                     <li key={category.id}>
+    //                         <a href="#" onClick={ e => handleCategory(e,category)}>
+    //                             {category.name}
+    //                         </a>
+    //                     </li>
+    //                   )}
+    //                 </ul>
+    //             </Col>
+    //             <Col xs={10}>
+    //                 {isError && <div>Something went wrong ...</div>}
+    //
+    //                 <InputGroup className="mb-3">
+    //                     <FormControl
+    //                         placeholder="Search text"
+    //                         onChange={handleChange}
+    //                     />
+    //                     <InputGroup.Append>
+    //                         <Button
+    //                             variant="outline-secondary"
+    //                             onClick={handleSearch}>
+    //                             Search
+    //                         </Button>
+    //                     </InputGroup.Append>
+    //                 </InputGroup>
+    //                 {isLoading &&
+    //                   <img src={spinner}/>
+    //                 }
+    //                 {/*<img src={spinner}/>*/}
+    //                 {iframe &&
+    //                     <iframe frameBorder="0" src={iframe} width="100%" height="700px"></iframe>
+    //                 }
+    //             </Col>
+    //         </Row>
+    //     </Container>
+    //
+    //
+    // );
 }
-
-          // <div className="App">
-          //     <header className="App-header">
-
-          //     </header>
-          // </div>
-
 export default App;

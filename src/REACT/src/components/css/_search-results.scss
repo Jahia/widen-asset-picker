@@ -16,6 +16,16 @@
       margin-right: .75rem;
       flex-basis: calc( 50% - .75rem);
       box-shadow: 0 3px 3px 0 rgba(0,0,0,.05);
+      cursor: pointer;
+      &:hover{
+        border-color: #888;
+      }
+    }
+    .active.card{
+      //border-color: #004C99;
+      //box-shadow: 0 3px 3px 0 rgba(0,76,153,5) inset;
+      border-color: #000;
+      //border-width: 2px;
     }
   }
 }
