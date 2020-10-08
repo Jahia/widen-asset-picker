@@ -17,9 +17,10 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="workspace" type="java.lang.String"--%>
 
-<template:addResources type="css" resources="REACTBuildApp/main.a83a45f0.chunk.css" />
-<template:addResources type="javascript" resources="REACTBuildApp/2.6d8644af.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.0d19d275.chunk.js" />
+<template:addResources type="css" resources="REACTBuildApp/2.d9ad5f5c.chunk.css" />
+<template:addResources type="css" resources="REACTBuildApp/main.36007f7c.chunk.css" />
+<template:addResources type="javascript" resources="REACTBuildApp/2.6a8ffc6e.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.6d873dd9.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
 <c:set var="token" value="1234"/>
@@ -28,7 +29,12 @@
 
 <script>
     const context={
-        widenAuthorization:"Bearer ${token}"
+        widen:{
+            url:"https://api.widencollective.com",
+            version:"v2",
+            site:"virbac",
+            token:"ba4d0a71907a17aff9ebddc1fc91fd3a"
+        }
     };
 
     window.addEventListener("DOMContentLoaded", event => {

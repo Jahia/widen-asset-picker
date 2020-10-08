@@ -1,0 +1,1 @@
+update main.js with the appropriate url for the loader -> "modules/widen-picker/icons/"
