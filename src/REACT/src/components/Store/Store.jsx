@@ -58,7 +58,20 @@ const init = context => {
         widenEngine,
         searchAnswers:[],
         searchIframe:null,//not needed if I use searchAnswers
-        searchContexts:{},
+        //searchContexts:{},
+        searchSortBy:"created_date",//newest assets first //TODO voir si je passe ça configurable au niveau jahia
+        searchSortByDirection:"DESC",
+        searchSortList:[
+            {value:"created_date",label:"Date Added"},
+            {value:"last_update_date",label:"Date Updated"},
+            {value:"filename",label:"Filename"},
+            {value:"file_format",label:"File Format"},
+            {value:"file_size",label:"File Size"},
+
+        ],
+        searchSortListDirection:[
+            {value:"ASC",label:"sort-amount-up",symbol:""},
+            {value:"DESC",label:"sort-amount-down",symbol:"-"}],
         searchQuery:null,
         searchFacets:[],
         searchFilters:[],
@@ -266,6 +279,27 @@ const reducer = (state, action) => {
                 ...state,
                 searchResultPerPage:value,
                 searchResultPageIndex:1,
+                needToFetch:true
+            };
+        }
+        case "UPDATE_SORT_ITEM": {
+            console.debug("[STORE] UPDATE_SORT_ITEM payload : ",payload);
+            const {sortBy} = payload;
+
+            return {
+                ...state,
+                searchSortBy:sortBy,
+                needToFetch:true
+            };
+        }
+        case "TOGGLE_SORT_DIRECTION": {
+            console.debug("[STORE] TOGGLE_SORT_DIRECTION");
+            const {searchSortByDirection,searchSortListDirection} = state;
+            const [sortDirectionItem] = searchSortListDirection.filter(item => item.value != searchSortByDirection);
+
+            return {
+                ...state,
+                searchSortByDirection:sortDirectionItem.value,
                 needToFetch:true
             };
         }

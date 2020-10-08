@@ -6,6 +6,7 @@ import Nav from "./component/Nav";
 import NavXL from "./component/NavXL";
 import ResultPerPage from "components/Paging/component/ResultPerPage";
 import PageFormLink from "components/Paging/component/PageFormLink";
+import Sort from "components/Paging/component/Sort";
 
 const Paging=(props)=>{
 
@@ -39,12 +40,12 @@ const Paging=(props)=>{
 
     return(
         <>
-            <ul className="pT4__paging">
+            <ul className="pT4__paging results">
                 <li className="results">
                     {/*<FontAwesomeIcon icon={['fas','hashtag']}/>*/}
                     <h6>Résultats : {searchResultAvailableAnswersCount}</h6>
                 </li>
-
+                <Sort/>
                 <ResultPerPage/>
 
                 {showForm &&

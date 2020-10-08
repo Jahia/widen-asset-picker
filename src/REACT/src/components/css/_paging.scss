@@ -7,15 +7,15 @@
     //position: sticky;
     //top: 0;
     //background-color: $facet-color-silver;
-
-    li{
-      &.results{
-        padding: .5rem 1rem;
+    &.results{
+      li{
+        margin-left: 1rem;
         h6{
           margin:0;
         }
-
       }
+    }
+    li{
       &.interlayer{
         margin-left: -.25rem;
         margin-right: .5rem;
@@ -44,7 +44,7 @@
     }
   }
   &__form-goto{
-    margin-left:1rem;
+    //margin-left:1rem;
     input{
       max-width: 3rem;
     }

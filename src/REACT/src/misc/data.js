@@ -45,9 +45,17 @@ const computeFilterContext = ({searchFilters}) =>
 const paging = ({searchResultPerPage,searchResultPageIndex}) => {
     // console.log("[paging] searchResultPerPage: ",searchResultPerPage,"; searchResultPageIndex : ",searchResultPageIndex)
     return{
-        ["offset"]:(searchResultPageIndex-1)*searchResultPerPage,
-        ["limit"]:searchResultPerPage
+        offset:(searchResultPageIndex-1)*searchResultPerPage,
+        limit:searchResultPerPage
     };
+}
+
+const sort = ({searchSortBy,searchSortByDirection,searchSortListDirection}) => {
+    const [sortDirectionItem] = searchSortListDirection.filter(item => item.value === searchSortByDirection);
+    return{
+        sort:`${sortDirectionItem.symbol}${searchSortBy}`
+    };
+
 }
 
 const fetchSearchData = async ({path = "/",state,dispatch}) => {
@@ -58,7 +66,10 @@ const fetchSearchData = async ({path = "/",state,dispatch}) => {
         searchFacets,
         searchFilters,
         searchResultPerPage,
-        searchResultPageIndex
+        searchResultPageIndex,
+        searchSortBy,
+        searchSortByDirection,
+        searchSortListDirection
     } = state;
 
     dispatch({
@@ -70,11 +81,12 @@ const fetchSearchData = async ({path = "/",state,dispatch}) => {
     // console.log("searchQuery : ",searchQuery);
     const params = {
         query:searchQuery,
-        expand:"embeds,thumbnails",
+        expand:"embeds,thumbnails,file_properties",
         // ...computeSearchContext({searchContexts}),
         // ...computeFacetContext({searchFacets}),
         // ...computeFilterContext({searchFilters}),
-        ...paging({searchResultPerPage,searchResultPageIndex})
+        ...paging({searchResultPerPage,searchResultPageIndex}),
+        ...sort({searchSortBy,searchSortByDirection,searchSortListDirection})
     }
 
     // console.log("[fetchSearchData] params : ",params);

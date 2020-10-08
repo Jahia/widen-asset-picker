@@ -18,7 +18,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faSyncAlt,faFile,faSearch,faPowerOff,faBan,faTimes,faUserCheck,faUserTag,faCrosshairs,faChevronLeft,faChevronRight,faHashtag,faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faSortAmountDown,faSortAmountUp,faSyncAlt,faFile,faSearch,faPowerOff,faBan,faTimes,faUserCheck,faUserTag,faCrosshairs,faChevronLeft,faChevronRight,faHashtag,faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane,faFileAlt,faCheckCircle,faThumbsUp,faUserCircle,faAddressCard} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
@@ -41,7 +41,9 @@ library.add(
     faFile,
     faFileAlt,
     faSyncAlt,
-    faPaperPlane
+    faPaperPlane,
+    faSortAmountDown,
+    faSortAmountUp
 );
 
 const errorMsg = 'Oups something get wrong';
