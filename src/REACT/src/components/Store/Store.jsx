@@ -114,6 +114,9 @@ const reducer = (state, action) => {
             const {url} = payload;
             console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
             //TODO populate the interface object with the url.
+            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
+            window.widenPickerInterface.add(url);
+            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
             return {
                 ...state,
                 selectedItem:payload

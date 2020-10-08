@@ -45,7 +45,7 @@ const Nav=()=>{
                     id={`sortBy_${getRandomString(6,"aA#")}`}
                 >
                     {searchSortList.map((item,i)=>
-                        <Dropdown.Item eventKey={i} id={item.value} onClick={handleClickSortBy}>{item.label}</Dropdown.Item>
+                        <Dropdown.Item key={i} id={item.value} onClick={handleClickSortBy}>{item.label}</Dropdown.Item>
                     )}
                     {/*<Dropdown.Divider />*/}
                 </DropdownButton>

@@ -50,6 +50,7 @@ function widenPickerLoad(data) {
 function widenPickerGet() {
     console.log("widenPickerGet !");
     const pickerInterface = getCustomWidenPickerInterface();
+    console.log("[Picker] pickerInterface : ",pickerInterface);
     if(pickerInterface !== undefined) {
         return pickerInterface.data;
     }

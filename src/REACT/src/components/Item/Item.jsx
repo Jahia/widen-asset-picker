@@ -30,7 +30,7 @@ Decote.propTypes={
 }
 
 const Item=({item})=>{
-console.log("[Item] item : ",item);
+// console.log("[Item] item : ",item);
     const { state,dispatch } = React.useContext(StoreContext);
     const {selectedItem} = state //TODO locale is needed for the date format
     const {thumbnails,created_date,filename,id,embeds} = item;

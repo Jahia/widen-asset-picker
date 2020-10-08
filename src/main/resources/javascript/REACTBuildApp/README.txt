@@ -1,1 +1,1 @@
-update main.js with the appropriate url for the loader -> "modules/widen-picker/icons/"
+update main.js with the appropriate url for the loader -> replace "static/media/" by "modules/widen-picker/icons/"
