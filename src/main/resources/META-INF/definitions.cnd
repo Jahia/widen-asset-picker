@@ -8,7 +8,7 @@
 
 [widenpkmix:widenPiker] > jmix:templateMixin mixin
   extends = widenpknt:widenAssetTest
-  - widenpk:widenAsset (weakreference, picker[type='custom',config='widenAsset']) internationalized indexed=no noqueryorder nofulltext
+  - widenpk:widenAsset (string, picker[type='custom',doNotResolveNode='true',config='widenAsset']) internationalized indexed=no noqueryorder nofulltext
 
 [widenpkmix:imagePicker] > jmix:templateMixin mixin
   extends = widenpknt:widenAssetTest
