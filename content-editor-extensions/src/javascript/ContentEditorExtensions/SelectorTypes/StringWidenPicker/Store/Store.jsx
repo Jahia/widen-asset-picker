@@ -73,7 +73,7 @@ const init = context => {
         searchResultMaxPage: null,
         searchResultPageIndex: 1,
         searchResultAvailableAnswersCount: null,
-        showPickerModal: false,
+        showPickerDialog: false,
 
         searchFacets: [],
         searchFilters: [],
@@ -123,7 +123,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 selectedItem,
-                showPickerModal: !state.showPickerModal
+                showPickerDialog: !state.showPickerDialog
             };
         }
 
@@ -334,7 +334,7 @@ const reducer = (state, action) => {
             console.debug('[STORE] TOGGLE_SHOW_PICKER');
             return {
                 ...state,
-                showPickerModal: !state.showPickerModal
+                showPickerDialog: !state.showPickerDialog
             };
         }
 
@@ -359,7 +359,7 @@ const reducer = (state, action) => {
         //     return {
         //         ...state,
         //         selectedItem,
-        //         showPickerModal:!state.showPickerModal
+        //         showPickerDialog:!state.showPickerDialog
         //     }
         // }
         default:
