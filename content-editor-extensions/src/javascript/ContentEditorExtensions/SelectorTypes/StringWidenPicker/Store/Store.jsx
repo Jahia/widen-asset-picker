@@ -37,11 +37,13 @@ const init = context => {
     //     return config;
     // });
     const {lazyLoad, resultPerPage} = context.widen;
-    const {selectedItem, contentEditorOnChange} = context;
+    const {selectedItem, contentEditorOnChange, field, id} = context;
 
     return {
         context, // TODO see if needed
         // locale:context.widen.locale.search,
+        field,
+        id,
         error: null,
         isLoading: false,
         needToFetch: !lazyLoad, // False,

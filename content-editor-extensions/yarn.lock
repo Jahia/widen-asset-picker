@@ -2004,6 +2004,17 @@
     eslint-plugin-react "^7.16.0"
     eslint-plugin-react-hooks "^2.2.0"
 
+"@jahia/moonstone@^0.16.2":
+  version "0.16.2"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-0.16.2.tgz#f06bfaeed408dbc6554d5f03ff5d13c374b070f6"
+  integrity sha512-XKaMo5mtiMwBN0Aamoq7KFLSnHgaRBX953J8b59CEVW5/8f/XnbPWPZFOQhW2xIaYuNlNvbahBkAT+er5iypOQ==
+  dependencies:
+    clsx "^1.0.4"
+    prop-types "^15.7.2"
+    re-resizable "^6.2.0"
+    react-is "^16.12.0"
+    to-px "^1.1.0"
+
 "@jahia/stylelint-config@^0.0.3":
   version "0.0.3"
   resolved "https://npm.jahia.com/@jahia%2fstylelint-config/-/stylelint-config-0.0.3.tgz#27f8af3805c50362de486c9ade5c0aabdb1edfa7"
@@ -4780,6 +4791,11 @@ clone-regexp@^2.1.0:
   dependencies:
     is-regexp "^2.0.0"
 
+clsx@^1.0.4, clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://npm.jahia.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -6750,6 +6766,11 @@ fast-levenshtein@~2.0.6:
   version "2.0.6"
   resolved "https://npm.jahia.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fast-memoize@^2.5.1:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/fast-memoize/-/fast-memoize-2.5.2.tgz#79e3bb6a4ec867ea40ba0e7146816f6cdce9b57e"
+  integrity sha512-Ue0LwpDYErFbmNnZSF0UH6eImUwDmogUO1jyE+JbN2gsQz/jICm1Ve7t9QT0rNSsfJt+Hs4/S3GnsDVjL4HVrw==
 
 fastq@^1.6.0:
   version "1.8.0"
@@ -10003,6 +10024,11 @@ mdast-util-compact@^2.0.0:
   dependencies:
     unist-util-visit "^2.0.0"
 
+mdi-material-ui@^5.31.0:
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/mdi-material-ui/-/mdi-material-ui-5.31.0.tgz#f884ba723c959232591dc858b4674e6a83b6d224"
+  integrity sha512-/CE4ocEL63Jo9yE+jfasP7SASJu8N0mHNqPVEzHn3TtrzL+L+kpcHFMSshWG1bea7xBiuSEgOVBSlwPGc3Aq4Q==
+
 mdn-data@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.4.tgz#699b3c38ac6f1d728091a64650b65d388502fd5b"
@@ -11031,6 +11057,11 @@ parse-passwd@^1.0.0:
   version "1.0.0"
   resolved "https://npm.jahia.com/parse-passwd/-/parse-passwd-1.0.0.tgz#6d5b934a456993b23d37f40a382d6f1666a8e5c6"
   integrity sha1-bVuTSkVpk7I9N/QKOC1vFmao5cY=
+
+parse-unit@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/parse-unit/-/parse-unit-1.0.1.tgz#7e1bb6d5bef3874c28e392526a2541170291eecf"
+  integrity sha1-fhu21b7zh0wo45JSaiVBFwKR7s8=
 
 parse5@4.0.0:
   version "4.0.0"
@@ -12305,6 +12336,13 @@ raw-body@2.4.0:
     http-errors "1.7.2"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+re-resizable@^6.2.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.7.0.tgz#63324f0d2c8cd24fedda6bba5d638bd09c63ee6b"
+  integrity sha512-uBrV59SZgxmZunL7MWoSnEKEfQW+GfevJqWqnA0slTe54Xbdfn1SgvUCP/C7Ak3hHkz3dSHN8xwpyapdx2Sgrw==
+  dependencies:
+    fast-memoize "^2.5.1"
 
 react-app-polyfill@^1.0.6:
   version "1.0.6"
@@ -14386,6 +14424,13 @@ to-object-path@^0.3.0:
   integrity sha1-KXWIt7Dn4KwI4E5nL4XB9JmeF68=
   dependencies:
     kind-of "^3.0.2"
+
+to-px@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/to-px/-/to-px-1.1.0.tgz#b6b269ed5db0cc9aefc15272a4c8bcb2ca1e99ca"
+  integrity sha512-bfg3GLYrGoEzrGoE05TAL/Uw+H/qrf2ptr9V3W7U0lkjjyYnIfgxmVLUfhQ1hZpIQwin81uxhDjvUkDYsC0xWw==
+  dependencies:
+    parse-unit "^1.0.1"
 
 to-regex-range@^2.1.0:
   version "2.1.1"

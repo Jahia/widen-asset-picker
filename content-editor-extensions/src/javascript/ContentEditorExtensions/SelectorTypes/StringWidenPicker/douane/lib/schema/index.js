@@ -92,8 +92,16 @@ export default {
                 // additionalProperties:false
             },
             contentEditorOnChange: {
-            }
-
+            },
+            field: {
+                type: 'object',
+                properties: {}, // TODO fix the expected properties
+                required: []// TODO update based on propeties
+                // additionalProperties:false
+            },
+            id:{
+                type:"string"
+            },
             // Cdp_endpoint:{
             //     type:"string",
             //     format:"uri",
