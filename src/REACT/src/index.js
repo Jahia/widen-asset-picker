@@ -75,15 +75,22 @@ const render = (target,context) =>{
         // })
 
         ReactDOM.render(
-            <React.StrictMode>
-                <Store context={context}>
-                    {/*<ApolloProvider client={client}>*/}
-                        <App />
-                    {/*</ApolloProvider>*/}
-                </Store>
-            </React.StrictMode>,
+            <Store context={context}>
+                <App />
+            </Store>,
             document.getElementById(target)
         );
+
+        // ReactDOM.render(
+        //     <React.StrictMode>
+        //         <Store context={context}>
+        //             {/*<ApolloProvider client={client}>*/}
+        //             <App />
+        //             {/*</ApolloProvider>*/}
+        //         </Store>
+        //     </React.StrictMode>,
+        //     document.getElementById(target)
+        // );
 
     }catch(e){
         console.error("error : ",e);

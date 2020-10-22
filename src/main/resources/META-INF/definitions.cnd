@@ -1,19 +1,43 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
-<widenpkmix = 'http://modules.se.jahia.org/widen-picker/mix/1.0'>
-<widenpknt = 'http://modules.se.jahia.org/widen-picker/nt/1.0'>
-<widenpk = 'http://modules.se.jahia.org/widen-picker/1.0'>
+<wdenmix = 'http://modules.se.jahia.org/wden/mix/1.0'>
+<wdennt = 'http://modules.se.jahia.org/wden/nt/1.0'>
+<wden = 'http://modules.se.jahia.org/wden/1.0'>
+
+[wdenmix:wdenPiker] > jmix:templateMixin mixin
+  extends = wdennt:wdenAssetTest
+  - wden:asset (weakreference, picker[type='custom',config='wdenAsset']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
+
+[wdenmix:imagePicker] > jmix:templateMixin mixin
+  extends = wdennt:wdenAssetTest
+  - wden:asset (weakreference, picker[type='image']) internationalized < 'jmix:image'
+
+[wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
+- wden:asset (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
+
+[wdennt:asset] > jnt:content, jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title
+ - wden:id (string) fulltextsearchable=no
+ - wden:external_id (string) fulltextsearchable=no
+ - wden:filename (string) fulltextsearchable=no
+ - wden:created_date (string) fulltextsearchable=no
+ - wden:last_update_date (string) fulltextsearchable=no
+ - wden:deleted_date (string) fulltextsearchable=no
+ - wden:thumbnail (string) fulltextsearchable=no
+ - wden:embed (string) fulltextsearchable=no
+// + * (wdennt:assetProperties)
+// + * (wdennt:fileProperties)
+//
+//[wdennt:assetProperties]
+// - wden:favorite (boolean)
+// - wden:popularity (long)
+//
+//[wdennt:fileProperties]
+// - wden:format (string)
+// - wden:type (string)
+// - wden:sizeKB (string)
+// - wden:width (long)
+// - wden:height (long)
+// - wden:aspect_ratio (long)
+// - wden:duration (long)
 
 
-
-[widenpkmix:widenPiker] > jmix:templateMixin mixin
-  extends = widenpknt:widenAssetTest
-  - widenpk:widenAsset (string, picker[type='custom',doNotResolveNode='true',config='widenAsset']) internationalized indexed=no noqueryorder nofulltext
-
-[widenpkmix:imagePicker] > jmix:templateMixin mixin
-  extends = widenpknt:widenAssetTest
-- widenpk:jContentAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
-
-
-[widenpknt:widenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
-- widenpk:asset (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no

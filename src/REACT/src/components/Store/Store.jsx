@@ -17,7 +17,7 @@ const init = context => {
             Authorization:`Bearer ${context.widen.site}/${context.widen.token}`
         },
         responseType:"json",
-        timeout:3000
+        timeout:5000
     });
     // widenEngine.interceptors.request.use((config) => {
     //     config.params = config.params || {};
@@ -43,7 +43,7 @@ const init = context => {
     //     return config;
     // });
 
-    const {lazyLoad,resultPerPage} = context.widen;
+    const {lazyLoad,resultPerPage,mountPoint} = context.widen;
 
     return {
         context,
@@ -56,6 +56,7 @@ const init = context => {
         // userProfile:{},
         selectedItem:{},
         widenEngine,
+        mountPoint,
         searchAnswers:[],
         searchIframe:null,//not needed if I use searchAnswers
         //searchContexts:{},
@@ -111,11 +112,11 @@ const reducer = (state, action) => {
             }
         }
         case "UPDATE_SELECTED_ITEM": {
-            const {url} = payload;
+            const {id} = payload;
             console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
             //TODO populate the interface object with the url.
             console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
-            window.widenPickerInterface.add(url);
+            window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
             console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
             return {
                 ...state,
