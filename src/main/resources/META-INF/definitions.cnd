@@ -4,9 +4,9 @@
 <wdennt = 'http://modules.se.jahia.org/wden/nt/1.0'>
 <wden = 'http://modules.se.jahia.org/wden/1.0'>
 
-[wdenmix:wdenPiker] > jmix:templateMixin mixin
+[wdenmix:widenPicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest
-  - wden:asset (weakreference, picker[type='custom',config='wdenAsset']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
+  - wden:asset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
 
 [wdenmix:imagePicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest

@@ -52,6 +52,7 @@ function widenPickerGet() {
     const pickerInterface = getCustomWidenPickerInterface();
     console.log("[Picker] pickerInterface : ",pickerInterface);
     if(pickerInterface !== undefined) {
+        console.log("[Picker] data returned to jahia : ",pickerInterface.data);
         return pickerInterface.data;
     }
 }

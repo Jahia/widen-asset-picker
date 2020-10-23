@@ -19,8 +19,8 @@
 
 <template:addResources type="css" resources="REACTBuildApp/2.d9ad5f5c.chunk.css" />
 <template:addResources type="css" resources="REACTBuildApp/main.874d8aa6.chunk.css" />
-<template:addResources type="javascript" resources="REACTBuildApp/2.6a8ffc6e.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.516eb370.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/2.1f07ff12.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.150bd8b9.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
 <c:set var="token" value="1234"/>

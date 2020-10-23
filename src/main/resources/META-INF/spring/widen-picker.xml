@@ -15,8 +15,8 @@
         </property>
     </bean>
 
-    <bean id="widenAsset" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
-        <property name="titleKey" value="label.widenAsset@resources.widen-picker"/>
+    <bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
+        <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
         <property name="customPickerConfiguration">
             <bean class="org.jahia.ajax.gwt.client.widget.content.CustomPickerConfiguration">
                 <property name="initMethodName" value="widenPickerInit"/>

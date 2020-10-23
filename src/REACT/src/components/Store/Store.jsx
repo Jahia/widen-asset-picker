@@ -1,6 +1,7 @@
 import React from "react";
 import {StoreContext} from "contexts";
 import axios from "axios";
+
 import {getRandomString} from "misc/utils";
 // import {fetchSearchData} from "misc/data";
 
@@ -17,7 +18,7 @@ const init = context => {
             Authorization:`Bearer ${context.widen.site}/${context.widen.token}`
         },
         responseType:"json",
-        timeout:5000
+        timeout:6000
     });
     // widenEngine.interceptors.request.use((config) => {
     //     config.params = config.params || {};
@@ -29,12 +30,17 @@ const init = context => {
     //     return config;
     // });
 
-    // const profileEngine = axios.create({
-    //     baseURL:context.cdp_endpoint,
-    //     responseType:"json",
-    //     withCredentials: true,//important to send the context-profile-id cookie
-    //     timeout:1000
-    // });
+    const graphQLEngine = axios.create({
+        baseURL:context.gql_endpoint,
+        headers:{
+            // "Content-Type":"application/json",
+            // Accept:"application/json",
+            Authorization:context.gql_authorization
+        },
+        responseType:"json",
+        // withCredentials: true,//important to send the context-profile-id cookie
+        timeout:3000
+    });
     // //
     // profileEngine.interceptors.request.use((config) => {
     //     config.headers = config.headers || {};
@@ -57,6 +63,7 @@ const init = context => {
         selectedItem:{},
         widenEngine,
         mountPoint,
+        graphQLEngine,
         searchAnswers:[],
         searchIframe:null,//not needed if I use searchAnswers
         //searchContexts:{},
@@ -113,11 +120,42 @@ const reducer = (state, action) => {
         }
         case "UPDATE_SELECTED_ITEM": {
             const {id} = payload;
+            const {graphQLEngine,mountPoint} = state
             console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
-            //TODO populate the interface object with the url.
-            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
-            window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
-            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
+
+            const synchWidenPickerInterface = async () => {
+                //Call jahia to generate the UUID of the virtual node
+                const query = `query getWiden($workspace: Workspace!,$path: String!){
+                                  response: jcr(workspace: $workspace) {
+                                    node:nodeByPath(path:$path){
+                                      uuid
+                                    }
+                                  }
+                                }`;
+                const variables = {
+                    workspace:"EDIT",
+                    path:`${state.mountPoint}/${id}`
+                }
+                const data = {
+                    query,
+                    variables
+                }
+                try {
+                    const response = await graphQLEngine.post("",data);
+                    // console.log("response : ",response);
+                    const uuid = response.data.data.response.node.uuid;
+                    console.log("jContent uuid is generated : ",uuid);
+                } catch (error) {
+                    console.error("oups ! something wrong with graphQL : ",error)
+                }
+            }
+
+            synchWidenPickerInterface().then( () => {
+                console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
+                window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
+                console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
+            })
+
             return {
                 ...state,
                 selectedItem:payload
