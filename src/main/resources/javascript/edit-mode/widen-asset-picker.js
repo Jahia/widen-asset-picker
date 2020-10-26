@@ -19,7 +19,7 @@ function getCustomWidenPickerInterface () {
 
 
 function widenPickerInit(data) {
-    console.log("widenPickerInit !");
+    console.log("widenPickerInit with jahiaGWTParameters : ",jahiaGWTParameters);
     const iframe = `<iframe 
             id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
             src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`

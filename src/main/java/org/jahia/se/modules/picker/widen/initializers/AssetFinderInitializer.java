@@ -42,12 +42,12 @@ public class AssetFinderInitializer extends AbstractChoiceListRenderer implement
         //externalLink
         myPropertiesMap = new HashMap<String, Object>();
         myPropertiesMap.put("addMixin","wdenmix:widenPicker");
-        myChoiceList.add(new ChoiceListValue("widen",myPropertiesMap,new ValueImpl("widen", PropertyType.STRING, false)));
+        myChoiceList.add(new ChoiceListValue("extAsset",myPropertiesMap,new ValueImpl("extAsset", PropertyType.STRING, false)));
 
         //internalLink
         myPropertiesMap = new HashMap<String, Object>();
         myPropertiesMap.put("addMixin","wdenmix:imagePicker");
-        myChoiceList.add(new ChoiceListValue("jContent",myPropertiesMap,new ValueImpl("jContent", PropertyType.STRING, false)));
+        myChoiceList.add(new ChoiceListValue("intAsset",myPropertiesMap,new ValueImpl("intAsset", PropertyType.STRING, false)));
 
         //Return the list
         return myChoiceList;

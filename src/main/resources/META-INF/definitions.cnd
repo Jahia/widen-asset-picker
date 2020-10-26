@@ -6,14 +6,14 @@
 
 [wdenmix:widenPicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest
-  - wden:asset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
+  - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
 
 [wdenmix:imagePicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest
-  - wden:asset (weakreference, picker[type='image']) internationalized < 'jmix:image'
+  - wden:intAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
 
 [wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
-- wden:asset (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
+- wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
 
 [wdennt:asset] > jnt:content, jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title
  - wden:id (string) fulltextsearchable=no
@@ -25,19 +25,19 @@
  - wden:thumbnail (string) fulltextsearchable=no
  - wden:embed (string) fulltextsearchable=no
 // + * (wdennt:assetProperties)
-// + * (wdennt:fileProperties)
+ + * (wdennt:fileProperties)
 //
 //[wdennt:assetProperties]
 // - wden:favorite (boolean)
 // - wden:popularity (long)
 //
-//[wdennt:fileProperties]
-// - wden:format (string)
-// - wden:type (string)
-// - wden:sizeKB (string)
-// - wden:width (long)
-// - wden:height (long)
-// - wden:aspect_ratio (long)
-// - wden:duration (long)
+[wdennt:fileProperties]
+ - wden:format (string)
+ - wden:type (string)
+ - wden:sizeKB (string)
+ - wden:width (long)
+ - wden:height (long)
+ - wden:aspect_ratio (long)
+ - wden:duration (long)
 
 

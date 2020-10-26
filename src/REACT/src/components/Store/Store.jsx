@@ -30,17 +30,17 @@ const init = context => {
     //     return config;
     // });
 
-    const graphQLEngine = axios.create({
-        baseURL:context.gql_endpoint,
-        headers:{
-            // "Content-Type":"application/json",
-            // Accept:"application/json",
-            Authorization:context.gql_authorization
-        },
-        responseType:"json",
-        // withCredentials: true,//important to send the context-profile-id cookie
-        timeout:3000
-    });
+    // const graphQLEngine = axios.create({
+    //     baseURL:context.gql_endpoint,
+    //     headers:{
+    //         // "Content-Type":"application/json",
+    //         // Accept:"application/json",
+    //         Authorization:context.gql_authorization
+    //     },
+    //     responseType:"json",
+    //     // withCredentials: true,//important to send the context-profile-id cookie
+    //     timeout:3000
+    // });
     // //
     // profileEngine.interceptors.request.use((config) => {
     //     config.headers = config.headers || {};
@@ -63,7 +63,7 @@ const init = context => {
         selectedItem:{},
         widenEngine,
         mountPoint,
-        graphQLEngine,
+        // graphQLEngine,
         searchAnswers:[],
         searchIframe:null,//not needed if I use searchAnswers
         //searchContexts:{},
@@ -120,41 +120,42 @@ const reducer = (state, action) => {
         }
         case "UPDATE_SELECTED_ITEM": {
             const {id} = payload;
-            const {graphQLEngine,mountPoint} = state
+            // const {graphQLEngine,mountPoint} = state
             console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
 
-            const synchWidenPickerInterface = async () => {
-                //Call jahia to generate the UUID of the virtual node
-                const query = `query getWiden($workspace: Workspace!,$path: String!){
-                                  response: jcr(workspace: $workspace) {
-                                    node:nodeByPath(path:$path){
-                                      uuid
-                                    }
-                                  }
-                                }`;
-                const variables = {
-                    workspace:"EDIT",
-                    path:`${state.mountPoint}/${id}`
-                }
-                const data = {
-                    query,
-                    variables
-                }
-                try {
-                    const response = await graphQLEngine.post("",data);
-                    // console.log("response : ",response);
-                    const uuid = response.data.data.response.node.uuid;
-                    console.log("jContent uuid is generated : ",uuid);
-                } catch (error) {
-                    console.error("oups ! something wrong with graphQL : ",error)
-                }
-            }
+            // const synchWidenPickerInterface = async () => {
+            //     //Call jahia to generate the UUID of the virtual node
+            //     const query = `query getWiden($workspace: Workspace!,$path: String!){
+            //                       response: jcr(workspace: $workspace) {
+            //                         node:nodeByPath(path:$path){
+            //                           uuid
+            //                         }
+            //                       }
+            //                     }`;
+            //     const variables = {
+            //         workspace:"EDIT",
+            //         path:`${state.mountPoint}/${id}`
+            //     }
+            //     const data = {
+            //         query,
+            //         variables
+            //     }
+            //     try {
+            //         const response = await graphQLEngine.post("",data);
+            //         // console.log("response : ",response);
+            //         const uuid = response.data.data.response.node.uuid;
+            //         return uuid;
+            //         console.log("jContent uuid is generated : ",uuid);
+            //     } catch (error) {
+            //         console.error("oups ! something wrong with graphQL : ",error)
+            //     }
+            // }
+            //
+            // synchWidenPickerInterface().then( uuid => { });
 
-            synchWidenPickerInterface().then( () => {
-                console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
-                window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
-                console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
-            })
+            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
+            window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
+            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
 
             return {
                 ...state,

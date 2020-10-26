@@ -99,15 +99,15 @@ export default{
             //     type:"string",
             //     default:process.env.REACT_APP_JCUSTOMER_TOKEN
             // },
-            gql_endpoint:{
-                type:"string",
-                format:"uri",
-                default:process.env.REACT_APP_JCONTENT_GQL_ENDPOINT || "http://localhost:8080/modules/graphql"
-            },
-            gql_authorization:{
-                type:"string",
-                default:process.env.REACT_APP_JCONTENT_GQL_AUTH || "Basic cm9vdDpyb290"
-            },
+            // gql_endpoint:{
+            //     type:"string",
+            //     format:"uri",
+            //     default:process.env.REACT_APP_JCONTENT_GQL_ENDPOINT || "http://localhost:8080/modules/graphql"
+            // },
+            // gql_authorization:{
+            //     type:"string",
+            //     default:process.env.REACT_APP_JCONTENT_GQL_AUTH || "Basic cm9vdDpyb290"
+            // },
             // gql_variables:{
             //     type:"object",
             //     properties:{
@@ -134,8 +134,8 @@ export default{
             "widen",
             // "cdp_endpoint",
             // "cdp_token",
-            "gql_endpoint",
-            "gql_authorization",
+            // "gql_endpoint",
+            // "gql_authorization",
             // "gql_variables",
             // "files_endpoint"
         ],
