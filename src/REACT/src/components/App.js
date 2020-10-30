@@ -18,10 +18,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faSortAmountDown,faSortAmountUp,faSyncAlt,faFile,faSearch,faPowerOff,faBan,faTimes,faUserCheck,faUserTag,faCrosshairs,faChevronLeft,faChevronRight,faHashtag,faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { faPaperPlane,faFileAlt,faCheckCircle,faThumbsUp,faUserCircle,faAddressCard} from '@fortawesome/free-regular-svg-icons';
+import {
+    faVideo,
+    faImage,
+    faSortAmountDown,
+    faSortAmountUp,
+    faSyncAlt,
+    faSearch,
+    faKiwiBird,
+    faPowerOff,faBan,faTimes,faUserCheck,faUserTag,faCrosshairs,faChevronLeft,faChevronRight,faHashtag,faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane,faFileAlt,faCheckCircle,faThumbsUp,faUserCircle,faAddressCard,faFilePdf,faFileImage,faFileVideo,faFile} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+    faKiwiBird,
+    faVideo,
+    faImage,
     fab,
     faSearch,
     faPowerOff,
@@ -43,7 +54,11 @@ library.add(
     faSyncAlt,
     faPaperPlane,
     faSortAmountDown,
-    faSortAmountUp
+    faSortAmountUp,
+    faFilePdf,
+    faFileImage,
+    faFileVideo,
+    faFile
 );
 
 const errorMsg = 'Oups something get wrong';
@@ -116,7 +131,7 @@ const App = (props) => {
                         // <iframe frameBorder="0" src={searchIframe} width="100%" height="700px"></iframe>
                     }
                 </Col>
-                <Col xs="4" sm="3" md="4" lg="3">
+                {/*<Col xs="4" sm="3" md="4" lg="3">*/}
                     {/*<ul className="pT4__facet">*/}
                     {/*    {searchFacets.map( facet =>*/}
                     {/*        <Facet*/}
@@ -126,7 +141,7 @@ const App = (props) => {
                     {/*    )*/}
                     {/*    }*/}
                     {/*</ul>*/}
-                </Col>
+                {/*</Col>*/}
             </Row>
         </Container>
     );

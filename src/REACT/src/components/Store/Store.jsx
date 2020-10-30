@@ -18,7 +18,7 @@ const init = context => {
             Authorization:`Bearer ${context.widen.site}/${context.widen.token}`
         },
         responseType:"json",
-        timeout:6000
+        timeout:10000
     });
     // widenEngine.interceptors.request.use((config) => {
     //     config.params = config.params || {};
@@ -154,6 +154,7 @@ const reducer = (state, action) => {
             // synchWidenPickerInterface().then( uuid => { });
 
             console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
+            window.widenPickerInterface.removeAll();
             window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
             console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
 

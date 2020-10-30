@@ -18,11 +18,10 @@
 <%--@elvariable id="workspace" type="java.lang.String"--%>
 
 <template:addResources type="css" resources="REACTBuildApp/2.d9ad5f5c.chunk.css" />
-<template:addResources type="css" resources="REACTBuildApp/main.874d8aa6.chunk.css" />
-<template:addResources type="javascript" resources="REACTBuildApp/2.1f07ff12.chunk.js" />
+<template:addResources type="css" resources="REACTBuildApp/main.d63656a5.chunk.css" />
 
-<%--<template:addResources type="javascript" resources="REACTBuildApp/main.e8b70aef.chunk.js" />--%>
-<template:addResources type="javascript" resources="REACTBuildApp/main.150bd8b9.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/2.c9b041a5.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.89612f00.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
 <c:set var="token" value="1234"/>
@@ -46,7 +45,6 @@
         <c:when test="${renderContext.editMode}" >
             setTimeout(() => {
                 window.widenPicker("${targetId}",context);
-                //voir pkoi j'ai besoin du context ci-apres ?...
                 window.widenPickerInterface.context = context;
             },500);
         </c:when>

@@ -26,7 +26,8 @@
         </property>
     </bean>
 
-    <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider" parent="AbstractJCRStoreProvider" >
+    <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
+          parent="AbstractJCRStoreProvider">
         <property name="key" value="WidenProvider"/>
         <property name="mountPoint" value="/sites/systemsite/contents/widen"/>
         <property name="externalProviderInitializerService" ref="ExternalProviderInitializerService"/>

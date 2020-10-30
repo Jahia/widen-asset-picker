@@ -111,11 +111,6 @@ public class WidenDataSource implements ExternalDataSource {
                     properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
                     properties.put("wden:embed", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
 
-//                    if (asset.has("id"))
-//                        properties.put("wden:id", new String[]{asset.getString("id")});
-//                    if (movie.has("release_date")) {
-//                        properties.put("release_date", new String[]{movie.getString("release_date") + "T00:00:00.000+00:00"});
-//                    }
                 } catch (JSONException | RepositoryException e) {
                     logger.error("Error while getting asset", e);
                 }

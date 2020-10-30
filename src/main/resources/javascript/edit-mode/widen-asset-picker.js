@@ -7,7 +7,6 @@ function getCustomWidenPickerFrameWindow () {
 
     return frame.contentWindow;
 }
-
 function getCustomWidenPickerInterface () {
     console.log("getCustomWidenPickerInterface !");
     const frameWindow = getCustomWidenPickerFrameWindow();
@@ -17,7 +16,6 @@ function getCustomWidenPickerInterface () {
     return frameWindow.widenPickerInterface;
 }
 
-
 function widenPickerInit(data) {
     console.log("widenPickerInit with jahiaGWTParameters : ",jahiaGWTParameters);
     const iframe = `<iframe 
@@ -25,7 +23,6 @@ function widenPickerInit(data) {
             src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
     return $.parseHTML(iframe)[0];
 }
-
 //called when the picker is loaded
 function widenPickerLoad(data) {
     console.log("widenPickerLoad ! data -> ",data);
@@ -45,14 +42,10 @@ function widenPickerLoad(data) {
         }
     }
 }
-
 //called when click the picker save button
 function widenPickerGet() {
-    console.log("widenPickerGet !");
     const pickerInterface = getCustomWidenPickerInterface();
-    console.log("[Picker] pickerInterface : ",pickerInterface);
     if(pickerInterface !== undefined) {
-        console.log("[Picker] data returned to jahia : ",pickerInterface.data);
         return pickerInterface.data;
     }
 }
