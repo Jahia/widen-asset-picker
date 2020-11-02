@@ -15,7 +15,7 @@
 [wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
 - wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
 
-[wdennt:asset] > jnt:content, jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title
+[wdennt:asset] > jnt:content, jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title, wdenmix:fileProperties
  - wden:id (string) fulltextsearchable=no
  - wden:external_id (string) fulltextsearchable=no
  - wden:filename (string) fulltextsearchable=no
@@ -24,20 +24,18 @@
  - wden:deleted_date (string) fulltextsearchable=no
  - wden:thumbnail (string) fulltextsearchable=no
  - wden:embed (string) fulltextsearchable=no
-// + * (wdennt:assetProperties)
- + * (wdennt:fileProperties)
-//
-//[wdennt:assetProperties]
+
+//[wdenmix:assetProperties]
 // - wden:favorite (boolean)
 // - wden:popularity (long)
 //
-[wdennt:fileProperties]
+[wdenmix:fileProperties]
  - wden:format (string)
  - wden:type (string)
  - wden:sizeKB (string)
  - wden:width (long)
  - wden:height (long)
- - wden:aspect_ratio (long)
+ - wden:aspect_ratio (double)
  - wden:duration (long)
 
 

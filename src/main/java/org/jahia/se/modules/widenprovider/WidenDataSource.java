@@ -98,6 +98,7 @@ public class WidenDataSource implements ExternalDataSource {
                 query.put("expand","embeds,thumbnails,file_properties");
 
                 try {
+
                     JSONObject asset = queryWiden(path,query);
                     logger.info("***** WidenDataSource ***** asset : "+asset);
                     properties = new HashMap<String, String[]>();
@@ -111,15 +112,33 @@ public class WidenDataSource implements ExternalDataSource {
                     properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
                     properties.put("wden:embed", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
 
+                    properties.put("wden:format", new String[]{asset.getJSONObject("file_properties").getString("format")});
+                    properties.put("wden:type", new String[]{asset.getJSONObject("file_properties").getString("format_type")});
+                    properties.put("wden:sizeKB", new String[]{asset.getJSONObject("file_properties").getString("size_in_kbytes")});
+
+//                    JSONObject vProperties = asset.getJSONObject("file_properties").optJSONObject("video_properties");
+//                    JSONObject iProperties = asset.getJSONObject("file_properties").optJSONObject("image_properties");
+//
+//                    if(iProperties.length() != 0){
+//                        Iterator<String> keys = iProperties.keys();
+//                        while(keys.hasNext()) {
+//                            String key = keys.next();
+//                            properties.put("wden:"+key, new String[]{iProperties.getString(key)});
+//                        }
+//                    }
+//
+//                    properties.put("wden:", new String[]{asset.getJSONObject("file_properties").optJSONObject("video_properties").getString("format")});
+
+
                 } catch (JSONException | RepositoryException e) {
                     logger.error("Error while getting asset", e);
                 }
                 ExternalData data = new ExternalData(identifier, "/"+identifier, "wdennt:asset", properties);
 
-                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getId() : "+data.getId());
-                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getPath() : "+data.getPath());
-                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getName() : "+data.getName());
-                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getType() : "+data.getType());
+//                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getId() : "+data.getId());
+//                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getPath() : "+data.getPath());
+//                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getName() : "+data.getName());
+//                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getType() : "+data.getType());
                 return data;
             }
         } catch (Exception e) {
@@ -199,4 +218,6 @@ public class WidenDataSource implements ExternalDataSource {
             throw new RepositoryException(e);
         }
     }
+
+
 }
