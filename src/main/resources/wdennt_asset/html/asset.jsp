@@ -18,36 +18,17 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<c:set var="alt" value="${fn:escapeXml(currentNode.displayableName)}"/>
-<c:set var="thumbnail" value="${currentNode.properties['wden:thumbnail'].string}"/>
-<c:set var="url" value="${currentNode.properties['wden:embed'].string}"/>
+<c:set var="type" value="${currentNode.properties['wden:type'].string}"/>
+<utility:logger level="INFO" value="*** widen asset type : ${type}"/>
 
-<c:set var="url" value="${fn:replace(url, '{scale}', '1')}"/>
-<c:set var="url" value="${fn:replace(url, '{quality}', '72')}"/>
-
-<c:set var="widths" value="${not empty currentResource.moduleParams.widths ? currentResource.moduleParams.widths :
-    '256,512,768,1024,1280,1600,2000'}"/>
-<c:set var="defaultWidth" value="${not empty currentResource.moduleParams.defaultWidth ? currentResource.moduleParams.defaultWidth :
-    '768'}"/>
-
-<utility:logger level="INFO" value="*** widen asset alt : ${alt}"/>
-<utility:logger level="INFO" value="*** widen asset url : ${url}"/>
-<%--<utility:logger level="INFO" value="*** widen asset defaultURL : ${defaultURL}"/>--%>
-
-<%--<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">--%>
-<%--    <c:if test="${!status.first}">,</c:if>--%>
-<%--    ${fn:replace(url, '{size}', width)}" ${width}w--%>
-<%--</c:forEach>--%>
-
-<%--<img src="${url}" alt="${alt}"/>--%>
-
-<img src="${fn:replace(url, '{size}', defaultWidth)}" width="100%"
-     srcset="<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">
-                <c:if test="${!status.first}">,</c:if>
-                <c:out value="${fn:replace(url, '{size}', width)} ${width}w" />
-            </c:forEach>"
-     sizes="(min-width: 600px) 512px,
-            200px"
-     class="${class}"
-     alt="${alt}"
-/>
+<c:choose>
+    <c:when test="${type eq 'image'}" >
+        <template:include view="hidden.image"/>
+    </c:when>
+    <c:when test="${type eq 'video'}" >
+        <template:include view="hidden.video"/>
+    </c:when>
+    <c:otherwise>
+        <template:include view="hidden.link"/>
+    </c:otherwise>
+</c:choose>

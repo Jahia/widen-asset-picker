@@ -79,7 +79,8 @@ public class WidenDataSource implements ExternalDataSource {
     @Override
     public List<String> getChildren(String s) throws RepositoryException {
         logger.info("***** WidenDataSource ***** getChildren is called with params : "+s);
-        return null;
+        List<String> child = new ArrayList<String>();
+        return child;
     }
 
     @Override
@@ -101,6 +102,7 @@ public class WidenDataSource implements ExternalDataSource {
 
                     JSONObject asset = queryWiden(path,query);
                     logger.info("***** WidenDataSource ***** asset : "+asset);
+
                     properties = new HashMap<String, String[]>();
                     properties.put("jcr:title", new String[]{asset.getString("filename")});
                     properties.put("wden:id", new String[]{asset.getString("id")});
@@ -109,26 +111,47 @@ public class WidenDataSource implements ExternalDataSource {
                     properties.put("wden:created_date", new String[]{asset.getString("created_date")});
                     properties.put("wden:last_update_date", new String[]{asset.getString("last_update_date")});
                     properties.put("wden:deleted_date", new String[]{asset.optString("deleted_date")});
-                    properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
                     properties.put("wden:embed", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
+
+                    if(asset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
+                        properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
+                    if(asset.getJSONObject("embeds").optJSONObject("video_player")!=null)
+                        properties.put("wden:videoPlayer", new String[]{asset.getJSONObject("embeds").optJSONObject("video_player").optString("url")});
+                    if(asset.getJSONObject("embeds").optJSONObject("video_stream")!=null)
+                        properties.put("wden:videoStream", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("url")});
 
                     properties.put("wden:format", new String[]{asset.getJSONObject("file_properties").getString("format")});
                     properties.put("wden:type", new String[]{asset.getJSONObject("file_properties").getString("format_type")});
                     properties.put("wden:sizeKB", new String[]{asset.getJSONObject("file_properties").getString("size_in_kbytes")});
 
-//                    JSONObject vProperties = asset.getJSONObject("file_properties").optJSONObject("video_properties");
-//                    JSONObject iProperties = asset.getJSONObject("file_properties").optJSONObject("image_properties");
-//
-//                    if(iProperties.length() != 0){
-//                        Iterator<String> keys = iProperties.keys();
-//                        while(keys.hasNext()) {
-//                            String key = keys.next();
-//                            properties.put("wden:"+key, new String[]{iProperties.getString(key)});
-//                        }
-//                    }
-//
-//                    properties.put("wden:", new String[]{asset.getJSONObject("file_properties").optJSONObject("video_properties").getString("format")});
+                    JSONObject iProperties = asset.getJSONObject("file_properties").optJSONObject("image_properties");
+                    JSONObject vProperties = asset.getJSONObject("file_properties").optJSONObject("video_properties");
 
+                    logger.info("***** WidenDataSource ***** iProperties : "+iProperties);
+                    logger.info("***** WidenDataSource ***** vProperties : "+vProperties);
+
+                    if(iProperties != null && iProperties.length() != 0){
+//                        properties.put("wden:width", new String[]{iProperties.getString("width")});
+//                        properties.put("wden:height", new String[]{iProperties.getString("height")});
+//                        properties.put("wden:aspect_ratio", new String[]{iProperties.getString("aspect_ratio")});
+
+                        Iterator<String> keys = iProperties.keys();
+                        while(keys.hasNext()) {
+                            String key = keys.next();
+//                            logger.info("***** WidenDataSource ***** put properties["+key+"] with value : "+iProperties.get(key));
+                            properties.put("wden:"+key, new String[]{iProperties.getString(key)});
+                        }
+                    }
+                    if(vProperties != null && vProperties.length() != 0){
+                        Iterator<String> keys = vProperties.keys();
+                        while(keys.hasNext()) {
+                            String key = keys.next();
+//                            logger.info("***** WidenDataSource ***** put properties["+key+"] with value : "+vProperties.get(key));
+                            properties.put("wden:"+key, new String[]{vProperties.getString(key)});
+                        }
+                    }
+
+                    logger.info("***** WidenDataSource ***** properties : "+properties);
 
                 } catch (JSONException | RepositoryException e) {
                     logger.error("Error while getting asset", e);
@@ -214,7 +237,7 @@ public class WidenDataSource implements ExternalDataSource {
                 logger.info("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));
             }
         } catch (Exception e) {
-            logger.error("Error while querying TMDB", e);
+            logger.error("Error while querying Widen", e);
             throw new RepositoryException(e);
         }
     }

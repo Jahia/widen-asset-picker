@@ -25,10 +25,13 @@
 <utility:logger level="INFO" value="*** nodeType : ${nodeType}"/>
 <utility:logger level="INFO" value="*** widenNode : ${widenNode}"/>
 
-
+<c:if test="${renderContext.editMode}" >
+<div>
+    <span style="color:#ccc;">Edit widen test</span>
+</c:if>
 <c:choose>
     <c:when test="${nodeType eq 'extAsset'}">
-        <template:module node="${widenNode}" editable="false">
+        <template:module node="${widenNode}" editable="true">
             <template:param name="widths" value="256,512"/>
             <template:param name="defaultWidth" value="512"/>
         </template:module>
@@ -37,3 +40,6 @@
         <template:module node="${jContentNode}" editable="false"/>
     </c:otherwise>
 </c:choose>
+<c:if test="${renderContext.editMode}" >
+</div>
+</c:if>
