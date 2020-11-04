@@ -6,7 +6,7 @@
 
 [wdenmix:widenPicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest
-  - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdennt:asset'
+  - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
 
 [wdenmix:imagePicker] > jmix:templateMixin mixin
   extends = wdennt:wdenAssetTest
@@ -16,26 +16,60 @@
 - wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
 
 
-[wdenmix:fileProperties]
+[wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
+ - wden:id (string) fulltextsearchable=no
+ - wden:externalId (string) fulltextsearchable=no
+ - wden:filename (string) fulltextsearchable=no
+ - wden:createdDate (string) fulltextsearchable=no
+ - wden:updatedDate (string) fulltextsearchable=no
+ - wden:deletedDate (string) fulltextsearchable=no
+// - wden:thumbnail (string) fulltextsearchable=no
+// - wden:embed (string) fulltextsearchable=no
+
+[wdenmix:embed] mixin
+ - wden:templatedUrl (string) fulltextsearchable=no
+
+[wdenmix:embedVideo] > wdenmix:embed  mixin
+ - wden:videoPlayer (string) fulltextsearchable=no
+ - wden:videoStreamURL (string) fulltextsearchable=no
+ - wden:videoStreamHTML (string) fulltextsearchable=no
+ - wden:videoPoster (string) fulltextsearchable=no
+
+[wdenmix:embedPdf] > wdenmix:embed  mixin
+ - wden:viewerHtml5 (string) fulltextsearchable=no
+ - wden:viewer (string) fulltextsearchable=no
+ - wden:docThumbnail (string) fulltextsearchable=no
+ - wden:docURL (string) fulltextsearchable=no
+ - wden:docHTMLLink (string) fulltextsearchable=no
+
+[wdenmix:fileProperties] mixin
  - wden:format (string)
  - wden:type (string)
  - wden:sizeKB (long)
+
+[wdenmix:imageFileProperties] > wdenmix:fileProperties mixin
  - wden:width (double)
  - wden:height (double)
- - wden:aspect_ratio (double)
+ - wden:aspectRatio (double)
+
+[wdenmix:videoFileProperties] > wdenmix:imageFileProperties mixin
  - wden:duration (double)
 
-[wdennt:asset] > jnt:content, jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title, wdenmix:fileProperties
- - wden:id (string) fulltextsearchable=no
- - wden:external_id (string) fulltextsearchable=no
- - wden:filename (string) fulltextsearchable=no
- - wden:created_date (string) fulltextsearchable=no
- - wden:last_update_date (string) fulltextsearchable=no
- - wden:deleted_date (string) fulltextsearchable=no
- - wden:thumbnail (string) fulltextsearchable=no
- - wden:embed (string) fulltextsearchable=no
- - wden:videoPlayer (string) fulltextsearchable=no
- - wden:videoStream (string) fulltextsearchable=no
+[wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
+
+
+[wdenmix:imageMediaSettings] mixin
+ extends = wdennt:widen
+ itemtype = content
+ - wden:defaultImageSize (long)
+ - wden:imageSizes (long) multiple
+
+[wdennt:image] > jnt:content, wdenmix:widenAsset, wdenmix:imageFileProperties, wdenmix:embed
+[wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
+[wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
+[wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
+[wdennt:widen] > jnt:content, jmix:multimediaContent
+ - wden:digitalAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
 
 //[wdenmix:assetProperties]
 // - wden:favorite (boolean)

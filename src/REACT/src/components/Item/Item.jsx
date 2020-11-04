@@ -31,7 +31,20 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 // }
 const ImageStats = ({properties,locale}) => {
     // console.log("[ImageStats] properties : ",properties);
-    const {width,height,aspect_ratio} = properties;
+
+    //reduce is used to manage case {width = null} for svg image for example
+    //default value works only for undefined
+    const {
+        width,
+        height,
+        aspect_ratio
+    } = Object.keys(properties).reduce((reducer,key) => {
+        reducer[key]= properties[key] || 'n/a';
+        return reducer;
+    },{});
+
+
+// console.log("ImageStats width : ",width);
     return(
         <ul className="stats">
             <li>
@@ -48,8 +61,19 @@ const ImageStats = ({properties,locale}) => {
 }
 
 const VideoStats = ({properties,locale}) => {
-    const {width,height,aspect_ratio,duration} = properties
+    const {
+        width,
+        height,
+        aspect_ratio,
+        duration
+    } = Object.keys(properties).reduce((reducer,key) => {
+        reducer[key]= properties[key] || 'n/a';
+        return reducer;
+    },{});
     const formatDuration = () => {
+        if(duration === 'n/a')
+            return 'n/a';
+
         const dateObj = new Date(duration * 1000);
         const hours = dateObj.getUTCHours().toString().padStart(2, '0');
         const minutes = dateObj.getUTCMinutes().toString().padStart(2, '0');
@@ -95,6 +119,8 @@ const ItemStats = ({properties}) => {
         image_properties,
         video_properties
     } = properties;
+    // console.log("properties : ",properties);
+    // console.log("image_properties : ",image_properties);
 
     const isImage = format_type === _IMAGE_;
     const isVideo = format_type === _VIDEO_;

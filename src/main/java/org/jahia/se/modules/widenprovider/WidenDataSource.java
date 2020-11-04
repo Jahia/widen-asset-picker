@@ -24,7 +24,15 @@ public class WidenDataSource implements ExternalDataSource {
 
     private static final Logger logger = LoggerFactory.getLogger(WidenDataSource.class);
 
-    private static String ASSET_ENTRY = "assets";
+    private static final String ASSET_ENTRY = "assets";
+    private static final String FILE_TYPE_IMAGE = "image";
+    private static final String FILE_TYPE_VIDEO = "video";
+    private static final String FILE_TYPE_PDF = "pdf";
+    private static final String CONTENT_TYPE_IMAGE = "wdennt:image";
+    private static final String CONTENT_TYPE_VIDEO = "wdennt:video";
+    private static final String CONTENT_TYPE_PDF = "wdennt:pdf";
+    private static final String CONTENT_TYPE_DOC = "wdennt:document";
+
     private static String widenEndpoint;
     private static String widenSite;
     private static String widenToken;
@@ -64,7 +72,7 @@ public class WidenDataSource implements ExternalDataSource {
     }
 
     public void start() {
-        logger.info("***** WidenDataSource ***** start for remote site : "+this.widenSite);
+//        logger.info("***** WidenDataSource ***** start for remote site : "+this.widenSite);
         try {
             if (!ehCacheProvider.getCacheManager().cacheExists("widen-cache")) {
                 ehCacheProvider.getCacheManager().addCache("widen-cache");
@@ -92,7 +100,7 @@ public class WidenDataSource implements ExternalDataSource {
             }else{
                 //TODO manage cache here
                 Map<String, String[]> properties = null;
-
+                String contentType = CONTENT_TYPE_DOC;
                 String path = "/"+this.widenVersion+"/"+ASSET_ENTRY+"/"+identifier;
 
                 Map<String, String> query = new LinkedHashMap<String, String>();
@@ -101,62 +109,100 @@ public class WidenDataSource implements ExternalDataSource {
                 try {
 
                     JSONObject asset = queryWiden(path,query);
-                    logger.info("***** WidenDataSource ***** asset : "+asset);
+//                    logger.info("***** WidenDataSource ***** asset : "+asset);
 
                     properties = new HashMap<String, String[]>();
                     properties.put("jcr:title", new String[]{asset.getString("filename")});
                     properties.put("wden:id", new String[]{asset.getString("id")});
-                    properties.put("wden:external_id", new String[]{asset.getString("external_id")});
+                    properties.put("wden:externalId", new String[]{asset.getString("external_id")});
                     properties.put("wden:filename", new String[]{asset.getString("filename")});
-                    properties.put("wden:created_date", new String[]{asset.getString("created_date")});
-                    properties.put("wden:last_update_date", new String[]{asset.getString("last_update_date")});
-                    properties.put("wden:deleted_date", new String[]{asset.optString("deleted_date")});
-                    properties.put("wden:embed", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
+                    properties.put("wden:createdDate", new String[]{asset.getString("created_date")});
+                    properties.put("wden:updatedDate", new String[]{asset.getString("last_update_date")});
+                    properties.put("wden:deletedDate", new String[]{asset.optString("deleted_date")});
 
-                    if(asset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
-                        properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
-                    if(asset.getJSONObject("embeds").optJSONObject("video_player")!=null)
-                        properties.put("wden:videoPlayer", new String[]{asset.getJSONObject("embeds").optJSONObject("video_player").optString("url")});
-                    if(asset.getJSONObject("embeds").optJSONObject("video_stream")!=null)
-                        properties.put("wden:videoStream", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("url")});
+//                    if(asset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
+//                        properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
 
-                    properties.put("wden:format", new String[]{asset.getJSONObject("file_properties").getString("format")});
-                    properties.put("wden:type", new String[]{asset.getJSONObject("file_properties").getString("format_type")});
-                    properties.put("wden:sizeKB", new String[]{asset.getJSONObject("file_properties").getString("size_in_kbytes")});
+                    JSONObject fileProps = asset.getJSONObject("file_properties");
+                    String fileType = fileProps.getString("format_type");
+                    properties.put("wden:format", new String[]{fileProps.getString("format")});
+                    properties.put("wden:type", new String[] {fileType});
+                    properties.put("wden:sizeKB", new String[]{fileProps.getString("size_in_kbytes")});
 
-                    JSONObject iProperties = asset.getJSONObject("file_properties").optJSONObject("image_properties");
-                    JSONObject vProperties = asset.getJSONObject("file_properties").optJSONObject("video_properties");
+                    properties.put("wden:templatedUrl", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
 
-                    logger.info("***** WidenDataSource ***** iProperties : "+iProperties);
-                    logger.info("***** WidenDataSource ***** vProperties : "+vProperties);
+                    switch (fileType){
+                        case FILE_TYPE_IMAGE :
+                            contentType = CONTENT_TYPE_IMAGE;
 
-                    if(iProperties != null && iProperties.length() != 0){
-//                        properties.put("wden:width", new String[]{iProperties.getString("width")});
-//                        properties.put("wden:height", new String[]{iProperties.getString("height")});
-//                        properties.put("wden:aspect_ratio", new String[]{iProperties.getString("aspect_ratio")});
+                            JSONObject imageProps = asset.getJSONObject("file_properties").optJSONObject("image_properties");
+//                            logger.info("***** WidenDataSource ***** imageProps : "+imageProps);
 
-                        Iterator<String> keys = iProperties.keys();
-                        while(keys.hasNext()) {
-                            String key = keys.next();
-//                            logger.info("***** WidenDataSource ***** put properties["+key+"] with value : "+iProperties.get(key));
-                            properties.put("wden:"+key, new String[]{iProperties.getString(key)});
-                        }
+                            if(imageProps != null && imageProps.length() != 0){
+                                properties.put("wden:width", new String[]{imageProps.optString("width")});
+                                properties.put("wden:height", new String[]{imageProps.optString("height")});
+                                properties.put("wden:aspectRatio", new String[]{imageProps.optString("aspect_ratio")});
+
+//                                Iterator<String> keys = imageProps.keys();
+//                                while(keys.hasNext()) {
+//                                    String key = keys.next();
+////                                    logger.info("***** WidenDataSource ***** put properties["+key+"] with value : "+imageProps.get(key));
+//                                    properties.put("wden:"+key, new String[]{imageProps.getString(key)});
+//                                }
+                            }
+
+                            break;
+                        case FILE_TYPE_VIDEO:
+                            contentType = CONTENT_TYPE_VIDEO;
+
+                            if(asset.getJSONObject("embeds").optJSONObject("video_player")!=null)
+                                properties.put("wden:videoPlayer", new String[]{asset.getJSONObject("embeds").optJSONObject("video_player").optString("url")});
+
+                            if(asset.getJSONObject("embeds").optJSONObject("video_stream")!=null){
+                                properties.put("wden:videoStreamURL", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("url")});
+                                properties.put("wden:videoStreamHTML", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("html")});
+                            }
+
+
+                            if(asset.getJSONObject("embeds").optJSONObject("video_poster")!=null)
+                                properties.put("wden:videoPoster", new String[]{asset.getJSONObject("embeds").optJSONObject("video_poster").optString("url")});
+
+
+                            JSONObject videoProps = asset.getJSONObject("file_properties").optJSONObject("video_properties");
+//                            logger.info("***** WidenDataSource ***** videoProps : "+videoProps);
+                            if(videoProps != null && videoProps.length() != 0){
+                                properties.put("wden:width", new String[]{videoProps.optString("width")});
+                                properties.put("wden:height", new String[]{videoProps.optString("height")});
+                                properties.put("wden:aspectRatio", new String[]{videoProps.optString("aspect_ratio")});
+                                properties.put("wden:duration", new String[]{videoProps.optString("duration")});
+                            }
+
+                            break;
+                        case FILE_TYPE_PDF:
+                            contentType = CONTENT_TYPE_PDF;
+
+                            if(asset.getJSONObject("embeds").optJSONObject("document_html5_viewer")!=null)
+                                properties.put("wden:viewerHtml5", new String[]{asset.getJSONObject("embeds").optJSONObject("document_html5_viewer").optString("url")});
+
+                            if(asset.getJSONObject("embeds").optJSONObject("document_viewer")!=null)
+                                properties.put("wden:viewer", new String[]{asset.getJSONObject("embeds").optJSONObject("document_viewer").optString("url")});
+
+                            if(asset.getJSONObject("embeds").optJSONObject("document_thumbnail")!=null)
+                                properties.put("wden:docThumbnail", new String[]{asset.getJSONObject("embeds").optJSONObject("document_thumbnail").optString("url")});
+
+                            if(asset.getJSONObject("embeds").optJSONObject("original")!=null) {
+                                properties.put("wden:docURL", new String[]{asset.getJSONObject("embeds").optJSONObject("original").optString("url")});
+                                properties.put("wden:docHTMLLink", new String[]{asset.getJSONObject("embeds").optJSONObject("original").optString("html")});
+                            }
+                            break;
                     }
-                    if(vProperties != null && vProperties.length() != 0){
-                        Iterator<String> keys = vProperties.keys();
-                        while(keys.hasNext()) {
-                            String key = keys.next();
-//                            logger.info("***** WidenDataSource ***** put properties["+key+"] with value : "+vProperties.get(key));
-                            properties.put("wden:"+key, new String[]{vProperties.getString(key)});
-                        }
-                    }
 
-                    logger.info("***** WidenDataSource ***** properties : "+properties);
+//                    logger.info("***** WidenDataSource ***** properties : "+properties);
 
                 } catch (JSONException | RepositoryException e) {
                     logger.error("Error while getting asset", e);
                 }
-                ExternalData data = new ExternalData(identifier, "/"+identifier, "wdennt:asset", properties);
+                ExternalData data = new ExternalData(identifier, "/"+identifier, contentType, properties);
 
 //                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getId() : "+data.getId());
 //                logger.info("***** WidenDataSource ***** getItemByIdentifier data.getPath() : "+data.getPath());
@@ -171,7 +217,7 @@ public class WidenDataSource implements ExternalDataSource {
 
     @Override
     public ExternalData getItemByPath(String path) throws PathNotFoundException {
-        logger.info("***** WidenDataSource ***** getItemByPath is called with path : "+path);
+//        logger.info("***** WidenDataSource ***** getItemByPath is called with path : "+path);
         String[] splitPath = path.split("/");
         try {
             if (path.endsWith("j:acl")) {
@@ -193,25 +239,25 @@ public class WidenDataSource implements ExternalDataSource {
 
     @Override
     public Set<String> getSupportedNodeTypes() {
-        logger.info("***** WidenDataSource ***** getSupportedNodeTypes is called ");
-        return Sets.newHashSet("jnt:contentFolder", "wdennt:asset");//"wdennt:assetProperties", "wdennt:fileProperties"
+//        logger.info("***** WidenDataSource ***** getSupportedNodeTypes is called ");
+        return Sets.newHashSet("jnt:contentFolder", "wdennt:image","wdennt:video","wdennt:pdf","wdennt:document","wdennt:widen");
     }
 
     @Override
     public boolean isSupportsHierarchicalIdentifiers() {
-        logger.info("***** WidenDataSource ***** isSupportsHierarchicalIdentifiers is called ");
+//        logger.info("***** WidenDataSource ***** isSupportsHierarchicalIdentifiers is called ");
         return false;
     }
 
     @Override
     public boolean isSupportsUuid() {
-        logger.info("***** WidenDataSource ***** isSupportsUuid is called ");
+//        logger.info("***** WidenDataSource ***** isSupportsUuid is called ");
         return false;
     }
 
     @Override
     public boolean itemExists(String s) {
-        logger.info("***** WidenDataSource ***** itemExists is called with params : "+s);
+//        logger.info("***** WidenDataSource ***** itemExists is called with params : "+s);
         return false;
     }
 
