@@ -128,7 +128,7 @@ public class WidenDataSource implements ExternalDataSource {
 
                     //TODO manage cache here
                     if (cache.get("/"+identifier) != null) {
-                        logger.error("***** WidenDataSource ***** get Asset {} from cache",identifier);
+                        logger.info("***** WidenDataSource ***** get Asset {} from cache",identifier);
                         widenAsset = new JSONObject((String) cache.get("/"+identifier).getObjectValue());
                     } else {
 //                        try {

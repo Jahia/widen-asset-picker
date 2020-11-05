@@ -19,7 +19,7 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
 
-<c:set var="stream" value="${currentNode.properties['wden:videoStream'].string}"/>
+<c:set var="stream" value="${currentNode.properties['wden:videoStreamURL'].string}"/>
 <c:set var="poster" value="${currentNode.properties['wden:videoPoster'].string}"/>
 
 
