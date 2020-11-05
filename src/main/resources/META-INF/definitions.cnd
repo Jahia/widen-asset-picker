@@ -64,11 +64,16 @@
  - wden:defaultImageSize (long)
  - wden:imageSizes (long) multiple
 
+[wdenmix:pdfMediaSettings] mixin
+ extends = wdennt:widen
+ itemtype = content
+ - wden:pdfMinHeight (long)
+
 [wdennt:image] > jnt:content, wdenmix:widenAsset, wdenmix:imageFileProperties, wdenmix:embed
 [wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
 [wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
 [wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
-[wdennt:widen] > jnt:content, jmix:multimediaContent
+[wdennt:widen] > jnt:content, jmix:multimediaContent //,jmix:renderableList
  - wden:digitalAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
 
 //[wdenmix:assetProperties]

@@ -53,12 +53,7 @@ const widenPickerInterface = {
 
     removeAll: function () {
         widenPickerInterface.data = [];
-    },
-
-    // get: function () {
-    //     return productPickerData.data;
-    // }
-
+    }
 };
 
 const render = (target,context) =>{
@@ -103,13 +98,6 @@ const render = (target,context) =>{
             document.getElementById(target)
         );
     }
-
-    // ReactDOM.render(
-    //     <React.StrictMode>
-    //         <App />
-    //     </React.StrictMode>,
-    //     document.getElementById(target)
-    // );
 }
 
 window.widenPicker = render;

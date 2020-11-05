@@ -7,6 +7,22 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="query" uri="http://www.jahia.org/tags/queryLib" %>
+<%--<%@ page import="org.jahia.settings.SettingsBean"%>--%>
+<%@ page import="java.util.Properties"%>
+<%@ page import="org.jahia.services.SpringContextSingleton"%>
+
+
+<%--<%@ page language="java" contentType="text/javascript" %>--%>
+<%
+//    SettingsBean settingsBean = SettingsBean.getInstance();
+    Properties properties = (Properties) (Properties) SpringContextSingleton.getBean("jahiaProperties");
+    String APIProtocol = properties.getProperty("jahia.widen.api.protocol");
+    String APIEndPoint = properties.getProperty("jahia.widen.api.endPoint");
+    String APISite = properties.getProperty("jahia.widen.api.site");
+    String APIToken = properties.getProperty("jahia.widen.api.token");
+    String APIVersion = properties.getProperty("jahia.widen.api.version");
+    String JCRMountPoint = properties.getProperty("jahia.widen.edp.mountPoint");
+%>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="flowRequestContext" type="org.springframework.webflow.execution.RequestContext"--%>
@@ -21,37 +37,40 @@
 <template:addResources type="css" resources="REACTBuildApp/main.d63656a5.chunk.css" />
 
 <template:addResources type="javascript" resources="REACTBuildApp/2.c9b041a5.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.60a0317b.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.481d2b1f.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
-<c:set var="token" value="1234"/>
+
+<%--<utility:logger level="info" value="path : ${renderContext.mainResource.node.path}"/>--%>
+<%--<utility:logger level="info" value="name : ${currentNode.properties['jcr:name'].string}"/>--%>
 
 <div id="${targetId}">Loading ...</div>
 
 <script>
-    const context={
+    const context_${targetId}={
         widen:{
-            url:"https://api.widencollective.com",
-            version:"v2",
-            site:"virbac",
-            token:"ba4d0a71907a17aff9ebddc1fc91fd3a"
+            url:"<%= APIProtocol %>://<%= APIEndPoint %>",
+            version:"<%= APIVersion %>",
+            site:"<%= APISite %>",
+            token:"<%= APIToken %>",
+            mountPoint:"<%= JCRMountPoint %>"
         }
     };
-
+    console.log("context_${targetId} : ",context_${targetId});
     window.addEventListener("DOMContentLoaded", event => {
         //in case if edit mode slow down the load waiting for the jahia GWT UI was setup,
         // otherwise the react app failed (maybe loosing his position as the DOM is updated by the jahia UI at the same time)
         <c:choose>
         <c:when test="${renderContext.editMode}" >
             setTimeout(() => {
-                window.widenPicker("${targetId}",context);
-                window.widenPickerInterface.context = context;
+                window.widenPicker("${targetId}",context_${targetId});
+                window.widenPickerInterface.context = context_${targetId};
             },500);
         </c:when>
         <c:otherwise>
-            window.widenPicker("${targetId}",context);
+            window.widenPicker("${targetId}",context_${targetId});
             //voir pkoi j'ai besoin du context ci-apres ?...
-            window.widenPickerInterface.context = context;
+            window.widenPickerInterface.context = context_${targetId};
         </c:otherwise>
         </c:choose>
     });

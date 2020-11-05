@@ -50,7 +50,9 @@ const init = context => {
     // });
 
     const {lazyLoad,resultPerPage,mountPoint} = context.widen;
-
+    console.debug("[STORE INIT] window.widenPickerInterface.data : ", window.widenPickerInterface.data)
+    const selectedId = Array.isArray(window.widenPickerInterface.data) && window.widenPickerInterface.data.length >=1 ?
+        window.widenPickerInterface.data[0].split("/").slice(-1)[0]:null;
     return {
         context,
         //locale:context.widen.locale.search,
@@ -60,7 +62,7 @@ const init = context => {
         //needToFetch:false,
         // profileEngine,
         // userProfile:{},
-        selectedItem:{},
+        selectedItem:selectedId?{id:selectedId}:{},
         widenEngine,
         mountPoint,
         // graphQLEngine,

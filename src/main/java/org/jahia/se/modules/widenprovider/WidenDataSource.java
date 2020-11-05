@@ -1,8 +1,13 @@
 package org.jahia.se.modules.widenprovider;
 
 import com.google.common.collect.Sets;
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
+import net.sf.ehcache.config.CacheConfiguration;
+import net.sf.ehcache.config.PersistenceConfiguration;
+import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
@@ -75,7 +80,22 @@ public class WidenDataSource implements ExternalDataSource {
 //        logger.info("***** WidenDataSource ***** start for remote site : "+this.widenSite);
         try {
             if (!ehCacheProvider.getCacheManager().cacheExists("widen-cache")) {
-                ehCacheProvider.getCacheManager().addCache("widen-cache");
+
+                int maxEntriesLocalHeap = 1000;
+
+                Cache widenCache = new Cache(
+                    new CacheConfiguration("widen-cache", maxEntriesLocalHeap)
+                    .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU)
+                    .eternal(false)
+                    .timeToLiveSeconds(180)
+                    .timeToIdleSeconds(60)
+                    .diskExpiryThreadIntervalSeconds(0)
+//                    .persistence(
+//                        new PersistenceConfiguration()
+//                        .strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
+//                    )
+                );
+                ehCacheProvider.getCacheManager().addCache(widenCache);
             }
             cache = ehCacheProvider.getCacheManager().getCache("widen-cache");
         } catch (IllegalStateException | CacheException e) {
@@ -98,50 +118,74 @@ public class WidenDataSource implements ExternalDataSource {
             if (identifier.equals("root")) {
                 return new ExternalData(identifier, "/", "jnt:contentFolder", new HashMap<String, String[]>());
             }else{
-                //TODO manage cache here
+
+
                 Map<String, String[]> properties = null;
                 String contentType = CONTENT_TYPE_DOC;
-                String path = "/"+this.widenVersion+"/"+ASSET_ENTRY+"/"+identifier;
-
-                Map<String, String> query = new LinkedHashMap<String, String>();
-                query.put("expand","embeds,thumbnails,file_properties");
 
                 try {
+                    JSONObject widenAsset;
 
-                    JSONObject asset = queryWiden(path,query);
-//                    logger.info("***** WidenDataSource ***** asset : "+asset);
+                    //TODO manage cache here
+                    if (cache.get("/"+identifier) != null) {
+                        logger.error("***** WidenDataSource ***** get Asset {} from cache",identifier);
+                        widenAsset = new JSONObject((String) cache.get("/"+identifier).getObjectValue());
+                    } else {
+//                        try {
+                            String path = "/"+this.widenVersion+"/"+ASSET_ENTRY+"/"+identifier;
+                            Map<String, String> query = new LinkedHashMap<String, String>();
+                            query.put("expand","embeds,thumbnails,file_properties");
+                            //TODO manage language
+                            widenAsset = queryWiden(path,query);
+                            cache.put(new Element("/"+identifier, widenAsset.toString()));
+
+//                        } catch (RepositoryException | IllegalArgumentException | IllegalStateException | CacheException e) {
+//                            logger.error("Error while getting movie", e);
+//                            widenAsset = new JSONObject();
+//                        }
+                    }
+
+
+//                    logger.info("***** WidenDataSource ***** widenAsset : "+widenAsset);
 
                     properties = new HashMap<String, String[]>();
-                    properties.put("jcr:title", new String[]{asset.getString("filename")});
-                    properties.put("wden:id", new String[]{asset.getString("id")});
-                    properties.put("wden:externalId", new String[]{asset.getString("external_id")});
-                    properties.put("wden:filename", new String[]{asset.getString("filename")});
-                    properties.put("wden:createdDate", new String[]{asset.getString("created_date")});
-                    properties.put("wden:updatedDate", new String[]{asset.getString("last_update_date")});
-                    properties.put("wden:deletedDate", new String[]{asset.optString("deleted_date")});
+                    properties.put("jcr:title", new String[]{widenAsset.getString("filename")});
+                    properties.put("wden:id", new String[]{widenAsset.getString("id")});
+                    properties.put("wden:externalId", new String[]{widenAsset.getString("external_id")});
+                    properties.put("wden:filename", new String[]{widenAsset.getString("filename")});
+                    properties.put("wden:createdDate", new String[]{widenAsset.getString("created_date")});
+                    properties.put("wden:updatedDate", new String[]{widenAsset.getString("last_update_date")});
+                    properties.put("wden:deletedDate", new String[]{widenAsset.optString("deleted_date")});
 
-//                    if(asset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
-//                        properties.put("wden:thumbnail", new String[]{asset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
+//                    if(widenAsset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
+//                        properties.put("wden:thumbnail", new String[]{widenAsset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
 
-                    JSONObject fileProps = asset.getJSONObject("file_properties");
+                    JSONObject fileProps = widenAsset.getJSONObject("file_properties");
                     String fileType = fileProps.getString("format_type");
                     properties.put("wden:format", new String[]{fileProps.getString("format")});
                     properties.put("wden:type", new String[] {fileType});
                     properties.put("wden:sizeKB", new String[]{fileProps.getString("size_in_kbytes")});
 
-                    properties.put("wden:templatedUrl", new String[]{asset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
+                    properties.put("wden:templatedUrl", new String[]{widenAsset.getJSONObject("embeds").getJSONObject("templated").optString("url")});
 
                     switch (fileType){
                         case FILE_TYPE_IMAGE :
                             contentType = CONTENT_TYPE_IMAGE;
 
-                            JSONObject imageProps = asset.getJSONObject("file_properties").optJSONObject("image_properties");
+                            JSONObject imageProps = widenAsset.getJSONObject("file_properties").optJSONObject("image_properties");
 //                            logger.info("***** WidenDataSource ***** imageProps : "+imageProps);
 
                             if(imageProps != null && imageProps.length() != 0){
-                                properties.put("wden:width", new String[]{imageProps.optString("width")});
-                                properties.put("wden:height", new String[]{imageProps.optString("height")});
-                                properties.put("wden:aspectRatio", new String[]{imageProps.optString("aspect_ratio")});
+                                String width = imageProps.optString("width");
+                                String height = imageProps.optString("height");
+                                String aspectRatio = imageProps.optString("aspect_ratio");
+
+                                if(width!=null && width!="null")
+                                    properties.put("wden:width", new String[]{width});
+                                if(height!=null && height!="null")
+                                    properties.put("wden:height", new String[]{height});
+                                if(aspectRatio!=null && aspectRatio!="null")
+                                    properties.put("wden:aspectRatio", new String[]{aspectRatio});
 
 //                                Iterator<String> keys = imageProps.keys();
 //                                while(keys.hasNext()) {
@@ -155,44 +199,54 @@ public class WidenDataSource implements ExternalDataSource {
                         case FILE_TYPE_VIDEO:
                             contentType = CONTENT_TYPE_VIDEO;
 
-                            if(asset.getJSONObject("embeds").optJSONObject("video_player")!=null)
-                                properties.put("wden:videoPlayer", new String[]{asset.getJSONObject("embeds").optJSONObject("video_player").optString("url")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("video_player")!=null)
+                                properties.put("wden:videoPlayer", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("video_player").optString("url")});
 
-                            if(asset.getJSONObject("embeds").optJSONObject("video_stream")!=null){
-                                properties.put("wden:videoStreamURL", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("url")});
-                                properties.put("wden:videoStreamHTML", new String[]{asset.getJSONObject("embeds").optJSONObject("video_stream").optString("html")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("video_stream")!=null){
+                                properties.put("wden:videoStreamURL", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("video_stream").optString("url")});
+                                properties.put("wden:videoStreamHTML", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("video_stream").optString("html")});
                             }
 
 
-                            if(asset.getJSONObject("embeds").optJSONObject("video_poster")!=null)
-                                properties.put("wden:videoPoster", new String[]{asset.getJSONObject("embeds").optJSONObject("video_poster").optString("url")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("video_poster")!=null)
+                                properties.put("wden:videoPoster", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("video_poster").optString("url")});
 
 
-                            JSONObject videoProps = asset.getJSONObject("file_properties").optJSONObject("video_properties");
+                            JSONObject videoProps = widenAsset.getJSONObject("file_properties").optJSONObject("video_properties");
 //                            logger.info("***** WidenDataSource ***** videoProps : "+videoProps);
                             if(videoProps != null && videoProps.length() != 0){
-                                properties.put("wden:width", new String[]{videoProps.optString("width")});
-                                properties.put("wden:height", new String[]{videoProps.optString("height")});
-                                properties.put("wden:aspectRatio", new String[]{videoProps.optString("aspect_ratio")});
-                                properties.put("wden:duration", new String[]{videoProps.optString("duration")});
+
+                                String width = videoProps.optString("width");
+                                String height = videoProps.optString("height");
+                                String aspectRatio = videoProps.optString("aspect_ratio");
+                                String duration = videoProps.optString("duration");
+
+                                if(width!=null && width!="null")
+                                    properties.put("wden:width", new String[]{width});
+                                if(height!=null && height!="null")
+                                    properties.put("wden:height", new String[]{height});
+                                if(aspectRatio!=null && aspectRatio!="null")
+                                    properties.put("wden:aspectRatio", new String[]{aspectRatio});
+                                if(duration!=null && duration!="null")
+                                    properties.put("wden:duration", new String[]{duration});
                             }
 
                             break;
                         case FILE_TYPE_PDF:
                             contentType = CONTENT_TYPE_PDF;
 
-                            if(asset.getJSONObject("embeds").optJSONObject("document_html5_viewer")!=null)
-                                properties.put("wden:viewerHtml5", new String[]{asset.getJSONObject("embeds").optJSONObject("document_html5_viewer").optString("url")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("document_html5_viewer")!=null)
+                                properties.put("wden:viewerHtml5", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("document_html5_viewer").optString("url")});
 
-                            if(asset.getJSONObject("embeds").optJSONObject("document_viewer")!=null)
-                                properties.put("wden:viewer", new String[]{asset.getJSONObject("embeds").optJSONObject("document_viewer").optString("url")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("document_viewer")!=null)
+                                properties.put("wden:viewer", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("document_viewer").optString("url")});
 
-                            if(asset.getJSONObject("embeds").optJSONObject("document_thumbnail")!=null)
-                                properties.put("wden:docThumbnail", new String[]{asset.getJSONObject("embeds").optJSONObject("document_thumbnail").optString("url")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("document_thumbnail")!=null)
+                                properties.put("wden:docThumbnail", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("document_thumbnail").optString("url")});
 
-                            if(asset.getJSONObject("embeds").optJSONObject("original")!=null) {
-                                properties.put("wden:docURL", new String[]{asset.getJSONObject("embeds").optJSONObject("original").optString("url")});
-                                properties.put("wden:docHTMLLink", new String[]{asset.getJSONObject("embeds").optJSONObject("original").optString("html")});
+                            if(widenAsset.getJSONObject("embeds").optJSONObject("original")!=null) {
+                                properties.put("wden:docURL", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("original").optString("url")});
+                                properties.put("wden:docHTMLLink", new String[]{widenAsset.getJSONObject("embeds").optJSONObject("original").optString("html")});
                             }
                             break;
                     }
@@ -200,7 +254,7 @@ public class WidenDataSource implements ExternalDataSource {
 //                    logger.info("***** WidenDataSource ***** properties : "+properties);
 
                 } catch (JSONException | RepositoryException e) {
-                    logger.error("Error while getting asset", e);
+                    logger.error("Error while getting widenAsset", e);
                 }
                 ExternalData data = new ExternalData(identifier, "/"+identifier, contentType, properties);
 

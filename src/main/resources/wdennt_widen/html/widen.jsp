@@ -21,6 +21,7 @@
 <c:set var="widenNode" value="${currentNode.properties['wden:digitalAsset'].node}"/>
 <%--<c:set var="defaultWidth" value="${currentNode.properties['wden:defaultImageSize'].long}"/>--%>
 <c:set var="_widths_" value="${currentNode.properties['wden:imageSizes']}"/>
+<c:set var="pdfMinHeight" value="${currentNode.properties['wden:pdfMinHeight'].long}"/>
 
 <c:set var="defaultWidth" value="${not empty currentNode.properties['wden:defaultImageSize'] ?
     currentNode.properties['wden:defaultImageSize'].long :
@@ -47,6 +48,7 @@
     <template:module node="${widenNode}" editable="true">
         <template:param name="widths" value="${widths}"/>
         <template:param name="defaultWidth" value="${defaultWidth}"/>
+        <template:param name="pdfMinHeight" value="${pdfMinHeight}"/>
     </template:module>
 
 <c:if test="${renderContext.editMode}" >
