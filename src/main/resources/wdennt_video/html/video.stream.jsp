@@ -17,20 +17,24 @@
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+<style>
+    video{
+        width: 100%;
+    }
+</style>
+<%--<c:out value="${currentNode.properties['wden:videoStreamHTML'].string}"/>--%>
+${currentNode.properties['wden:videoStreamHTML'].string}
 
 
-<c:set var="player" value="${currentNode.properties['wden:videoPlayer'].string}"/>
+<%--<c:set var="stream" value="${currentNode.properties['wden:videoStreamHTML'].string}"/>--%>
+<%--<c:set var="poster" value="${currentNode.properties['wden:videoPoster'].string}"/>--%>
 
-<div style="position:relative;width:100%;height:0;padding-bottom:56.25%;">
-    <iframe
-        src="${player}"
-        webkitallowfullscreen
-        mozallowfullscreen
-        allowfullscreen
-        frameborder="0"
-        allowtransparency="true"
-        scrolling="no"
-        style="position:absolute;top:0;left:0;width:100%;height:100%;" >
+<%--<utility:logger level="INFO" value="*** widen asset player HTML5 : ${player}"/>--%>
+<%--<utility:logger level="INFO" value="*** widen asset poster HTML5 : ${poster}"/>--%>
 
-    </iframe>
-</div>
+<%--Default HTML5 player--%>
+<%--<video controls width="100%" poster="${poster}">--%>
+<%--    <source src="${stream}"--%>
+<%--            type="">&lt;%&ndash; video/mp4 &ndash;%&gt;--%>
+<%--    Sorry, your browser doesn't support embedded videos.--%>
+<%--</video>--%>

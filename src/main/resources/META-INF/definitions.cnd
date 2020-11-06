@@ -59,13 +59,13 @@
 
 
 [wdenmix:imageMediaSettings] mixin
- extends = wdennt:widen
+ extends = wdennt:widenReference
  itemtype = content
  - wden:defaultImageSize (long)
  - wden:imageSizes (long) multiple
 
 [wdenmix:pdfMediaSettings] mixin
- extends = wdennt:widen
+ extends = wdennt:widenReference
  itemtype = content
  - wden:pdfMinHeight (long)
 
@@ -73,9 +73,8 @@
 [wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
 [wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
 [wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
-[wdennt:widen] > jnt:content, jmix:multimediaContent //,jmix:renderableList
- - wden:digitalAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
-
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent //,jmix:renderableList jmix:renderableReference, jmix:nodeReference
+ - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 //[wdenmix:assetProperties]
 // - wden:favorite (boolean)
 // - wden:popularity (long)

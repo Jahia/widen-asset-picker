@@ -20,6 +20,8 @@
 
 
 <c:set var="viewer" value="${currentNode.properties['wden:viewer'].string}"/>
+<c:set var="pdfMinHeight" value="${not empty currentResource.moduleParams.pdfMinHeight ? currentResource.moduleParams.pdfMinHeight :
+    '512'}"/>
 <iframe
     src="${viewer}"
     webkitallowfullscreen
@@ -27,5 +29,5 @@
     allowfullscreen
     frameborder="0"
     allowtransparency="true"
-    style="width:100%;height:100%">
+    style="width:100%;min-height:${pdfMinHeight}px">
 </iframe>

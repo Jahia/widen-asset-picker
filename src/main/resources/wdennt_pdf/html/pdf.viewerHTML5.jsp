@@ -27,5 +27,7 @@
     webkitallowfullscreen
     mozallowfullscreen
     allowfullscreen
+    frameborder="0"
+    allowtransparency="true"
     style="min-height:${pdfMinHeight}px;width:100%">
 </iframe>

@@ -81,25 +81,26 @@ public class WidenDataSource implements ExternalDataSource {
         try {
             if (!ehCacheProvider.getCacheManager().cacheExists("widen-cache")) {
 
-                int maxEntriesLocalHeap = 1000;
-
-                Cache widenCache = new Cache(
-                    new CacheConfiguration("widen-cache", maxEntriesLocalHeap)
-                    .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU)
-                    .eternal(false)
-                    .timeToLiveSeconds(180)
-                    .timeToIdleSeconds(60)
-                    .diskExpiryThreadIntervalSeconds(0)
-//                    .persistence(
-//                        new PersistenceConfiguration()
-//                        .strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
-//                    )
-                );
-                ehCacheProvider.getCacheManager().addCache(widenCache);
+//                int maxEntriesLocalHeap = 1000;
+//
+//                Cache widenCache = new Cache(
+//                    new CacheConfiguration("widen-cache", maxEntriesLocalHeap)
+//                    .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU)
+//                    .eternal(false)
+//                    .timeToLiveSeconds(180)
+//                    .timeToIdleSeconds(60)
+//                    .diskExpiryThreadIntervalSeconds(0)
+////                    .persistence(
+////                        new PersistenceConfiguration()
+////                        .strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
+////                    )
+//                );
+//                ehCacheProvider.getCacheManager().addCache(widenCache);
+                ehCacheProvider.getCacheManager().addCache("widen-cache");
             }
             cache = ehCacheProvider.getCacheManager().getCache("widen-cache");
         } catch (IllegalStateException | CacheException e) {
-            logger.error("Error while initializing cache for IMDB", e);
+            logger.error("Error while initializing cache for Widen", e);
         }
     }
 

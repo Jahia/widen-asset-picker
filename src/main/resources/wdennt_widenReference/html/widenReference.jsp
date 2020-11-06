@@ -18,7 +18,12 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<c:set var="widenNode" value="${currentNode.properties['wden:digitalAsset'].node}"/>
+<c:set var="widenNode" value="${currentNode.properties['j:node'].node}"/>
+<c:set var="referenceView" value="${not empty currentNode.properties['j:referenceView'] ?
+    currentNode.properties['j:referenceView'].string :
+    'default'}"/>
+<utility:logger level="INFO" value="*** widenReference referenceView: ${referenceView}"/>
+
 <%--<c:set var="defaultWidth" value="${currentNode.properties['wden:defaultImageSize'].long}"/>--%>
 <c:set var="_widths_" value="${currentNode.properties['wden:imageSizes']}"/>
 <c:set var="pdfMinHeight" value="${currentNode.properties['wden:pdfMinHeight'].long}"/>
@@ -45,7 +50,7 @@
     <span style="color:#ccc;">Edit widen media</span>
 </c:if>
 
-    <template:module node="${widenNode}" editable="true">
+    <template:module node="${widenNode}" editable="false" view="${referenceView}">
         <template:param name="widths" value="${widths}"/>
         <template:param name="defaultWidth" value="${defaultWidth}"/>
         <template:param name="pdfMinHeight" value="${pdfMinHeight}"/>
