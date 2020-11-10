@@ -1,19 +1,84 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
-<widenpkmix = 'http://modules.se.jahia.org/widen-picker/mix/1.0'>
-<widenpknt = 'http://modules.se.jahia.org/widen-picker/nt/1.0'>
-<widenpk = 'http://modules.se.jahia.org/widen-picker/1.0'>
+<wdenmix = 'http://modules.se.jahia.org/wden/mix/1.0'>
+<wdennt = 'http://modules.se.jahia.org/wden/nt/1.0'>
+<wden = 'http://modules.se.jahia.org/wden/1.0'>
+
+[wdenmix:widenPicker] > jmix:templateMixin mixin
+ extends = wdennt:wdenAssetTest
+ - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
+
+[wdenmix:imagePicker] > jmix:templateMixin mixin
+ extends = wdennt:wdenAssetTest
+ - wden:intAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
+
+[wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
+ - wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
+
+
+[wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
+ - wden:id (string) fulltextsearchable=no
+ - wden:externalId (string) fulltextsearchable=no
+ - wden:filename (string) fulltextsearchable=no
+ - wden:createdDate (string) fulltextsearchable=no
+ - wden:updatedDate (string) fulltextsearchable=no
+ - wden:deletedDate (string) fulltextsearchable=no
+// - wden:thumbnail (string) fulltextsearchable=no
+// - wden:embed (string) fulltextsearchable=no
+
+[wdenmix:embed] mixin
+ - wden:templatedUrl (string) fulltextsearchable=no
+
+[wdenmix:embedVideo] > wdenmix:embed  mixin
+ - wden:videoPlayer (string) fulltextsearchable=no
+ - wden:videoStreamURL (string) fulltextsearchable=no
+ - wden:videoStreamHTML (string) fulltextsearchable=no
+ - wden:videoPoster (string) fulltextsearchable=no
+
+[wdenmix:embedPdf] > wdenmix:embed  mixin
+ - wden:viewerHtml5 (string) fulltextsearchable=no
+ - wden:viewer (string) fulltextsearchable=no
+ - wden:docThumbnail (string) fulltextsearchable=no
+ - wden:docURL (string) fulltextsearchable=no
+ - wden:docHTMLLink (string) fulltextsearchable=no
+
+[wdenmix:fileProperties] mixin
+ - wden:format (string)
+ - wden:type (string)
+ - wden:sizeKB (long)
+
+[wdenmix:imageFileProperties] > wdenmix:fileProperties mixin
+ - wden:width (double)
+ - wden:height (double)
+ - wden:aspectRatio (double)
+
+[wdenmix:videoFileProperties] > wdenmix:imageFileProperties mixin
+ - wden:duration (double)
+
+[wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
+
+
+[wdenmix:imageMediaSettings] mixin
+ extends = wdennt:widenReference
+ itemtype = content
+ - wden:defaultImageSize (long)
+ - wden:imageSizes (long) multiple
+
+[wdenmix:pdfMediaSettings] mixin
+ extends = wdennt:widenReference
+ itemtype = content
+ - wden:pdfMinHeight (long)
+
+[wdennt:image] > jnt:content, wdenmix:widenAsset, wdenmix:imageFileProperties, wdenmix:embed
+[wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
+[wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
+[wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent //,jmix:renderableList jmix:renderableReference, jmix:nodeReference
+ - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
+//[wdenmix:assetProperties]
+// - wden:favorite (boolean)
+// - wden:popularity (long)
+//
 
 
 
-[widenpkmix:widenPiker] > jmix:templateMixin mixin
- extends = widenpknt:widenAssetTest
- - widenpk:widenAsset (string) internationalized indexed=no noqueryorder nofulltext
-
-[widenpkmix:imagePicker] > jmix:templateMixin mixin
- extends = widenpknt:widenAssetTest
- - widenpk:jContentAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
-
-
-[widenpknt:widenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
- - widenpk:asset (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no

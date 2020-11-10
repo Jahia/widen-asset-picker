@@ -11,7 +11,7 @@ const init = context => {
             Authorization: `Bearer ${context.widen.site}/${context.widen.token}`
         },
         responseType: 'json',
-        timeout: 3000
+        timeout: 6000
     });
     // WidenEngine.interceptors.request.use((config) => {
     //     config.params = config.params || {};

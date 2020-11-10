@@ -52,9 +52,9 @@ const Picker = props => {
         <Container className="pT4">
             <Row>
                 <Col>
-                    <SearchForm/>
+
+                    <Paging/>    <SearchForm/>
                     {/* <CurrentFilter/> */}
-                    <Paging/>
                 </Col>
             </Row>
             <Row>
