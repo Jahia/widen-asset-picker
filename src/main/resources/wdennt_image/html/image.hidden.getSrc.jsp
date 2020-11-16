@@ -18,7 +18,8 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<c:set var="alt" value="${fn:escapeXml(currentNode.displayableName)}"/>
+<utility:logger level="INFO" value="*** widen image hidden getSrc called"/>
+
 <c:set var="url" value="${currentNode.properties['wden:templatedUrl'].string}"/>
 
 <c:set var="url" value="${fn:replace(url, '{scale}', '1')}"/>
@@ -29,18 +30,14 @@
 <c:set var="defaultWidth" value="${not empty currentResource.moduleParams.defaultWidth ? currentResource.moduleParams.defaultWidth :
     '768'}"/>
 
-<c:set var="sizes" value="${not empty currentResource.moduleParams.sizes ? currentResource.moduleParams.sizes :
-    '(min-width: 600px) 1024px, 512px'}"/>
 
-<utility:logger level="INFO" value="*** widen asset alt : ${alt}"/>
-<utility:logger level="INFO" value="*** widen asset url : ${url}"/>
+<c:set var="src" value="${fn:replace(url, '{size}', defaultWidth)}" />
+<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">
+    <c:if test="${!status.first}">
+        <c:set var="srcset" value="${srcset}," />
+    </c:if>
+    <c:set var="srcset" value="${srcset} ${fn:replace(url, '{size}', width)} ${width}w" />
+</c:forEach>
 
-<img src="${fn:replace(url, '{size}', defaultWidth)}" width="100%"
-     srcset="<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">
-                <c:if test="${!status.first}">,</c:if>
-                <c:out value="${fn:replace(url, '{size}', width)} ${width}w" />
-            </c:forEach>"
-     sizes="${sizes}"
-     class="${class}"
-     alt="${alt}"
-/>
+<c:set target="${moduleMap}" property="src" value="${src}" />
+<c:set target="${moduleMap}" property="srcset" value="${srcset}" />
