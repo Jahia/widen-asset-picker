@@ -1,1 +1,1 @@
-export * from 'src/javascript/ContentEditorExtensions/SelectorTypes/StringWidenPicker/components/Viewer/ReferenceCard';
+export * from 'src/javascript/ContentEditorExtensions/SelectorTypes/StringWidenPicker/components/ViewerJsx/ReferenceCard';

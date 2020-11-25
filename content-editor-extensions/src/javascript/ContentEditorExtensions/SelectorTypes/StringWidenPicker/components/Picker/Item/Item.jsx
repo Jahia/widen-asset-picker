@@ -1,97 +1,228 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Card} from 'react-bootstrap';
 import {StoreContext} from '../../../contexts';
 import get from 'lodash.get';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const Decote = ({discount, price}) => {
-    const {state} = React.useContext(StoreContext);
-    const {locale} = state;
+const ImageStats = ({properties,locale}) => {
+    // console.log("[ImageStats] properties : ",properties);
 
-    const [dashedPrice] = price.map(prc => Number(prc));
-    const formatedDashedPrice = new Intl.NumberFormat(locale, {style: 'currency', currency: 'EUR'}).format(dashedPrice);
+    //reduce is used to manage case {width = null} for svg image for example
+    //default value works only for undefined
+    const {
+        width,
+        height,
+        aspect_ratio
+    } = Object.keys(properties).reduce((reducer,key) => {
+        reducer[key]= properties[key] || 'n/a';
+        return reducer;
+    },{});
 
-    const [discountNumber] = discount.map(discnt => Number(discnt));
-    const formatedDiscount = new Intl.NumberFormat(locale, {style: 'percent'}).format(-Number(discountNumber) / 100);
 
-    return (
+// console.log("ImageStats width : ",width);
+    return(
+        <ul className="stats">
+            <li>
+                <strong>Width</strong> {width.toLocaleString(locale)} px
+            </li>
+            <li>
+                <strong>Height</strong> {height.toLocaleString(locale)} px
+            </li>
+            <li>
+                <strong>Ratio</strong> {aspect_ratio.toLocaleString(locale,{maximumFractionDigits:2})}
+            </li>
+        </ul>
+    )
+}
+
+const VideoStats = ({properties,locale}) => {
+    const {
+        width,
+        height,
+        aspect_ratio,
+        duration
+    } = Object.keys(properties).reduce((reducer,key) => {
+        reducer[key]= properties[key] || 'n/a';
+        return reducer;
+    },{});
+    const formatDuration = () => {
+        if(duration === 'n/a')
+            return 'n/a';
+
+        const dateObj = new Date(duration * 1000);
+        const hours = dateObj.getUTCHours().toString().padStart(2, '0');
+        const minutes = dateObj.getUTCMinutes().toString().padStart(2, '0');
+        const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    return(
         <>
-            <span className="bg-danger d-block text-white font-weight-bold">{formatedDiscount}</span>
-            <del className="text-muted small mr-3">{formatedDashedPrice}</del>
+            <ul className="stats">
+                <li title={`${width.toLocaleString(locale)} px`}>
+                    <strong>Width</strong> {width.toLocaleString(locale)} px
+                </li>
+                <li title={`${height.toLocaleString(locale)} px`}>
+                    <strong>Height</strong> {height.toLocaleString(locale)} px
+                </li>
+                <li>
+                    <strong>Ratio</strong> {aspect_ratio && aspect_ratio.toLocaleString(locale,{maximumFractionDigits:2})}
+                </li>
+            </ul>
+            <ul className="stats">
+                <li className="w-100">
+                    <strong>Duration</strong> {formatDuration()}
+                </li>
+            </ul>
+        </>
+    )
+}
+
+
+const ItemStats = ({properties}) => {
+    // console.log("[ItemStats] properties : ",properties);
+    const _IMAGE_ = 'image';
+    const _VIDEO_ = 'video';
+    const _PDF_ = 'pdf';
+    const locale='fr-FR';
+
+    const {
+        format,
+        format_type,
+        size_in_kbytes,
+        image_properties,
+        video_properties
+    } = properties;
+    // console.log("properties : ",properties);
+    // console.log("image_properties : ",image_properties);
+
+    const isImage = format_type === _IMAGE_;
+    const isVideo = format_type === _VIDEO_;
+    const isDocument = !isImage && !isVideo;
+    const isPdf = format_type === _PDF_;
+
+    const formatFileSize = () => {
+        switch(true){
+            case size_in_kbytes > 1000000:
+                return `${(size_in_kbytes/1000000).toLocaleString(locale,{maximumFractionDigits:1})} GB`;
+            case size_in_kbytes > 1000:
+                return `${(size_in_kbytes/1000).toLocaleString(locale,{maximumFractionDigits:1})} MB`;
+            default :
+                return `${size_in_kbytes.toLocaleString(locale,{maximumFractionDigits:1})} KB`;
+        }
+    }
+
+    const getFileFormatIcon = () => {
+        const size = '1x';
+        switch(true){
+            case isImage :
+                return <FontAwesomeIcon icon={['fas','image']} size={size}/>//<FontAwesomeIcon icon={['far','file-image']} size={size}/>
+            case isVideo :
+                return <FontAwesomeIcon icon={['fas','video']} size={size}/>//<FontAwesomeIcon icon={['far','file-video']} size={size}/>
+            case isPdf:
+                return <FontAwesomeIcon icon={['far','file-pdf']} size={size}/>
+            default :
+                return <FontAwesomeIcon icon={['far','file']} size={size}/>
+        }
+    }
+
+    return(
+        <>
+            <ul className="stats">
+                <li className="type" title={format_type}>
+                    <strong>Type</strong>
+                    {getFileFormatIcon()}
+                </li>
+                <li title={format.toLowerCase()}>
+                    <strong>Format</strong>
+                    {format.toLowerCase()}
+                </li>
+                <li title={formatFileSize()}>
+                    <strong>Size</strong>
+                    {formatFileSize()}
+                </li>
+            </ul>
+            {isImage &&
+            <ImageStats properties={image_properties} locale={locale}/>
+            }
+            {isVideo &&
+            <VideoStats properties={video_properties} locale={locale}/>
+            }
+            {isDocument &&
+            <ul className="stats">
+                <li className="w-100">
+                    {/*<strong></strong> <FontAwesomeIcon icon={['fas','kiwi-bird']} size="2x"/>*/}
+                </li>
+            </ul>
+            }
         </>
     );
-};
+}
 
-Decote.propTypes = {
-    discount: PropTypes.array.isRequired,
-    price: PropTypes.array.isRequired
-};
 
-const Item = ({item}) => {
-// Console.log("[Picker] item : ",item);
-    const {state, dispatch} = React.useContext(StoreContext);
-    const {selectedItem} = state; // TODO locale is needed for the date format
-    const {
-        id,
-        external_id,
-        filename,
-        created_date,
-        last_update_date,
-        deleted_date,
-        asset_properties,
-        file_properties,
-        thumbnails,
-        embeds
-    } = item;
 
-    const widenAsset = {
-        id,
-        external_id,
-        filename,
-        created_date,
-        last_update_date,
-        deleted_date,
-        asset_properties,
-        file_properties,
-        thumbnail: get(thumbnails, '160px.url', null),
-        embed: get(embeds, 'templated.url', null)
-    };
+const Item=({item})=>{
+// console.log("[Item] item : ",item);
+    const { state,dispatch } = React.useContext(StoreContext);
+    const {selectedItem} = state //TODO locale is needed for the date format
+    const {thumbnails,created_date,last_update_date,filename,id,file_properties} = item;
+    const thumbnailURL = get(thumbnails,"300px.url",null);
+    // const url = get(embeds,"templated.url",null);
 
-    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-    let date = new Date(created_date);
-    date = date.toLocaleDateString('fr-FR', options);
+    //const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'};
 
-    const active = selectedItem === id ? 'active' : '';
+    let createdDate = new Date(created_date);
+    createdDate = createdDate.toLocaleDateString('fr-FR', options);
+
+    let updatedDate = new Date(last_update_date);
+    updatedDate = updatedDate.toLocaleDateString('fr-FR', options);
+
+    const active = selectedItem.id===id?"active":"";
     const handleClick = () =>
         dispatch({
-            case: 'UPDATE_SELECTED_ITEM',
-            payload: widenAsset
+            case:"UPDATE_SELECTED_ITEM",
+            payload:{
+                id
+            }
         });
 
-    return (
-        <Card className={active} onClick={handleClick}>
-            {widenAsset.thumbnail &&
-            <Card.Img variant="top" src={widenAsset.thumbnail}/>}
-            <Card.Body>
-                <Card.Title>{filename}</Card.Title>
-                {/* <Card.Text> */}
-                {/*    {meta.description} */}
-                {/* </Card.Text> */}
-            </Card.Body>
-            <Card.Footer className="text-center">
-                {/* {discount && */}
-                {/*    <Decote */}
-                {/*        discount={meta.decote} */}
-                {/*        price={meta.prix_barre}/> */}
-                {/* } */}
-                {date}
-            </Card.Footer>
-        </Card>
-    );
-};
+    return(
+        // <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div className={`card tile ${active}`} onClick={handleClick}>
+            <div className="wrapper">
 
-Item.propTypes = {
-    item: PropTypes.object.isRequired
-};
+                <div className="banner-img">
+                    <img src={thumbnailURL} alt="Image 1"/>
+                </div>
+
+                <div className="header">{filename}</div>
+
+                <div className="dates">
+                    <div className="start">
+                        <strong>Created</strong> {createdDate}
+                    </div>
+                    <div className="ends">
+                        <strong>Updated</strong> {updatedDate}
+                    </div>
+                </div>
+
+                <ItemStats properties={file_properties}/>
+
+                {/*<div className="footer">*/}
+                {/*    <a href="#" className="Cbtn Cbtn-primary">View</a>*/}
+                {/*    <a href="#" className="Cbtn Cbtn-danger">Delete</a>*/}
+                {/*</div>*/}
+            </div>
+        </div>
+        // </div>
+
+    )
+}
+
+Item.propTypes={
+    item:PropTypes.object.isRequired,
+}
 
 export default Item;

@@ -62,6 +62,10 @@ export default {
                     resultPerPage: {
                         type: 'integer',
                         default: Number.parseInt(process.env.REACT_APP_WIDEN_RESULT_PER_PAGE, 10)
+                    },
+                    mountPoint:{
+                        type:'string',
+                        default:process.env.REACT_APP_WIDEN_MOUNT_POINT
                     }
                     // Locale:{
                     //     type:"object",
@@ -82,7 +86,7 @@ export default {
                     //
                     // },
                 },
-                required: ['url', 'site', 'token', 'version', 'lazyLoad', 'resultPerPage'], // ,"locale"
+                required: ['url', 'site', 'token', 'version', 'lazyLoad', 'resultPerPage','mountPoint'], // ,"locale"
                 additionalProperties: false
             },
             selectedItem: {

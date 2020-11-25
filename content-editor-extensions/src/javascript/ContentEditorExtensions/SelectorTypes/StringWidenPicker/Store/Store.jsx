@@ -36,8 +36,11 @@ const init = context => {
     //     config.headers["Accept"] ="application/json";
     //     return config;
     // });
-    const {lazyLoad, resultPerPage} = context.widen;
+    const {lazyLoad,resultPerPage,mountPoint} = context.widen;
     const {selectedItem, contentEditorOnChange, field, id} = context;
+    //TODO check I have the path to get the widen ID
+    // const selectedId = Array.isArray(window.widenPickerInterface.data) && window.widenPickerInterface.data.length >=1 ?
+    //     window.widenPickerInterface.data[0].split("/").slice(-1)[0]:null;
 
     return {
         context, // TODO see if needed
@@ -50,9 +53,12 @@ const init = context => {
         // needToFetch:false,
         // profileEngine,
         // userProfile:{},
+        //TODO upadte when above is ready
+        // selectedItem:selectedId?{id:selectedId}:{},
         selectedItem,
         contentEditorOnChange,
         widenEngine,
+        mountPoint,
         searchAnswers: [],
         searchIframe: null, // Not needed if I use searchAnswers
         // searchContexts:{},
@@ -115,16 +121,16 @@ const reducer = (state, action) => {
         }
 
         case 'UPDATE_SELECTED_ITEM': {
-            const selectedItem = payload;
-            const {contentEditorOnChange} = state;
-            console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', selectedItem);
+            const {id} = payload;
+            const {contentEditorOnChange,mountPoint} = state;
+            console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
 
-            console.debug('[STORE] UPDATE_WIDEN_ASSET with', selectedItem);
-            contentEditorOnChange(JSON.stringify(selectedItem));
+            // contentEditorOnChange(JSON.stringify(selectedItem));
+            contentEditorOnChange(`${mountPoint}/${id}`);
 
             return {
                 ...state,
-                selectedItem,
+                selectedItem:payload,
                 showPickerDialog: !state.showPickerDialog
             };
         }
