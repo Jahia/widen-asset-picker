@@ -9,11 +9,13 @@
     String APISite = settingsBean.getString("jahia.widen.api.site");
     String APIToken = settingsBean.getString("jahia.widen.api.token");
 %>
-<%--contextJsParameters.config.wip="<%= settingsBean.getString("wip.link", "https://academy.jahia.com/documentation/enduser/jahia/8/authoring-content-in-jahia/using-content-editor/understanding-work-in-progress-content")%>";--%>
-<%--contextJsParameters.config.maxNameSize=<%= settingsBean.getMaxNameSize() %>;--%>
-<%--contextJsParameters.config.defaultSynchronizeNameWithTitle=<%= settingsBean.getString("jahia.ui.contentTab.defaultSynchronizeNameWithTitle", "true") %>;--%>
-contextJsParameters.config.widen["url"]="<%= APIProtocol %>://<%= APIEndPoint %>";
-contextJsParameters.config.widen["version"]="<%= APIVersion %>";
-contextJsParameters.config.widen["site"]="<%= APISite %>";
-contextJsParameters.config.widen["token"]="<%= APIToken %>";
-contextJsParameters.config.widen["mountPoint"]="<%= JCRMountPoint %>";
+<%--console.log("contextJsParameters",contextJsParameters);--%>
+<%--console.log("contextJsParameters.config",contextJsParameters.config);--%>
+
+contextJsParameters.config.widen={
+    url:"<%= APIProtocol %>://<%= APIEndPoint %>",
+    version:"<%= APIVersion %>",
+    site:"<%= APISite %>",
+    token:"<%= APIToken %>",
+    mountPoint:"<%= JCRMountPoint %>"
+}

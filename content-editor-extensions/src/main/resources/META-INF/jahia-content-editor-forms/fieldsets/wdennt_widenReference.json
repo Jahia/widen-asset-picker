@@ -1,0 +1,9 @@
+{
+  "name": "wdennt:widenReference",
+  "fields": [
+    {
+      "name": "j:node",
+      "selectorType": "WidenPicker"
+    }
+  ]
+}

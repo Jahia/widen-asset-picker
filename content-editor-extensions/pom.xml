@@ -58,7 +58,7 @@
     <groupId>org.jahia.se.modules</groupId>
     <artifactId>widen-picker</artifactId>
     <name>Widen Picker</name>
-    <version>8.0.0.1-SNAPSHOT</version>
+    <version>8.0.0.2-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (Widen Picker) for running on a Jahia server.</description>
 
@@ -103,7 +103,7 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>external-provider</artifactId>
-            <version>3.0.5</version>
+            <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

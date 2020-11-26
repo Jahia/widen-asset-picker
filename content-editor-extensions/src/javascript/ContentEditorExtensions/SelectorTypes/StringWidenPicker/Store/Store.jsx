@@ -37,26 +37,28 @@ const init = context => {
     //     return config;
     // });
     const {lazyLoad,resultPerPage,mountPoint} = context.widen;
-    const {selectedItem, contentEditorOnChange, field, id} = context;
+    const {value, onChange, field,editorContext,setActionContext} = context.editor;
+    console.debug('[STORE] init -> value: ', value);
     //TODO check I have the path to get the widen ID
     // const selectedId = Array.isArray(window.widenPickerInterface.data) && window.widenPickerInterface.data.length >=1 ?
     //     window.widenPickerInterface.data[0].split("/").slice(-1)[0]:null;
 
     return {
         context, // TODO see if needed
-        // locale:context.widen.locale.search,
-        field,
-        id,
+        //TODO upadte when above is ready
+        // editorValue:selectedId?{id:selectedId}:{},
+        editorField:field,
+        editorValue:value,
+        editorOnChange:onChange,
+        editorContext,
+        editorSetActionContext:setActionContext,
+        locale:editorContext.lang,
         error: null,
         isLoading: false,
         needToFetch: !lazyLoad, // False,
         // needToFetch:false,
         // profileEngine,
         // userProfile:{},
-        //TODO upadte when above is ready
-        // selectedItem:selectedId?{id:selectedId}:{},
-        selectedItem,
-        contentEditorOnChange,
         widenEngine,
         mountPoint,
         searchAnswers: [],
@@ -122,11 +124,11 @@ const reducer = (state, action) => {
 
         case 'UPDATE_SELECTED_ITEM': {
             const {id} = payload;
-            const {contentEditorOnChange,mountPoint} = state;
+            const {editorOnChange,mountPoint} = state;
             console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
 
-            // contentEditorOnChange(JSON.stringify(selectedItem));
-            contentEditorOnChange(`${mountPoint}/${id}`);
+            // editorOnChange(JSON.stringify(editorValue));
+            editorOnChange(`${mountPoint}/${id}`);
 
             return {
                 ...state,
@@ -347,29 +349,15 @@ const reducer = (state, action) => {
         }
 
         case 'DELETE_SELECTED_ASSET': {
-            const {contentEditorOnChange} = state;
+            const {editorOnChange} = state;
             console.debug('[STORE] DELETE_WIDEN_ASSET');
 
-            contentEditorOnChange(null);
+            editorOnChange(null);
             return {
                 ...state,
                 selectedItem: null
             };
         }
-
-        // Case "UPDATE_SELECTED_ASSET": {
-        //     const {selectedItem} = payload;
-        //     const {contentEditorOnChange} = state;
-        //
-        //     console.debug("[STORE] UPDATE_WIDEN_ASSET with",selectedItem);
-        //     contentEditorOnChange(JSON.stringify(selectedItem));
-        //
-        //     return {
-        //         ...state,
-        //         selectedItem,
-        //         showPickerDialog:!state.showPickerDialog
-        //     }
-        // }
         default:
             return {
                 ...state,

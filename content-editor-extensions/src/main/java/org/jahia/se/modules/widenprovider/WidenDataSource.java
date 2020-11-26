@@ -81,22 +81,22 @@ public class WidenDataSource implements ExternalDataSource {
         try {
             if (!ehCacheProvider.getCacheManager().cacheExists("widen-cache")) {
 
-//                int maxEntriesLocalHeap = 1000;
-//
-//                Cache widenCache = new Cache(
-//                    new CacheConfiguration("widen-cache", maxEntriesLocalHeap)
-//                    .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU)
-//                    .eternal(false)
-//                    .timeToLiveSeconds(180)
-//                    .timeToIdleSeconds(60)
-//                    .diskExpiryThreadIntervalSeconds(0)
-////                    .persistence(
-////                        new PersistenceConfiguration()
-////                        .strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
-////                    )
-//                );
-//                ehCacheProvider.getCacheManager().addCache(widenCache);
-                ehCacheProvider.getCacheManager().addCache("widen-cache");
+                int maxEntriesLocalHeap = 1000;
+
+                Cache widenCache = new Cache(
+                    new CacheConfiguration("widen-cache", maxEntriesLocalHeap)
+                    .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LFU)
+                    .eternal(false)
+                    .timeToLiveSeconds(28800)
+                    .timeToIdleSeconds(3600)
+                    .diskExpiryThreadIntervalSeconds(0)
+//                    .persistence(
+//                        new PersistenceConfiguration()
+//                        .strategy(PersistenceConfiguration.Strategy.LOCALTEMPSWAP)
+//                    )
+                );
+                ehCacheProvider.getCacheManager().addCache(widenCache);
+//                ehCacheProvider.getCacheManager().addCache("widen-cache");
             }
             cache = ehCacheProvider.getCacheManager().getCache("widen-cache");
         } catch (IllegalStateException | CacheException e) {
@@ -151,8 +151,8 @@ public class WidenDataSource implements ExternalDataSource {
                     properties.put("wden:updatedDate", new String[]{widenAsset.getString("last_update_date")});
                     properties.put("wden:deletedDate", new String[]{widenAsset.optString("deleted_date")});
 
-//                    if(widenAsset.getJSONObject("thumbnails").optJSONObject("160px")!=null)
-//                        properties.put("wden:thumbnail", new String[]{widenAsset.optJSONObject("thumbnails").optJSONObject("160px").optString("url")});
+                    if(widenAsset.getJSONObject("thumbnails").optJSONObject("300px")!=null)
+                        properties.put("wden:thumbnail", new String[]{widenAsset.optJSONObject("thumbnails").optJSONObject("300px").optString("url")});
 
                     JSONObject fileProps = widenAsset.getJSONObject("file_properties");
                     String fileType = fileProps.getString("format_type");

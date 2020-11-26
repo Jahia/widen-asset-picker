@@ -21,59 +21,29 @@ import {WidenPickerFilledQuery} from './WidenPicker.gql-queries';
 import get from "lodash.get";
 
 const WidenPicker = ({setActionContext}) => {
-
+    console.log("[WidenPicker] called !!! ");
     const {state, dispatch} = React.useContext(StoreContext);
     const {
         showPickerDialog,
         selectedItem,
-        field
+        editorField,
+        locale,
+        editorSetActionContext,
+        editorValue
     } = state;
+    console.log("[WidenPicker] editorValue : ",editorValue);
+
+    const variables={
+        path: editorValue || '',
+        language: locale,
+        // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
+        needToFetch: Boolean(editorValue)
+    }
+    console.log("[WidenPicker] variables : ",variables);
 
     const {loading, error, data} = useQuery(WidenPickerFilledQuery, {
-        variables:variables,
+        variables
     });
-
-    React.useEffect(() => {
-        if(loading === false && data){
-            const fieldData = get(data, "jcr.result", {});
-            dispatch({
-                case:"FIELD_DATA_READY",
-                payload:{
-                    fieldData
-                }
-            });
-        }
-    }, [loading,data]);
-
-    // //TODO get fielddata
-    // const usePickerInputData = (uuid, editorContext) => {
-    //     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
-    //         variables: {
-    //             uuid: uuid || '',
-    //             language: editorContext.lang,
-    //             // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
-    //             needToFetch: Boolean(uuid)
-    //         }
-    //     });
-    //
-    //     if (loading || error || !data || !uuid) {
-    //         return {error, loading, notFound: Boolean(uuid)};
-    //     }
-    //
-    //     const imageData = data.jcr.result;
-    //     const sizeInfo = (imageData.height && imageData.width) ? ` - ${parseInt(imageData.height.value, 10)}x${parseInt(imageData.width.value, 10)}px` : '';
-    //     const fieldData = {
-    //         uuid,
-    //         url: `${
-    //             window.contextJsParameters.contextPath
-    //         }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
-    //         name: imageData.displayName,
-    //         path: imageData.path,
-    //         info: `${imageData.children.nodes[0].mimeType.value}${sizeInfo}`
-    //     };
-    //
-    //     return {fieldData, error, loading};
-    // };
 
     if (error) {
         const message = t(
@@ -88,10 +58,13 @@ const WidenPicker = ({setActionContext}) => {
         return <ProgressOverlay/>;
     }
 
+    const fieldData = get(data, "jcr.result", null);
+    // const fieldData = null
+    console.log("[WidenPicker] fieldData : ",fieldData);
+    console.log("[WidenPicker] editorField : ",editorField)
 
-
-//TODO me souviens plus comment ca fonctionne ca
-    setActionContext({
+    //TODO me souviens plus comment ca fonctionne ca
+    editorSetActionContext({
         widenStoreDispatch:dispatch,
         selectedItem
     })
@@ -101,6 +74,7 @@ const WidenPicker = ({setActionContext}) => {
         maxWidth:'xl',
         dividers:true
     }
+
     const handleShow = () =>
         dispatch({
             case: 'TOGGLE_SHOW_PICKER'
@@ -110,16 +84,17 @@ const WidenPicker = ({setActionContext}) => {
         dispatch({
             case: 'TOGGLE_SHOW_PICKER'
         });
-    // <ViewerJsx/>
+
+
     return (
         <>
 
             <ReferenceCard
-                readOnly={field.readOnly}
+                readOnly={editorField.readOnly}
                 emptyLabel='Add Widen Asset'
                 emptyIcon={<Image/>}
-                labelledBy={`${field.name}-label`}
-                fieldData={selectedItem}
+                labelledBy={`${editorField.name}-label`}
+                fieldData={fieldData}
                 onClick={handleShow}
             />
             <Dialog
@@ -133,21 +108,11 @@ const WidenPicker = ({setActionContext}) => {
                 <DialogContent dividers={dialogConfig.dividers}>
                     <Picker/>
                 </DialogContent>
-                {/*<DialogActions>*/}
-                {/*    <Button onClick={handleClose} color="primary">*/}
-                {/*        Cancel*/}
-                {/*    </Button>*/}
-                {/*    <Button onClick={handleSave} color="primary">*/}
-                {/*        Save Changes*/}
-                {/*    </Button>*/}
-                {/*</DialogActions>*/}
             </Dialog>
         </>
     );
 };
 
-WidenPicker.propTypes = {
-    setActionContext: PropTypes.func.isRequired
-};
+// WidenPicker.propTypes = {};
 WidenPicker.displayName = 'WidenPicker';
 export default WidenPicker;

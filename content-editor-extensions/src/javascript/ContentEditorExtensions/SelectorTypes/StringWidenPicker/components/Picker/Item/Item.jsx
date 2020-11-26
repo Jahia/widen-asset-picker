@@ -179,7 +179,7 @@ const Item=({item})=>{
     let updatedDate = new Date(last_update_date);
     updatedDate = updatedDate.toLocaleDateString('fr-FR', options);
 
-    const active = selectedItem.id===id?"active":"";
+    const active = false;// TODO fix this -> selectedItem.id===id?"active":"";
     const handleClick = () =>
         dispatch({
             case:"UPDATE_SELECTED_ITEM",

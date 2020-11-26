@@ -1,0 +1,9 @@
+{
+  "name": "wdenmix:widenPicker",
+  "fields": [
+    {
+      "name": "wden:extAsset",
+      "selectorType": "WidenPicker"
+    }
+  ]
+}

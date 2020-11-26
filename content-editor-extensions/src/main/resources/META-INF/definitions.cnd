@@ -6,7 +6,8 @@
 
 [wdenmix:widenPicker] > jmix:templateMixin mixin
  extends = wdennt:wdenAssetTest
- - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
+ - wden:extAsset (weakreference) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
+// - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
 
 [wdenmix:imagePicker] > jmix:templateMixin mixin
  extends = wdennt:wdenAssetTest
@@ -23,7 +24,7 @@
  - wden:createdDate (string) fulltextsearchable=no
  - wden:updatedDate (string) fulltextsearchable=no
  - wden:deletedDate (string) fulltextsearchable=no
-// - wden:thumbnail (string) fulltextsearchable=no
+ - wden:thumbnail (string) fulltextsearchable=no
 // - wden:embed (string) fulltextsearchable=no
 
 [wdenmix:embed] mixin
@@ -74,7 +75,8 @@
 [wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
 [wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent //,jmix:renderableList jmix:renderableReference, jmix:nodeReference
- - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
+ - j:node (weakreference) < 'wdenmix:widenAsset'
+// - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 //[wdenmix:assetProperties]
 // - wden:favorite (boolean)
 // - wden:popularity (long)

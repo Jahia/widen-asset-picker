@@ -1,9 +1,0 @@
-{
-  "name": "widenpkmix:widenPiker",
-  "fields": [
-    {
-      "name": "widenpk:widenAsset",
-      "selectorType": "WidenPicker"
-    }
-  ]
-}

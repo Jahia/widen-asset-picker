@@ -89,23 +89,40 @@ export default {
                 required: ['url', 'site', 'token', 'version', 'lazyLoad', 'resultPerPage','mountPoint'], // ,"locale"
                 additionalProperties: false
             },
-            selectedItem: {
-                type: ['object', 'null'],
-                properties: {}, // TODO fix the expected properties
-                required: []// TODO update based on propeties
-                // additionalProperties:false
-            },
-            contentEditorOnChange: {
-            },
-            field: {
+            editor: {
                 type: 'object',
-                properties: {}, // TODO fix the expected properties
-                required: []// TODO update based on propeties
-                // additionalProperties:false
+                properties: {
+                    onChange:{},
+                    setActionContext:{},
+                    field: {
+                        type: 'object',
+                        properties: {}, // TODO fix the expected properties
+                        required: []// TODO update based on propeties
+                        // additionalProperties:false
+                    },
+                    value:{ //should be the uuid or path
+                        type:"string"
+                    },
+                    editorContext:{
+                        type: 'object',
+                        properties: {}, // TODO fix the expected properties
+                        required: []// TODO update based on propeties
+                        // additionalProperties:false
+                    },
+                    // selectedItem: {
+                    //     type: ['object', 'null'],
+                    //     properties: {}, // TODO fix the expected properties
+                    //     required: []// TODO update based on propeties
+                    //     // additionalProperties:false
+                    // },
+                    // id:{
+                    //     type:"string"
+                    // },
+                },
+                required: ['onChange', 'setActionContext', 'field', 'editorContext'], // ,"locale" 'value',
+                additionalProperties: false
             },
-            id:{
-                type:"string"
-            },
+
             // Cdp_endpoint:{
             //     type:"string",
             //     format:"uri",
@@ -147,7 +164,8 @@ export default {
             // 'host',
             // 'workspace',
             // 'scope',
-            'widen'
+            'widen',
+            'editor'
             // "widenAsset",//not required
             // "pickerDispatch",//not required
 
