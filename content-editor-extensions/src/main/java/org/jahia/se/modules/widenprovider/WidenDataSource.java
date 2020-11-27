@@ -80,8 +80,8 @@ public class WidenDataSource implements ExternalDataSource {
 //        logger.info("***** WidenDataSource ***** start for remote site : "+this.widenSite);
         try {
             if (!ehCacheProvider.getCacheManager().cacheExists("widen-cache")) {
-
-                int maxEntriesLocalHeap = 1000;
+                //0 is unlimited, limit is managed by maxBytesLocalHeap global config
+                int maxEntriesLocalHeap = 0;//1000;
 
                 Cache widenCache = new Cache(
                     new CacheConfiguration("widen-cache", maxEntriesLocalHeap)

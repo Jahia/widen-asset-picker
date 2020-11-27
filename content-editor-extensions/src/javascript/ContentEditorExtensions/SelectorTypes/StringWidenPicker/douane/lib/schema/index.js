@@ -100,8 +100,8 @@ export default {
                         required: []// TODO update based on propeties
                         // additionalProperties:false
                     },
-                    value:{ //should be the uuid or path
-                        type:"string"
+                    value:{ //should be the uuid or null
+                        type:['string', 'null']
                     },
                     editorContext:{
                         type: 'object',

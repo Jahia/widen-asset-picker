@@ -4,8 +4,10 @@ export const unsetFieldAction = {
         // context.enabled = Boolean(!context.field.readOnly && (
         //     Array.isArray(value) ? value && value.length !== 0 : value
         // ));
-        console.log("context.selectedItem : ",context.selectedItem);
-        context.enabled = !context.field.readOnly && context.selectedItem;
+        console.log("context.editorValue : ",context.editorValue);
+        console.log("context.value : ",context.value);
+        //TODO replace selectedItem by value
+        context.enabled = !context.field.readOnly && context.editorValue;
         context.key = 'unsetFieldActionWidenPicker';
     },
     onClick: context => {

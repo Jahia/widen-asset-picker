@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import {withStyles} from '@material-ui/core';
 import {HandleDrag,Typography} from '@jahia/moonstone';
-
+import {StoreContext} from '../../contexts';
 const unitIndex = 12;//prev 9
 
 const styles = theme => ({
@@ -111,20 +111,27 @@ const ReferenceCardCmp = ({
     onClick,
     isDraggable
 }) => {
+    const {state, dispatch} = React.useContext(StoreContext);
+    const {
+        locale
+    } = state;
 
     // If card have already data
     if (fieldData) {
         const {
-            id,
-            external_id,
             filename,
-            created_date,
-            last_update_date,
-            deleted_date,
-            asset_properties,
-            file_properties,
+            format,
+            type,
             thumbnail,
-            embed
+            sizeKB,
+            duration,
+            aspectRatio
+        } = fieldData;
+        let {
+            createdDate,
+            updatedDate,
+            deletedDate,
+            lastModified
         } = fieldData;
 
         const formatDate = date => {
@@ -134,12 +141,12 @@ const ReferenceCardCmp = ({
 
             const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
             date = new Date(date);
-            return date.toLocaleDateString('fr-FR', options);// TODO get locale
+            return date.toLocaleDateString(locale, options);
         };
 
-        const createdDate = formatDate(created_date);
-        const updatedDate = formatDate(last_update_date);
-        const deletedDate = formatDate(deleted_date);
+        // createdDate = formatDate(createdDate);
+        updatedDate = formatDate(updatedDate);
+        deletedDate = formatDate(deletedDate);
 
         // TODO faire des composants pour chaque element
         // todo manage file_properties.image_properties if type === 'image"
@@ -190,7 +197,7 @@ const ReferenceCardCmp = ({
                             variant="omega"
                             color="gamma"
                         >
-                            {file_properties.format} | {file_properties.size_in_kbytes} kB
+                            {format} | {sizeKB} kB
                         </Typography>
                     </div>
                 </article>

@@ -60,6 +60,7 @@ const init = context => {
         // profileEngine,
         // userProfile:{},
         widenEngine,
+        widenPath4EDP:null,
         mountPoint,
         searchAnswers: [],
         searchIframe: null, // Not needed if I use searchAnswers
@@ -122,18 +123,38 @@ const reducer = (state, action) => {
             };
         }
 
-        case 'UPDATE_SELECTED_ITEM': {
-            const {id} = payload;
-            const {editorOnChange,mountPoint} = state;
-            console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
-
-            // editorOnChange(JSON.stringify(editorValue));
-            editorOnChange(`${mountPoint}/${id}`);
+        case 'UPDATE_SELECTED_ITEM_UUID': {
+            const {uuid} = payload;
+            const {editorOnChange} = state;
+            const editorValue = uuid;
+            console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - payload: ', payload);
+            editorOnChange(editorValue);
 
             return {
                 ...state,
-                selectedItem:payload,
+                editorValue,
+                widenPath4EDP:null,
                 showPickerDialog: !state.showPickerDialog
+            };
+        }
+
+        case 'UPDATE_SELECTED_ITEM': {
+            const {widenID} = payload;
+            const {editorOnChange,mountPoint} = state;
+            console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
+            //TODO do a graphQL call to the EDP to get uuid and return this jContent
+            // const editorValue = `${mountPoint}/${widenID}`;
+            const widenPath4EDP = `${mountPoint}/${widenID}`;
+            // editorOnChange(JSON.stringify(editorValue));
+            //TODO create a specific event for that
+            //editorOnChange(editorValue);
+
+            return {
+                ...state,
+                widenPath4EDP,
+                //editorValue,
+                // selectedItem:payload,
+                //showPickerDialog: !state.showPickerDialog //Moved to UPDATE_SELECTED_ITEM_UUID
             };
         }
 
@@ -355,7 +376,7 @@ const reducer = (state, action) => {
             editorOnChange(null);
             return {
                 ...state,
-                selectedItem: null
+                editorValue: null
             };
         }
         default:

@@ -165,7 +165,7 @@ const ItemStats = ({properties}) => {
 const Item=({item})=>{
 // console.log("[Item] item : ",item);
     const { state,dispatch } = React.useContext(StoreContext);
-    const {selectedItem} = state //TODO locale is needed for the date format
+    const {mountPoint,locale,selectedItem} = state;
     const {thumbnails,created_date,last_update_date,filename,id,file_properties} = item;
     const thumbnailURL = get(thumbnails,"300px.url",null);
     // const url = get(embeds,"templated.url",null);
@@ -174,17 +174,17 @@ const Item=({item})=>{
     const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'};
 
     let createdDate = new Date(created_date);
-    createdDate = createdDate.toLocaleDateString('fr-FR', options);
+    createdDate = createdDate.toLocaleDateString(locale, options);
 
     let updatedDate = new Date(last_update_date);
-    updatedDate = updatedDate.toLocaleDateString('fr-FR', options);
+    updatedDate = updatedDate.toLocaleDateString(locale, options);
 
     const active = false;// TODO fix this -> selectedItem.id===id?"active":"";
     const handleClick = () =>
         dispatch({
             case:"UPDATE_SELECTED_ITEM",
             payload:{
-                id
+                widenID:id
             }
         });
 

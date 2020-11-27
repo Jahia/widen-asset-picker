@@ -36,7 +36,8 @@ const StringWidenPickerCmp = ({field, id, value, editorContext,setActionContext,
     try {
 
         context = contextValidator(context);
-        console.log("context : ",JSON.stringify(context));
+        // console.log("context : ",JSON.stringify(context));
+        console.log("context : ",context);
 
         return (
             <Store context={context}>
