@@ -2,167 +2,84 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StoreContext} from '../../../contexts';
 import get from 'lodash.get';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ItemInfo from './ItemInfo/ItemInfo';
+import {withStyles} from "@material-ui/core";
+import classnames from "clsx";
 
-const ImageStats = ({properties,locale}) => {
-    // console.log("[ImageStats] properties : ",properties);
+const unitIndex = 12;//prev 9
 
-    //reduce is used to manage case {width = null} for svg image for example
-    //default value works only for undefined
-    const {
-        width,
-        height,
-        aspect_ratio
-    } = Object.keys(properties).reduce((reducer,key) => {
-        reducer[key]= properties[key] || 'n/a';
-        return reducer;
-    },{});
+const styles = theme => ({
 
-
-// console.log("ImageStats width : ",width);
-    return(
-        <ul className="stats">
-            <li>
-                <strong>Width</strong> {width.toLocaleString(locale)} px
-            </li>
-            <li>
-                <strong>Height</strong> {height.toLocaleString(locale)} px
-            </li>
-            <li>
-                <strong>Ratio</strong> {aspect_ratio.toLocaleString(locale,{maximumFractionDigits:2})}
-            </li>
-        </ul>
-    )
-}
-
-const VideoStats = ({properties,locale}) => {
-    const {
-        width,
-        height,
-        aspect_ratio,
-        duration
-    } = Object.keys(properties).reduce((reducer,key) => {
-        reducer[key]= properties[key] || 'n/a';
-        return reducer;
-    },{});
-    const formatDuration = () => {
-        if(duration === 'n/a')
-            return 'n/a';
-
-        const dateObj = new Date(duration * 1000);
-        const hours = dateObj.getUTCHours().toString().padStart(2, '0');
-        const minutes = dateObj.getUTCMinutes().toString().padStart(2, '0');
-        const seconds = dateObj.getSeconds().toString().padStart(2, '0');
-
-        return `${hours}:${minutes}:${seconds}`;
-    }
-
-    return(
-        <>
-            <ul className="stats">
-                <li title={`${width.toLocaleString(locale)} px`}>
-                    <strong>Width</strong> {width.toLocaleString(locale)} px
-                </li>
-                <li title={`${height.toLocaleString(locale)} px`}>
-                    <strong>Height</strong> {height.toLocaleString(locale)} px
-                </li>
-                <li>
-                    <strong>Ratio</strong> {aspect_ratio && aspect_ratio.toLocaleString(locale,{maximumFractionDigits:2})}
-                </li>
-            </ul>
-            <ul className="stats">
-                <li className="w-100">
-                    <strong>Duration</strong> {formatDuration()}
-                </li>
-            </ul>
-        </>
-    )
-}
-
-
-const ItemStats = ({properties}) => {
-    // console.log("[ItemStats] properties : ",properties);
-    const _IMAGE_ = 'image';
-    const _VIDEO_ = 'video';
-    const _PDF_ = 'pdf';
-    const locale='fr-FR';
-
-    const {
-        format,
-        format_type,
-        size_in_kbytes,
-        image_properties,
-        video_properties
-    } = properties;
-    // console.log("properties : ",properties);
-    // console.log("image_properties : ",image_properties);
-
-    const isImage = format_type === _IMAGE_;
-    const isVideo = format_type === _VIDEO_;
-    const isDocument = !isImage && !isVideo;
-    const isPdf = format_type === _PDF_;
-
-    const formatFileSize = () => {
-        switch(true){
-            case size_in_kbytes > 1000000:
-                return `${(size_in_kbytes/1000000).toLocaleString(locale,{maximumFractionDigits:1})} GB`;
-            case size_in_kbytes > 1000:
-                return `${(size_in_kbytes/1000).toLocaleString(locale,{maximumFractionDigits:1})} MB`;
-            default :
-                return `${size_in_kbytes.toLocaleString(locale,{maximumFractionDigits:1})} KB`;
+    card:{
+        backgroundColor:theme.palette.ui.epsilon,
+        marginBottom: theme.spacing.unit * unitIndex,
+        marginRight: theme.spacing.unit * unitIndex,
+        flexBasis: `calc( 50% - ${theme.spacing.unit * unitIndex}px)`,
+        boxShadow: '0 3px 3px 0 rgba(0,0,0,.05)',
+        cursor: 'pointer',
+        '&:hover':{
+            borderColor: theme.palette.ui.zeta
+        },
+        //TODO
+        [theme.breakpoints.up('md')]: {
+            flexBasis: `calc( 50% - ${theme.spacing.unit * unitIndex}px)`,
         }
-    }
-
-    const getFileFormatIcon = () => {
-        const size = '1x';
-        switch(true){
-            case isImage :
-                return <FontAwesomeIcon icon={['fas','image']} size={size}/>//<FontAwesomeIcon icon={['far','file-image']} size={size}/>
-            case isVideo :
-                return <FontAwesomeIcon icon={['fas','video']} size={size}/>//<FontAwesomeIcon icon={['far','file-video']} size={size}/>
-            case isPdf:
-                return <FontAwesomeIcon icon={['far','file-pdf']} size={size}/>
-            default :
-                return <FontAwesomeIcon icon={['far','file']} size={size}/>
+    },
+    active:{
+        '& .card':{
+            borderColor: theme.palette.ui.zeta
         }
+    },
+    wrapper:{
+        backgroundColor: theme.palette.ui.alpha,//$white,
+        borderRadius: '2px'
+    },
+
+    header:{
+        borderTop: `1px solid ${theme.palette.ui.beta}`,
+        padding: `${theme.spacing.unit} ${theme.spacing.unit/2}`,
+        fontSize:'1.25rem',
+        textAlign:'center',
+        position:'relative',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
+    bannerImg: {
+        position: 'relative',
+        height: theme.spacing.unit * unitIndex,//200px;
+        padding: `${theme.spacing.unit} 0`,//.25rem 0,
+        '& img':{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            borderRadius: '2px 2px 0 0'//.25rem .25rem 0 0;
+        }
+    },
+    dates:{
+        paddingBottom: theme.spacing.unit, //1rem;
+        margin: `${theme.spacing.unit/2} ${theme.spacing.unit}`,//.5rem 1rem;
+        fontSize: '1rem',
+        color: theme.palette.ui.gamma, //$blue,
+        overflow: 'auto',
+        display: 'flex',
+        flexFlow: 'row wrap',
+
+        '& div':{
+            width:'50%',
+            textAlign:'center',
+            position:'relative',
+
+        }
+    },
+    startDate:{
+        borderRight: `1px solid ${theme.palette.ui.beta}`// $card-border-color;
     }
 
-    return(
-        <>
-            <ul className="stats">
-                <li className="type" title={format_type}>
-                    <strong>Type</strong>
-                    {getFileFormatIcon()}
-                </li>
-                <li title={format.toLowerCase()}>
-                    <strong>Format</strong>
-                    {format.toLowerCase()}
-                </li>
-                <li title={formatFileSize()}>
-                    <strong>Size</strong>
-                    {formatFileSize()}
-                </li>
-            </ul>
-            {isImage &&
-            <ImageStats properties={image_properties} locale={locale}/>
-            }
-            {isVideo &&
-            <VideoStats properties={video_properties} locale={locale}/>
-            }
-            {isDocument &&
-            <ul className="stats">
-                <li className="w-100">
-                    {/*<strong></strong> <FontAwesomeIcon icon={['fas','kiwi-bird']} size="2x"/>*/}
-                </li>
-            </ul>
-            }
-        </>
-    );
-}
+});
 
 
-
-const Item=({item})=>{
+const ItemCmp=({item,classes})=>{
 // console.log("[Item] item : ",item);
     const { state,dispatch } = React.useContext(StoreContext);
     const {mountPoint,locale,selectedItem} = state;
@@ -190,25 +107,29 @@ const Item=({item})=>{
 
     return(
         // <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div className={`card tile ${active}`} onClick={handleClick}>
-            <div className="wrapper">
+        <div className={classnames(
+            classes.card,
+            //classes.tile,
+            (active ? classes.active : '')
+        )} onClick={handleClick}>
+            <div className={classes.wrapper}>
 
-                <div className="banner-img">
+                <div className={classes.bannerImg}>
                     <img src={thumbnailURL} alt="Image 1"/>
                 </div>
 
-                <div className="header">{filename}</div>
+                <div className={classes.header}>{filename}</div>
 
-                <div className="dates">
-                    <div className="start">
+                <div className={classes.dates}>
+                    <div className={classes.startDate}>
                         <strong>Created</strong> {createdDate}
                     </div>
-                    <div className="ends">
+                    <div>
                         <strong>Updated</strong> {updatedDate}
                     </div>
                 </div>
 
-                <ItemStats properties={file_properties}/>
+                <ItemInfo properties={file_properties}/>
 
                 {/*<div className="footer">*/}
                 {/*    <a href="#" className="Cbtn Cbtn-primary">View</a>*/}
@@ -221,8 +142,9 @@ const Item=({item})=>{
     )
 }
 
-Item.propTypes={
+ItemCmp.propTypes={
     item:PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 }
 
-export default Item;
+export const Item = withStyles(styles)(ItemCmp);

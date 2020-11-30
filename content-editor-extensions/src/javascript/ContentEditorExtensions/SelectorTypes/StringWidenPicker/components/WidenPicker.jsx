@@ -14,7 +14,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {StoreContext} from '../contexts';
 // import {Viewer} from './Viewer';
 import {ReferenceCard} from './Viewer'
-import Picker from './Picker';
+import {Picker} from './Picker';
 import * as PropTypes from "prop-types";
 
 import {useQuery} from '@apollo/react-hooks';
@@ -29,11 +29,14 @@ const GetUuid = () =>{
         widenPath4EDP
     } = state;
 
+    console.log("[WidenPicker] GetUuid : widenPath4EDP : ",widenPath4EDP);
+    console.log("[WidenPicker] GetUuid : needToFetch : ",Boolean(widenPath4EDP));
+
     //TODO Call the EDP to get uuid and send to the store
     const {loading, error, data} = useQuery(widenUUIDQuery, {
         variables:{
-            path:widenPath4EDP,
-            needToFetch:Boolean(widenPath4EDP)
+            widenEDPPath:widenPath4EDP,
+            needToFetch: Boolean(widenPath4EDP)
         }
     });
 
