@@ -3,7 +3,7 @@ import {Card, Col, Container, Row} from 'react-bootstrap';
 import {StoreContext} from '../../contexts';
 import {fetchSearchData} from '../../misc/data';
 import {SearchForm} from './SearchForm';
-import Paging from './Paging';
+import {Paging} from './Paging';
 import spinner from '../../assets/loader_4.gif';
 import {Item} from './Item';
 import classnames from 'clsx';
@@ -11,6 +11,7 @@ import {withStyles} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 
 import PropTypes from "prop-types";
+import {ProgressOverlay} from "@jahia/react-material";
 
 const errorMsg = 'Oups something get wrong';
 const Error = ({e}) => {
@@ -42,6 +43,9 @@ const styles = theme => ({
         animationIterationCount: 1,
         animationTimingFunction: 'ease-in',
         animationDuration: '.5s'
+    },
+    spinner:{
+        marginLeft: 'calc(50% - 200px)'
     }
 });
 
@@ -73,7 +77,8 @@ const PickerCmp = ({classes}) => {
     if (error) {
         return <Error e={error}/>;
     }
-
+//<img className="pT4__spinner" src={spinner}/>
+//     <ProgressOverlay/>
     return (
         <Grid container className="pT4" spacing={3}>
             <Grid item xs={12}>
@@ -83,7 +88,8 @@ const PickerCmp = ({classes}) => {
             <Grid item xs={12}>
 
                     {isLoading &&
-                    <img className="pT4__spinner" src={spinner}/>}
+                    <img className={classes.spinner} src={spinner}/>
+                    }
                     {!isLoading &&
                     <div className={classnames(
                         classes.wdenResult,

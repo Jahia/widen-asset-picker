@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const VideoInfo = ({properties,locale}) => {
+const VideoInfo = ({properties,locale,classes}) => {
     const {
         width,
         height,
@@ -26,7 +26,7 @@ const VideoInfo = ({properties,locale}) => {
 
     return(
         <>
-            <ul className="stats">
+            <ul className={classes.stats}>
                 <li title={`${width.toLocaleString(locale)} px`}>
                     <strong>Width</strong> {width.toLocaleString(locale)} px
                 </li>
@@ -37,8 +37,8 @@ const VideoInfo = ({properties,locale}) => {
                     <strong>Ratio</strong> {aspect_ratio && aspect_ratio.toLocaleString(locale,{maximumFractionDigits:2})}
                 </li>
             </ul>
-            <ul className="stats">
-                <li className="w-100">
+            <ul className={classes.stats}>
+                <li className={classes.w100}>
                     <strong>Duration</strong> {formatDuration()}
                 </li>
             </ul>
@@ -49,6 +49,7 @@ const VideoInfo = ({properties,locale}) => {
 VideoInfo.propTypes={
     properties:PropTypes.object.isRequired,
     locale:PropTypes.string.isRequired,
+    classes:PropTypes.object.isRequired
 }
 
 export default VideoInfo;

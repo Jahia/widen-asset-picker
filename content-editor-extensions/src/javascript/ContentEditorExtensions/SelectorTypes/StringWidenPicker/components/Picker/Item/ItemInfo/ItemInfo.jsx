@@ -1,11 +1,89 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {StoreContext} from '../../../../contexts';
 import VideoInfo from './VideoInfo';
 import ImageInfo from './ImageInfo';
+import {withStyles} from "@material-ui/core";
+import classnames from "clsx";
 
-const ItemInfo = ({properties}) => {
+import VideocamIcon from '@material-ui/icons/Videocam';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+// import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
+// import CropOriginalIcon from '@material-ui/icons/CropOriginal';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import DescriptionIcon from '@material-ui/icons/Description';
+
+const picker={
+    palette:{
+        blue : '#007bff',
+        white : '#fefefe',
+        cardBorderColor:{
+            default: 'rgba(0,0,0,.125)',//'#ccc',
+            hover:'#888',
+            active:'#000'
+        },
+        cardBackgroundColor:{
+            default:'#f7f8fa'
+        }
+    },
+}
+
+const styles = theme => ({
+    stats:{
+        margin: 0,
+        listStyle: 'none',
+        display: 'flex',
+        alignItems: 'stretch',
+        flexFlow: 'row wrap',
+        //flex-basis: calc( 33.33% - .75rem);
+
+        borderTop: `1px solid ${picker.palette.cardBorderColor.default}`,//theme.palette.ui.beta $card-border-color
+        backgroundColor:picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,// $card-background-color;
+        padding: `${theme.spacing.unit}px 0`,
+        fontSize:'.75rem',
+        color: '#59687f',
+        fontWeight:'600',
+        borderRadius: '0 0 5px 5px',
+
+        '& li':{
+            borderRight: `1px solid ${picker.palette.cardBorderColor.default}`,//theme.palette.ui.beta $card-border-color
+            width: '33.33333%',
+            textAlign:'center',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            padding: '0 .25rem',
+            // '&.w100':{
+            //     width:'100%',
+            //     border:'none'
+            // },
+        },
+        '& li:nth-of-type(3)':{
+            border:'none'
+        },
+        '& strong':{
+            display:'block',
+            color:picker.palette.cardBorderColor.hover,
+            //fontSize:'.75rem',
+            fontWeight:'700',
+        }
+    },
+    w100:{
+        width:'100% !important',
+        border:'none !important'
+    },
+    type:{
+        '& strong':{
+            //padding-bottom: .15rem;
+        },
+        '& svg':{
+            fontSize:' 1.5rem'
+        }
+    }
+})
+
+
+const ItemInfoCmp = ({properties,classes}) => {
     // console.log("[ItemInfo] properties : ",properties);
     const _IMAGE_ = 'image';
     const _VIDEO_ = 'video';
@@ -47,20 +125,20 @@ const ItemInfo = ({properties}) => {
         const size = '1x';
         switch(true){
             case isImage :
-                return <FontAwesomeIcon icon={['fas','image']} size={size}/>//<FontAwesomeIcon icon={['far','file-image']} size={size}/>
+                return <PhotoCameraIcon color="primary"/>
             case isVideo :
-                return <FontAwesomeIcon icon={['fas','video']} size={size}/>//<FontAwesomeIcon icon={['far','file-video']} size={size}/>
+                return <VideocamIcon color="primary"/>
             case isPdf:
-                return <FontAwesomeIcon icon={['far','file-pdf']} size={size}/>
+                return <PictureAsPdfIcon color="primary"/>
             default :
-                return <FontAwesomeIcon icon={['far','file']} size={size}/>
+                return <DescriptionIcon color="primary"/>
         }
     }
 
     return(
         <>
-            <ul className="stats">
-                <li className="type" title={format_type}>
+            <ul className={classes.stats}>
+                <li className={classes.type} title={format_type}>
                     <strong>Type</strong>
                     {getFileFormatIcon()}
                 </li>
@@ -74,14 +152,14 @@ const ItemInfo = ({properties}) => {
                 </li>
             </ul>
             {isImage &&
-            <ImageInfo properties={image_properties} locale={locale}/>
+            <ImageInfo properties={image_properties} locale={locale} classes={classes}/>
             }
             {isVideo &&
-            <VideoInfo properties={video_properties} locale={locale}/>
+            <VideoInfo properties={video_properties} locale={locale} classes={classes}/>
             }
             {isDocument &&
-            <ul className="stats">
-                <li className="w-100">
+            <ul className={classes.stats}>
+                <li className={classes.w100}>
                     {/*<strong></strong> <FontAwesomeIcon icon={['fas','kiwi-bird']} size="2x"/>*/}
                 </li>
             </ul>
@@ -90,8 +168,9 @@ const ItemInfo = ({properties}) => {
     );
 }
 
-ItemInfo.propTypes={
+ItemInfoCmp.propTypes={
     properties:PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 }
 
-export default ItemInfo;
+export const ItemInfo = withStyles(styles)(ItemInfoCmp);

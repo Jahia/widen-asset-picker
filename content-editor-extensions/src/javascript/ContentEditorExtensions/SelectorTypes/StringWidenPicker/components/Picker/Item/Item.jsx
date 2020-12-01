@@ -2,42 +2,69 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StoreContext} from '../../../contexts';
 import get from 'lodash.get';
-import ItemInfo from './ItemInfo/ItemInfo';
+import {ItemInfo} from './ItemInfo/ItemInfo';
 import {withStyles} from "@material-ui/core";
 import classnames from "clsx";
 
-const unitIndex = 12;//prev 9
+//const unitIndex = 12;//prev 9
+const gutter = 2;
 
+
+const picker={
+    palette:{
+        blue : '#007bff',
+        white : '#fefefe',
+        cardBorderColor:{
+            default: 'rgba(0,0,0,.125)',//'#ccc',
+            hover:'#888',
+            active:'#000'
+        },
+        cardBackgroundColor:{
+            default:'#f7f8fa'
+        }
+    },
+}
+// const styles = theme => console.log("theme.palette :",theme.palette)
 const styles = theme => ({
-
     card:{
-        backgroundColor:theme.palette.ui.epsilon,
-        marginBottom: theme.spacing.unit * unitIndex,
-        marginRight: theme.spacing.unit * unitIndex,
-        flexBasis: `calc( 50% - ${theme.spacing.unit * unitIndex}px)`,
+        lineHeight:1.5,
+        backgroundColor: picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,//$card-background-color;
+        marginBottom: theme.spacing.unit * gutter,
+        marginRight: theme.spacing.unit * gutter,
+        flexBasis: `calc( 50% - ${theme.spacing.unit * gutter}px)`,
         boxShadow: '0 3px 3px 0 rgba(0,0,0,.05)',
         cursor: 'pointer',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: 0,
+        wordWrap: 'break-word',
+        backgroundClip: 'border-box',
+        border: `1px solid ${picker.palette.cardBorderColor.default}`,
+        borderRadius: '.25rem',
         '&:hover':{
-            borderColor: theme.palette.ui.zeta
+            borderColor: picker.palette.cardBorderColor.hover,//theme.palette.ui.zeta
         },
-        //TODO
         [theme.breakpoints.up('md')]: {
-            flexBasis: `calc( 50% - ${theme.spacing.unit * unitIndex}px)`,
+            flexBasis: `calc( 33.33% - ${theme.spacing.unit * gutter}px)`,
+        },
+        [theme.breakpoints.up('lg')]: {
+            flexBasis: `calc( 25% - ${theme.spacing.unit * gutter}px)`,
         }
     },
     active:{
         '& .card':{
-            borderColor: theme.palette.ui.zeta
+            borderColor: picker.palette.cardBorderColor.active//theme.palette.ui.zeta
         }
     },
     wrapper:{
-        backgroundColor: theme.palette.ui.alpha,//$white,
+        backgroundColor: picker.palette.white,//theme.palette.ui.alpha,//$white,
         borderRadius: '2px'
     },
 
     header:{
-        borderTop: `1px solid ${theme.palette.ui.beta}`,
-        padding: `${theme.spacing.unit} ${theme.spacing.unit/2}`,
+        borderTop: `1px solid ${picker.palette.cardBorderColor.default}`,//theme.palette.ui.beta
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit}px`,
         fontSize:'1.25rem',
         textAlign:'center',
         position:'relative',
@@ -47,7 +74,7 @@ const styles = theme => ({
     },
     bannerImg: {
         position: 'relative',
-        height: theme.spacing.unit * unitIndex,//200px;
+        height: '200px',//theme.spacing.unit * unitIndex,//200px;
         padding: `${theme.spacing.unit} 0`,//.25rem 0,
         '& img':{
             width: '100%',
@@ -58,9 +85,9 @@ const styles = theme => ({
     },
     dates:{
         paddingBottom: theme.spacing.unit, //1rem;
-        margin: `${theme.spacing.unit/2} ${theme.spacing.unit}`,//.5rem 1rem;
-        fontSize: '1rem',
-        color: theme.palette.ui.gamma, //$blue,
+        margin: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,//.5rem 1rem;
+        fontSize: '.75rem',//'1rem',
+        //color:  theme.palette.primary.main,//picker.palette.blue,//theme.palette.ui.gamma, //$blue,
         overflow: 'auto',
         display: 'flex',
         flexFlow: 'row wrap',
@@ -70,10 +97,16 @@ const styles = theme => ({
             textAlign:'center',
             position:'relative',
 
+        },
+        '& strong':{
+            display:'block',
+            color:picker.palette.cardBorderColor.hover,//TODO voir la couleur
+            fontSize:'.75rem',
+            fontWeight:'700',
         }
     },
     startDate:{
-        borderRight: `1px solid ${theme.palette.ui.beta}`// $card-border-color;
+        borderRight: `1px solid ${picker.palette.cardBorderColor.default}`// theme.palette.ui.beta $card-border-color;
     }
 
 });

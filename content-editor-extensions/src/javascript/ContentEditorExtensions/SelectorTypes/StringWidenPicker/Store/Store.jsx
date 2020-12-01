@@ -75,9 +75,13 @@ const init = context => {
             {value: 'file_size', label: 'File Size'}
 
         ],
+        // searchSortListDirection: [
+        //     {value: 'ASC', label: 'sort-amount-up', symbol: ''},
+        //     {value: 'DESC', label: 'sort-amount-down', symbol: '-'}
+        // ],
         searchSortListDirection: [
-            {value: 'ASC', label: 'sort-amount-up', symbol: ''},
-            {value: 'DESC', label: 'sort-amount-down', symbol: '-'}
+            {value: 'ASC', label: 'sortUp', symbol: ''},
+            {value: 'DESC', label: 'sortDown', symbol: '-'}
         ],
         searchQuery: null,
         searchResultPerPage: Number.parseInt(resultPerPage, 10), // Be sure it is an integer base 10
@@ -271,42 +275,42 @@ const reducer = (state, action) => {
             };
         }
 
-        case 'PREVIOUS_RESULT_PAGE': {
-            console.debug('[STORE] PREVIOUS_RESULT_PAGE');
+        // case 'PREVIOUS_RESULT_PAGE': {
+        //     console.debug('[STORE] PREVIOUS_RESULT_PAGE');
+        //
+        //     if (state.searchResultPageIndex <= 1) {
+        //         return {
+        //             ...state
+        //         };
+        //     }
+        //
+        //     const searchResultPageIndex = state.searchResultPageIndex - 1;
+        //
+        //     return {
+        //         ...state,
+        //         needToFetch: true,
+        //         searchResultPageIndex
+        //     };
+        // }
 
-            if (state.searchResultPageIndex <= 1) {
-                return {
-                    ...state
-                };
-            }
-
-            const searchResultPageIndex = state.searchResultPageIndex - 1;
-
-            return {
-                ...state,
-                needToFetch: true,
-                searchResultPageIndex
-            };
-        }
-
-        case 'NEXT_RESULT_PAGE': {
-            console.debug('[STORE] NEXT_RESULT_PAGE');
-            const {searchResultMaxPage} = state;
-
-            if (state.searchResultPageIndex >= searchResultMaxPage) {
-                return {
-                    ...state
-                };
-            }
-
-            const searchResultPageIndex = state.searchResultPageIndex + 1;
-
-            return {
-                ...state,
-                needToFetch: true,
-                searchResultPageIndex
-            };
-        }
+        // case 'NEXT_RESULT_PAGE': {
+        //     console.debug('[STORE] NEXT_RESULT_PAGE');
+        //     const {searchResultMaxPage} = state;
+        //
+        //     if (state.searchResultPageIndex >= searchResultMaxPage) {
+        //         return {
+        //             ...state
+        //         };
+        //     }
+        //
+        //     const searchResultPageIndex = state.searchResultPageIndex + 1;
+        //
+        //     return {
+        //         ...state,
+        //         needToFetch: true,
+        //         searchResultPageIndex
+        //     };
+        // }
 
         case 'GOTO_RESULT_PAGE': {
             console.debug('[STORE] GOTO_RESULT_PAGE payload : ', payload);

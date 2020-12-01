@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ImageInfo = ({properties,locale}) => {
+const ImageInfo = ({properties,locale,classes}) => {
     // console.log("[ImageStats] properties : ",properties);
 
     //reduce is used to manage case {width = null} for svg image for example
@@ -18,7 +18,7 @@ const ImageInfo = ({properties,locale}) => {
 
 // console.log("ImageStats width : ",width);
     return(
-        <ul className="stats">
+        <ul className={classes.stats}>
             <li>
                 <strong>Width</strong> {width.toLocaleString(locale)} px
             </li>
@@ -35,6 +35,7 @@ const ImageInfo = ({properties,locale}) => {
 ImageInfo.propTypes={
     properties:PropTypes.object.isRequired,
     locale:PropTypes.string.isRequired,
+    classes:PropTypes.object.isRequired
 }
 
 export default ImageInfo;
