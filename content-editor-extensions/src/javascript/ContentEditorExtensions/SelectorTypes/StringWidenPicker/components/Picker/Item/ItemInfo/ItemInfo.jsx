@@ -40,9 +40,9 @@ const styles = theme => ({
         borderTop: `1px solid ${picker.palette.cardBorderColor.default}`,//theme.palette.ui.beta $card-border-color
         backgroundColor:picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,// $card-background-color;
         padding: `${theme.spacing.unit}px 0`,
-        fontSize:'.75rem',
-        color: '#59687f',
-        fontWeight:'600',
+        fontSize:'1rem',
+        color: theme.palette.primary.main,//'#59687f',
+        //fontWeight:'600',
         borderRadius: '0 0 5px 5px',
 
         '& li':{
@@ -64,7 +64,7 @@ const styles = theme => ({
         '& strong':{
             display:'block',
             color:picker.palette.cardBorderColor.hover,
-            //fontSize:'.75rem',
+            fontSize:'.75rem',
             fontWeight:'700',
         }
     },

@@ -150,9 +150,9 @@ const WidenPicker = ({setActionContext}) => {
                 fullWidth={dialogConfig.fullWidth}
                 maxWidth={dialogConfig.maxWidth}
                 onClose={handleClose}>
-                <DialogTitle closeButton>
-                    Browse Widen Catalog
-                </DialogTitle>
+                {/*<DialogTitle closeButton>*/}
+                {/*    Browse Widen Catalog*/}
+                {/*</DialogTitle>*/}
                 <DialogContent dividers={dialogConfig.dividers}>
                     <Picker/>
                 </DialogContent>

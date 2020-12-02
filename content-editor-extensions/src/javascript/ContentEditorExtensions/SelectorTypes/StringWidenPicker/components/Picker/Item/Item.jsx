@@ -31,7 +31,7 @@ const styles = theme => ({
         backgroundColor: picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,//$card-background-color;
         marginBottom: theme.spacing.unit * gutter,
         marginRight: theme.spacing.unit * gutter,
-        flexBasis: `calc( 50% - ${theme.spacing.unit * gutter}px)`,
+        flexBasis: `calc( 50% - ${theme.spacing.unit * gutter * 1/2}px)`,
         boxShadow: '0 3px 3px 0 rgba(0,0,0,.05)',
         cursor: 'pointer',
         position: 'relative',
@@ -46,10 +46,10 @@ const styles = theme => ({
             borderColor: picker.palette.cardBorderColor.hover,//theme.palette.ui.zeta
         },
         [theme.breakpoints.up('md')]: {
-            flexBasis: `calc( 33.33% - ${theme.spacing.unit * gutter}px)`,
+            flexBasis: `calc( 33.33% - ${theme.spacing.unit * gutter * 2/3}px)`,
         },
         [theme.breakpoints.up('lg')]: {
-            flexBasis: `calc( 25% - ${theme.spacing.unit * gutter}px)`,
+            flexBasis: `calc( 25% - ${theme.spacing.unit * gutter * 3/4}px)`,
         }
     },
     active:{
@@ -86,7 +86,7 @@ const styles = theme => ({
     dates:{
         paddingBottom: theme.spacing.unit, //1rem;
         margin: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,//.5rem 1rem;
-        fontSize: '.75rem',//'1rem',
+        fontSize: '.9rem',
         //color:  theme.palette.primary.main,//picker.palette.blue,//theme.palette.ui.gamma, //$blue,
         overflow: 'auto',
         display: 'flex',

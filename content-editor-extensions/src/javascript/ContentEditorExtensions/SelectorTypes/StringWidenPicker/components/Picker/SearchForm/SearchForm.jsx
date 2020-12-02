@@ -1,28 +1,49 @@
 import React from 'react';
 import {InputGroup, Form, Button} from 'react-bootstrap';
 import clsx from 'clsx';
-import {FormControl, InputAdornment, InputLabel, IconButton, Input, withStyles,} from '@material-ui/core';
+import {FormControl, InputAdornment, InputLabel, IconButton, InputBase, withStyles,TextField} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import {StoreContext} from '../../../contexts';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import PropTypes from "prop-types";
+import {getRandomString} from '../../../misc/utils';
 
 const styles = theme => ({
     root: {
+        background: '#fff',
         display: 'flex',
-        flexWrap: 'wrap',
+        //border: '1px solid #dfe1e5',
+        boxShadow: 'none',
+        //height: '44px',
+        //maxWidth: '1200px',
+        //width: '690px',
+        //borderRadius: '24px',
+        zIndex: 3,
+        margin: '0 auto',
+        // flexWrap: 'wrap',
     },
     margin: {
         margin: theme.spacing.unit,
     },
-    withoutLabel: {
-        marginTop: `${theme.spacing.unit * 3}`,
-    },
+    // withoutLabel: {
+    //     marginTop: `${theme.spacing.unit * 3}`,
+    // },
     textField: {
-        width: '25ch',
+        flex:'100%',
+        borderBottom:'1px solid',
     },
+    // searchBtn:{
+    //     height: '44px',
+    //     width: '44px',
+    //     background: 'transparent',
+    //     border: 'none',
+    //     cursor: 'pointer',
+    //     flex: '0 0 auto',
+    //     padding: 0,
+    //     paddingRight: `${theme.spacing.unit}px`,
+    // }
 });
 
 
@@ -31,6 +52,8 @@ const SearchFormCmp = ({classes}) => {
     const {
         isLoading
     } = state;
+
+    const _id_ = getRandomString(6, 'aA#');
 
     const handleChange = e => {
         const searchQuery = e.target.value;
@@ -43,49 +66,46 @@ const SearchFormCmp = ({classes}) => {
         });
     };
 
-    const handleReset = e => {
-        // E.preventDefault();
+    const handleReset = () =>
         dispatch({
             case: 'RESET_TEXT_QUERY'
         });
-    };
 
-    const handleSubmit = async e => {
-        e.preventDefault();
+    const handleSubmit = () =>
         dispatch({
             case: 'EXECUTE_QUERY'
         });
-    };
+
+    //clsx(classes.margin, classes.textField)
+    // <form id={_id_} onSubmit={handleSubmit} className={classes.root}>
     return (
-        <form onSubmit={handleSubmit}>
-            <FormControl className={clsx(classes.margin, classes.textField)}>
-                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                <Input
-                    id='search-widen-media-content'
-                    type='text'
-                    //value={searchQuery}
-                    placeholder="Que cherchez-vous ?"
-                    onChange={handleChange}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="clear input content"
-                                onClick={handleReset}
-                            >
-                                <ClearIcon/>
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                />
+        <InputBase
+            placeholder="Browse Widen"
+            //variant="outlined"
+            id="search-widen-media-content"
+            onChange={handleChange}
+            className={clsx(classes.margin, classes.textField)}
+            // startAdornment={<InputAdornment position="start">
+            //     <IconButton
+            //         aria-label="clear input content"
+            //         onClick={handleReset}
+            //     >
+            //         <ClearIcon/>
+            //     </IconButton></InputAdornment>}
+            endAdornment={<InputAdornment position="end">
                 <IconButton
-                    aria-label="submit form"
-                    type="submit"
+                    aria-label="clear input content"
+                    onClick={handleReset}
+                >
+                    <ClearIcon/>
+                </IconButton>
+                <IconButton
+                    aria-label="submit query"
+                    onClick={handleSubmit}
                 >
                     <SearchIcon/>
-                </IconButton>
-            </FormControl>
-        </form>
-
+                </IconButton></InputAdornment>}
+        />
     )
 
     // return (

@@ -28,6 +28,17 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'stretch',
         flexFlow: 'row wrap',
+        [theme.breakpoints.only('md')]: {
+            '& > div:nth-child(3n)':{
+                marginRight: '0',
+            }
+        },
+        [theme.breakpoints.up('lg')]: {
+            '& > div:nth-child(4n)':{
+                marginRight: '0',
+            }
+        }
+
     },
     '@keyframes fadeInOpacity': {
         '0%': {
@@ -46,6 +57,15 @@ const styles = theme => ({
     },
     spinner:{
         marginLeft: 'calc(50% - 200px)'
+    },
+    sticky:{
+        position: 'sticky',
+        top: '-24px',
+        zIndex: 3,
+        backgroundColor: '#fff',
+        marginBottom: '10px',
+        paddingBottom: '16px',
+        boxShadow: '0 3px 3px 0 rgba(0,0,0,.2)',
     }
 });
 
@@ -81,11 +101,16 @@ const PickerCmp = ({classes}) => {
 //     <ProgressOverlay/>
     return (
         <Grid container className="pT4" spacing={3}>
-            <Grid item xs={12}>
-                    <Paging/>    <SearchForm/>
+            <Grid item xs={12} container className={classes.sticky}>
+                <Grid item xs md={6} container>
+                    <SearchForm/>
+                </Grid>
+                <Grid item xs>
+                    <Paging/>
+                </Grid>
                     {/* <CurrentFilter/> */}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs>
 
                     {isLoading &&
                     <img className={classes.spinner} src={spinner}/>

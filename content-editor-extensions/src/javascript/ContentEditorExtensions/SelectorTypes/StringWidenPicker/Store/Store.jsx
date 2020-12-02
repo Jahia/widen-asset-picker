@@ -275,42 +275,42 @@ const reducer = (state, action) => {
             };
         }
 
-        // case 'PREVIOUS_RESULT_PAGE': {
-        //     console.debug('[STORE] PREVIOUS_RESULT_PAGE');
-        //
-        //     if (state.searchResultPageIndex <= 1) {
-        //         return {
-        //             ...state
-        //         };
-        //     }
-        //
-        //     const searchResultPageIndex = state.searchResultPageIndex - 1;
-        //
-        //     return {
-        //         ...state,
-        //         needToFetch: true,
-        //         searchResultPageIndex
-        //     };
-        // }
+        case 'PREVIOUS_RESULT_PAGE': {
+            console.debug('[STORE] PREVIOUS_RESULT_PAGE');
 
-        // case 'NEXT_RESULT_PAGE': {
-        //     console.debug('[STORE] NEXT_RESULT_PAGE');
-        //     const {searchResultMaxPage} = state;
-        //
-        //     if (state.searchResultPageIndex >= searchResultMaxPage) {
-        //         return {
-        //             ...state
-        //         };
-        //     }
-        //
-        //     const searchResultPageIndex = state.searchResultPageIndex + 1;
-        //
-        //     return {
-        //         ...state,
-        //         needToFetch: true,
-        //         searchResultPageIndex
-        //     };
-        // }
+            if (state.searchResultPageIndex <= 1) {
+                return {
+                    ...state
+                };
+            }
+
+            const searchResultPageIndex = state.searchResultPageIndex - 1;
+
+            return {
+                ...state,
+                needToFetch: true,
+                searchResultPageIndex
+            };
+        }
+
+        case 'NEXT_RESULT_PAGE': {
+            console.debug('[STORE] NEXT_RESULT_PAGE');
+            const {searchResultMaxPage} = state;
+
+            if (state.searchResultPageIndex >= searchResultMaxPage) {
+                return {
+                    ...state
+                };
+            }
+
+            const searchResultPageIndex = state.searchResultPageIndex + 1;
+
+            return {
+                ...state,
+                needToFetch: true,
+                searchResultPageIndex
+            };
+        }
 
         case 'GOTO_RESULT_PAGE': {
             console.debug('[STORE] GOTO_RESULT_PAGE payload : ', payload);

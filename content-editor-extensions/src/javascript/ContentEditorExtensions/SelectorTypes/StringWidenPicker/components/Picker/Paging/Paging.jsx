@@ -6,6 +6,7 @@ import {StoreContext} from '../../../contexts';
 // import ResultPerPage from './component/ResultPerPage';
 // import PageFormLink from './component/PageFormLink';
 import {Sort} from './component/Sort';
+import {Pagination} from './component/Pagination';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import classnames from 'clsx';
@@ -16,8 +17,6 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        position: 'sticky',
-        top: 0,
         //backgroundColor: $facet-color-silver;
     },
     // results:{
@@ -114,7 +113,9 @@ const PagingCmp = ({classes}) => {
 
                 {/*{showForm &&*/}
                 {/*<PageFormLink/>}*/}
+                <Pagination/>
             </ul>
+
             {/*<Pagination*/}
             {/*    color="primary"*/}
             {/*    count={searchResultMaxPage}*/}
@@ -135,11 +136,11 @@ const PagingCmp = ({classes}) => {
             {/*    {searchResultMaxPage > 5 &&*/}
             {/*    <NavXL/>}*/}
 
-            {/*    <li className="nav">*/}
-            {/*        <a href="#" onClick={handleNext}>*/}
-            {/*            <FontAwesomeIcon icon={['fas', 'chevron-right']}/>*/}
-            {/*        </a>*/}
-            {/*    </li>*/}
+                {/*<li className="nav">*/}
+                {/*    <a href="#" onClick={handleNext}>*/}
+                {/*        <FontAwesomeIcon icon={['fas', 'chevron-right']}/>*/}
+                {/*    </a>*/}
+                {/*</li>*/}
             {/*</ul>*/}
         </>
 

@@ -1,31 +1,123 @@
 import React from 'react';
 import {StoreContext} from '../../../../contexts';
-import Pagination from '@material-ui/lab/Pagination';
+import PropTypes from "prop-types";
+import {withStyles,IconButton} from "@material-ui/core";
+import {PageLink} from "./PageLink";
 
-const PaginationCmp = () => {
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
+
+const styles = theme => ({
+    root:{
+        listStyle: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        //backgroundColor: $facet-color-silver;
+    },
+});
+
+const PaginationCmp = ({classes}) => {
     const {state} = React.useContext(StoreContext);
     const {
         searchResultPageIndex,
         searchResultMaxPage
     } = state;
 
-    const handleChange = (event, value) => {
-        //event.preventDefault();
+    const dotBefore = searchResultPageIndex > 3;
+    const dotAfter = searchResultMaxPage - searchResultPageIndex > 2;
+
+    let paging;
+    switch (true) {
+        case searchResultPageIndex <= 2:
+            paging = [2, 3];
+            break;
+        case searchResultMaxPage - searchResultPageIndex > 1:
+            paging = [searchResultPageIndex - 1, searchResultPageIndex, searchResultPageIndex + 1];
+            break;
+        case searchResultMaxPage - searchResultPageIndex === 1:
+            paging = [searchResultPageIndex - 1, searchResultPageIndex];
+            break;
+        default:
+            paging = [searchResultPageIndex - 2, searchResultPageIndex - 1];
+            break;
+    }
+
+    const handlePrev = () =>
         dispatch({
-            case: 'GOTO_RESULT_PAGE',
-            payload: {
-                index:value
-            }
+            case: 'PREVIOUS_RESULT_PAGE'
         });
-    };
+
+    const handleNext = () =>
+        dispatch({
+            case: 'NEXT_RESULT_PAGE'
+        });
 
     return (
-        <Pagination
-            color="primary"
-            count={searchResultMaxPage}
-            page={searchResultPageIndex}
-            onChange={handleChange} />
+        <li>
+            <nav>
+                <ul className={classes.root}>
+                    <li>
+                        <IconButton  onClick={handlePrev} aria-label="previous page">
+                            <ChevronLeftIcon/>
+                        </IconButton>
+                    </li>
+                    {/*<li className="nav">*/}
+                    {/*    <a href="#" onClick={handleNext}>*/}
+                    {/*        /!*<FontAwesomeIcon icon={['fas', 'chevron-right']}/>*!/*/}
+                    {/*    </a>*/}
+                    {/*</li>*/}
+
+
+
+                    {searchResultMaxPage <= 5 &&
+                    <>
+                        {[...Array(searchResultMaxPage)].map((e, i) =>
+                            <PageLink key={i} index={i + 1}/>
+                        )}
+                    </>
+                    }
+
+                    {searchResultMaxPage > 5 &&
+                    <>
+                        <PageLink index={1}/>
+
+                        {dotBefore &&
+                            //interlayer
+                        <li className="ellipsis">
+                            <MoreHorizIcon/>
+                        </li>}
+                        {paging.map((e, i) =>
+                            <PageLink key={i} index={e}/>
+                        )}
+                        {dotAfter &&
+                        <li className="ellipsis">
+                            <MoreHorizIcon/>
+                        </li>}
+
+                        <PageLink index={searchResultMaxPage}/>
+                    </>
+                    }
+                    <li>
+                        <IconButton  onClick={handleNext} aria-label="next page">
+                            <ChevronRightIcon/>
+                        </IconButton>
+                    </li>
+                    {/*<li className="nav">*/}
+                    {/*    <a href="#" onClick={handleNext}>*/}
+                    {/*        <FontAwesomeIcon icon={['fas', 'chevron-right']}/>*/}
+                    {/*    </a>*/}
+                    {/*</li>*/}
+                </ul>
+            </nav>
+        </li>
     );
 };
 
-export default Pagination;
+PaginationCmp.propTypes={
+    classes: PropTypes.object.isRequired,
+}
+
+export const Pagination = withStyles(styles)(PaginationCmp);

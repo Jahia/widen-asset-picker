@@ -53,7 +53,7 @@ const SortCmp = ({classes}) => {
     // faire le dispatch qui va bien -> update propertie and
     //     <i className="fas fa-sort-amount-up"></i>
     return (
-        <>
+        <li>
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel id={`sortBy_${_id_}_label`}>Sort by</InputLabel>
                 <Select
@@ -99,7 +99,7 @@ const SortCmp = ({classes}) => {
             {/*        <FontAwesomeIcon icon={['fas', sortDirectionItem.label]}/>*/}
             {/*    </Button>*/}
             {/*</li>*/}
-        </>
+        </li>
     );
 };
 

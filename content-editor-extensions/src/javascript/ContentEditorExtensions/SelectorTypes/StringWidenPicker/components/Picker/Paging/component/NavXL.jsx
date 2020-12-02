@@ -2,6 +2,7 @@ import React from 'react';
 import {StoreContext} from '../../../../contexts';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import PageLink from './PageLink';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 const NavXL = () => {
     const {state} = React.useContext(StoreContext);
@@ -34,14 +35,16 @@ const NavXL = () => {
             <PageLink index={1}/>
             {dotBefore &&
                 <li className="interlayer">
-                    <FontAwesomeIcon icon={['fas', 'ellipsis-h']}/>
+                    <MoreHorizIcon/>
+                    {/*<FontAwesomeIcon icon={['fas', 'ellipsis-h']}/>*/}
                 </li>}
             {paging.map((e, i) =>
                 <PageLink key={i} index={e}/>
             )}
             {dotAfter &&
                 <li className="interlayer">
-                    <FontAwesomeIcon icon={['fas', 'ellipsis-h']}/>
+                    <MoreHorizIcon/>
+                    {/*<FontAwesomeIcon icon={['fas', 'ellipsis-h']}/>*/}
                 </li>}
             <PageLink index={searchResultMaxPage}/>
         </>
