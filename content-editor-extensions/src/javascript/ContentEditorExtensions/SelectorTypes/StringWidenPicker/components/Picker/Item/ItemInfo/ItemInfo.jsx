@@ -38,7 +38,7 @@ const styles = theme => ({
         //flex-basis: calc( 33.33% - .75rem);
 
         borderTop: `1px solid ${picker.palette.cardBorderColor.default}`,//theme.palette.ui.beta $card-border-color
-        backgroundColor:picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,// $card-background-color;
+        backgroundColor:theme.palette.ui.omega,//picker.palette.cardBackgroundColor.default,// $card-background-color;
         padding: `${theme.spacing.unit}px 0`,
         fontSize:'1rem',
         color: theme.palette.primary.main,//'#59687f',

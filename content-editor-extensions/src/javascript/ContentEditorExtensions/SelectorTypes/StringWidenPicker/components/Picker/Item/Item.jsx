@@ -28,7 +28,7 @@ const picker={
 const styles = theme => ({
     card:{
         lineHeight:1.5,
-        backgroundColor: picker.palette.cardBackgroundColor.default,//theme.palette.ui.epsilon,//$card-background-color;
+        backgroundColor: theme.palette.ui.omega,//picker.palette.cardBackgroundColor.default,//$card-background-color;
         marginBottom: theme.spacing.unit * gutter,
         marginRight: theme.spacing.unit * gutter,
         flexBasis: `calc( 50% - ${theme.spacing.unit * gutter * 1/2}px)`,
@@ -76,6 +76,7 @@ const styles = theme => ({
         position: 'relative',
         height: '200px',//theme.spacing.unit * unitIndex,//200px;
         padding: `${theme.spacing.unit} 0`,//.25rem 0,
+        backgroundColor:theme.palette.ui.omega,
         '& img':{
             width: '100%',
             height: '100%',

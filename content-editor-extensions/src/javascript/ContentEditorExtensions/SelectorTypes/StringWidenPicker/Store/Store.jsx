@@ -114,7 +114,8 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 searchQuery: '',
-                needToFetch: true
+                needToFetch: true,
+                searchResultPageIndex: 1, // New search reset paging
             };
         }
 

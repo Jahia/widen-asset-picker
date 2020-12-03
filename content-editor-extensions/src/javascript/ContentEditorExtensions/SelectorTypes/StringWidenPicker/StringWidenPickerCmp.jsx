@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 import AjvError from './components/Error/Ajv';
-import WidenPicker from './components/WidenPicker';
+import {WidenPicker} from './components/WidenPicker';
 import {Store} from './Store';
 import * as PropTypes from 'prop-types';
 import {contextValidator} from './douane';

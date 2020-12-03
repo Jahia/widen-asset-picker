@@ -9,6 +9,7 @@ import {
     withStyles,
     FormControl,
     InputLabel,
+    NativeSelect,
     Select,
     MenuItem} from "@material-ui/core";
 import SortIcon from '@material-ui/icons/Sort';
@@ -53,9 +54,10 @@ const SortCmp = ({classes}) => {
     // faire le dispatch qui va bien -> update propertie and
     //     <i className="fas fa-sort-amount-up"></i>
     return (
+        <>
         <li>
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel id={`sortBy_${_id_}_label`}>Sort by</InputLabel>
+            {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+            {/*    <InputLabel id={`sortBy_${_id_}_label`}>Sort by</InputLabel>*/}
                 <Select
                     labelId={`sortBy_${_id_}_label`}
                     id={`sortBy_${_id_}`}
@@ -70,7 +72,9 @@ const SortCmp = ({classes}) => {
                         <MenuItem key={i} value={item.value}>{item.label}</MenuItem>
                     )}
                 </Select>
-            </FormControl>
+            {/*</FormControl>*/}
+        </li>
+        <li>
             <IconButton
                 className={classes[sortDirectionItem.label]}
                 aria-label="toggle sort order"
@@ -78,28 +82,8 @@ const SortCmp = ({classes}) => {
             >
                 <SortIcon/>
             </IconButton>
-            {/*<li>*/}
-            {/*    <DropdownButton*/}
-            {/*        alignRight*/}
-            {/*        variant="outline-dark"*/}
-            {/*        title={`Sort by ${sortByItem.label}`}*/}
-            {/*        id={`sortBy_${getRandomString(6, 'aA#')}`}*/}
-            {/*    >*/}
-            {/*        {searchSortList.map((item, i) =>*/}
-            {/*            <Dropdown.Item key={i} id={item.value} onClick={handleClickSortBy}>{item.label}</Dropdown.Item>*/}
-            {/*        )}*/}
-            {/*        /!* <Dropdown.Divider /> *!/*/}
-            {/*    </DropdownButton>*/}
-            {/*</li>*/}
-            {/*<li>*/}
-            {/*    <Button*/}
-            {/*        variant="outline-dark"*/}
-            {/*        onClick={handleClickSortByDirection}*/}
-            {/*    >*/}
-            {/*        <FontAwesomeIcon icon={['fas', sortDirectionItem.label]}/>*/}
-            {/*    </Button>*/}
-            {/*</li>*/}
         </li>
+            </>
     );
 };
 

@@ -3,13 +3,14 @@ import {StoreContext} from '../../../contexts';
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 // import Nav from './component/Nav';
 // import NavXL from './component/NavXL';
-// import ResultPerPage from './component/ResultPerPage';
+import {ResultPerPage} from './component/ResultPerPage';
 // import PageFormLink from './component/PageFormLink';
 import {Sort} from './component/Sort';
 import {Pagination} from './component/Pagination';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import classnames from 'clsx';
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
     paging:{
@@ -18,6 +19,12 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'flex-end',
         //backgroundColor: $facet-color-silver;
+        '& > li':{
+            marginRight: theme.spacing.unit,
+        },
+        '& > li:last-child':{
+            marginRight: 0,
+        }
     },
     // results:{
     //     '& li':{
@@ -104,17 +111,22 @@ const PagingCmp = ({classes}) => {
 
     return (
         <>
-            <ul className={classes.paging}>
-                <li className="results">
-                    <h6>Résultats : {searchResultAvailableAnswersCount}</h6>
-                </li>
-                <Sort/>
-                {/*<ResultPerPage/>*/}
-
-                {/*{showForm &&*/}
-                {/*<PageFormLink/>}*/}
-                <Pagination/>
-            </ul>
+            <Grid item xs={12}>
+                <ul className={classes.paging}>
+                    <li className="results">
+                        <h6>Résultats : {searchResultAvailableAnswersCount}</h6>
+                    </li>
+                    <Sort/>
+                    <ResultPerPage/>
+                    {/*{showForm &&*/}
+                    {/*<PageFormLink/>}*/}
+                </ul>
+            </Grid>
+            <Grid item xs>
+                <ul className={classes.paging}>
+                    <Pagination/>
+                </ul>
+            </Grid>
 
             {/*<Pagination*/}
             {/*    color="primary"*/}

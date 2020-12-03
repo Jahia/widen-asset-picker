@@ -17,10 +17,13 @@ const styles = theme => ({
         justifyContent: 'flex-end',
         //backgroundColor: $facet-color-silver;
     },
+    ellipsis:{
+        fontSize: '.875rem'
+    }
 });
 
 const PaginationCmp = ({classes}) => {
-    const {state} = React.useContext(StoreContext);
+    const {state,dispatch} = React.useContext(StoreContext);
     const {
         searchResultPageIndex,
         searchResultMaxPage
@@ -64,13 +67,6 @@ const PaginationCmp = ({classes}) => {
                             <ChevronLeftIcon/>
                         </IconButton>
                     </li>
-                    {/*<li className="nav">*/}
-                    {/*    <a href="#" onClick={handleNext}>*/}
-                    {/*        /!*<FontAwesomeIcon icon={['fas', 'chevron-right']}/>*!/*/}
-                    {/*    </a>*/}
-                    {/*</li>*/}
-
-
 
                     {searchResultMaxPage <= 5 &&
                     <>
@@ -86,14 +82,14 @@ const PaginationCmp = ({classes}) => {
 
                         {dotBefore &&
                             //interlayer
-                        <li className="ellipsis">
+                        <li className={classes.ellipsis}>
                             <MoreHorizIcon/>
                         </li>}
                         {paging.map((e, i) =>
                             <PageLink key={i} index={e}/>
                         )}
                         {dotAfter &&
-                        <li className="ellipsis">
+                        <li className={classes.ellipsis}>
                             <MoreHorizIcon/>
                         </li>}
 
@@ -105,11 +101,7 @@ const PaginationCmp = ({classes}) => {
                             <ChevronRightIcon/>
                         </IconButton>
                     </li>
-                    {/*<li className="nav">*/}
-                    {/*    <a href="#" onClick={handleNext}>*/}
-                    {/*        <FontAwesomeIcon icon={['fas', 'chevron-right']}/>*/}
-                    {/*    </a>*/}
-                    {/*</li>*/}
+
                 </ul>
             </nav>
         </li>

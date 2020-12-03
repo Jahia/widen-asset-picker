@@ -21,6 +21,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {WidenPickerFilledQuery} from './WidenPicker.gql-queries';
 import {widenUUIDQuery} from './WidenUUID.gql-queries';
 import get from "lodash.get";
+import {withStyles} from "@material-ui/core";
 
 const GetUuid = () =>{
     console.log("[WidenPicker] GetUuid !!! ");
@@ -51,9 +52,18 @@ const GetUuid = () =>{
         }
     });
 }
+const styles = theme => ({
+    dialogPaper: {
+        minHeight: '90vh',
+        maxHeight: '90vh',
+        //alignItems: 'baseline'  // default center
+    },
+    scrollPaper: {
+        alignItems: 'baseline'  // default center
+    }
+});
 
-
-const WidenPicker = ({setActionContext}) => {
+const WidenPickerCmp = ({classes}) => {
     console.log("[WidenPicker] called !!! ");
     const {state, dispatch} = React.useContext(StoreContext);
     const {t} = useTranslation();
@@ -132,8 +142,8 @@ const WidenPicker = ({setActionContext}) => {
         dispatch({
             case: 'TOGGLE_SHOW_PICKER'
         });
-
-
+    // scrollPaper:classes.scrollPaper
+    // paper:classes.dialogPaper,
     return (
         <>
 
@@ -149,10 +159,11 @@ const WidenPicker = ({setActionContext}) => {
                 open={showPickerDialog}
                 fullWidth={dialogConfig.fullWidth}
                 maxWidth={dialogConfig.maxWidth}
+                classes={{paper:classes.dialogPaper}}
                 onClose={handleClose}>
-                {/*<DialogTitle closeButton>*/}
-                {/*    Browse Widen Catalog*/}
-                {/*</DialogTitle>*/}
+                <DialogTitle closeButton>
+                    Widen Picker
+                </DialogTitle>
                 <DialogContent dividers={dialogConfig.dividers}>
                     <Picker/>
                 </DialogContent>
@@ -160,7 +171,10 @@ const WidenPicker = ({setActionContext}) => {
         </>
     );
 };
+WidenPickerCmp.propTypes={
+    classes: PropTypes.object.isRequired,
+}
+WidenPickerCmp.displayName = 'WidenPicker';
+export const WidenPicker = withStyles(styles)(WidenPickerCmp);
 
-// WidenPicker.propTypes = {};
-WidenPicker.displayName = 'WidenPicker';
-export default WidenPicker;
+

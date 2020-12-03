@@ -313,6 +313,7 @@ public class WidenDataSource implements ExternalDataSource {
 //            }
 
             url.setQuery(query.keySet().toArray(new String[query.size()]), query.values().toArray(new String[query.size()]));
+
             long l = System.currentTimeMillis();
             GetMethod getMethod = new GetMethod(url.toString());
             getMethod.setRequestHeader(new Header("Authorization","Bearer "+this.widenSite+"/"+this.widenToken));
