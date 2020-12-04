@@ -4,6 +4,11 @@ import classnames from 'clsx';
 import {withStyles} from '@material-ui/core';
 import {HandleDrag,Typography} from '@jahia/moonstone';
 import {StoreContext} from '../../contexts';
+import {ItemInfo} from "./ItemInfo/ItemInfo";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import VideocamIcon from "@material-ui/icons/Videocam";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
+import DescriptionIcon from "@material-ui/icons/Description";
 const unitIndex = 12;//prev 9
 
 const styles = theme => ({
@@ -98,6 +103,9 @@ const styles = theme => ({
     },
     draggableIcon: {
         cursor: 'grab'
+    },
+    vAlign:{
+        verticalAlign:'middle',
     }
 });
 
@@ -148,6 +156,38 @@ const ReferenceCardCmp = ({
         updatedDate = formatDate(updatedDate);
         deletedDate = formatDate(deletedDate);
 
+        const _IMAGE_ = 'image';
+        const _VIDEO_ = 'video';
+        const _PDF_ = 'pdf';
+        const isImage = type === _IMAGE_;
+        const isVideo = type === _VIDEO_;
+        const isDocument = !isImage && !isVideo;
+        const isPdf = type === _PDF_;
+
+        const formatFileSize = () => {
+            switch(true){
+                case sizeKB > 1000000:
+                    return `${(sizeKB/1000000).toLocaleString(locale,{maximumFractionDigits:1})} GB`;
+                case sizeKB > 1000:
+                    return `${(sizeKB/1000).toLocaleString(locale,{maximumFractionDigits:1})} MB`;
+                default :
+                    return `${sizeKB.toLocaleString(locale,{maximumFractionDigits:1})} KB`;
+            }
+        }
+
+        const getFileFormatIcon = () => {
+            switch(true){
+                case isImage :
+                    return <PhotoCameraIcon className={classes.vAlign}/>
+                case isVideo :
+                    return <VideocamIcon className={classes.vAlign}/>
+                case isPdf:
+                    return <PictureAsPdfIcon className={classes.vAlign}/>
+                default :
+                    return <DescriptionIcon className={classes.vAlign}/>
+            }
+        }
+
         // TODO faire des composants pour chaque element
         // todo manage file_properties.image_properties if type === 'image"
         // todo manage file_properties.video_properties if type === 'video'
@@ -184,6 +224,7 @@ const ReferenceCardCmp = ({
                         <img src={thumbnail} className={classes.fieldImage} aria-labelledby={nameId} alt=""/>
                     </div>
                     <div className={classes.fieldSelectedMetadata}>
+                        {/*<ItemInfo properties={fieldData} labelledBy={labelledBy}/>*/}
                         <Typography
                             data-sel-field-picker-name
                             variant="zeta"
@@ -197,7 +238,14 @@ const ReferenceCardCmp = ({
                             variant="omega"
                             color="gamma"
                         >
-                            {format} | {sizeKB} kB
+                            {getFileFormatIcon()} | {format.toLowerCase()} | {formatFileSize()}
+                        </Typography>
+                        <Typography
+                            data-sel-field-picker-info
+                            variant="omega"
+                            color="gamma"
+                        >
+                            last updated : {updatedDate}
                         </Typography>
                     </div>
                 </article>

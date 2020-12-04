@@ -24,21 +24,21 @@ import get from "lodash.get";
 import {withStyles} from "@material-ui/core";
 
 const GetUuid = () =>{
-    console.log("[WidenPicker] GetUuid !!! ");
+    // console.debug("[WidenPicker] GetUuid called ");
     const {state, dispatch} = React.useContext(StoreContext);
     const {
         widenPath4EDP
     } = state;
 
-    console.log("[WidenPicker] GetUuid : widenPath4EDP : ",widenPath4EDP);
-    console.log("[WidenPicker] GetUuid : needToFetch : ",Boolean(widenPath4EDP));
+    const variables ={
+        widenEDPPath:widenPath4EDP,
+        needToFetch: Boolean(widenPath4EDP)
+    }
+    console.log("[WidenPicker] GetUuid : variables for widenUUIDQuery : ",variables);
 
-    //TODO Call the EDP to get uuid and send to the store
+    //Call the EDP to get uuid and send to the store
     const {loading, error, data} = useQuery(widenUUIDQuery, {
-        variables:{
-            widenEDPPath:widenPath4EDP,
-            needToFetch: Boolean(widenPath4EDP)
-        }
+        variables
     });
 
     if (loading || error || !data || !widenPath4EDP) {
@@ -60,7 +60,10 @@ const styles = theme => ({
     },
     scrollPaper: {
         alignItems: 'baseline'  // default center
-    }
+    },
+    // scrollTrick:{
+    //     marginLeft: 'calc(100vw - 100%)'
+    // }
 });
 
 const WidenPickerCmp = ({classes}) => {
@@ -75,7 +78,7 @@ const WidenPickerCmp = ({classes}) => {
         editorValue,
         widenPath4EDP
     } = state;
-    console.log("[WidenPicker] editorValue : ",editorValue);
+    // console.log("[WidenPicker] editorValue : ",editorValue);
     GetUuid();
 
     const variables={
@@ -84,7 +87,7 @@ const WidenPickerCmp = ({classes}) => {
         // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
         needToFetch: Boolean(editorValue)
     }
-    console.log("[WidenPicker] variables : ",variables);
+    console.log("[WidenPicker] variables for WidenPickerFilledQuery : ",variables);
 
     const {loading, error, data} = useQuery(WidenPickerFilledQuery, {
         variables
@@ -142,6 +145,7 @@ const WidenPickerCmp = ({classes}) => {
         dispatch({
             case: 'TOGGLE_SHOW_PICKER'
         });
+
     // scrollPaper:classes.scrollPaper
     // paper:classes.dialogPaper,
     return (

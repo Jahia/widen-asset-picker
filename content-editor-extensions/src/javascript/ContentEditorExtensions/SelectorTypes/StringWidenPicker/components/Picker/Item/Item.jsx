@@ -140,10 +140,8 @@ const ItemCmp=({item,classes})=>{
         });
 
     return(
-        // <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div className={classnames(
             classes.card,
-            //classes.tile,
             (active ? classes.active : '')
         )} onClick={handleClick}>
             <div className={classes.wrapper}>
@@ -171,8 +169,6 @@ const ItemCmp=({item,classes})=>{
                 {/*</div>*/}
             </div>
         </div>
-        // </div>
-
     )
 }
 

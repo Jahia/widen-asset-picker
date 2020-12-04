@@ -137,7 +137,7 @@ const PickerCmp = ({classes}) => {
 //<img className="pT4__spinner" src={spinner}/>
 //     <ProgressOverlay/>
     return (
-        <Grid container className="pT4" spacing={3}>
+        <Grid container spacing={3}>
             <Grid item xs={12} container className={classes.sticky}>
                 <Grid item sm={12} md={6} container>
                     <SearchForm/>
@@ -182,8 +182,6 @@ const PickerCmp = ({classes}) => {
 
                         }
                     </div>
-                        // SearchIframe &&
-                        // <iframe frameBorder="0" src={searchIframe} width="100%" height="700px"></iframe>
                     }
                 {/*<Col xs="4" sm="3" md="4" lg="3">*/}
                 {/*    /!* <ul className="pT4__facet"> *!/*/}

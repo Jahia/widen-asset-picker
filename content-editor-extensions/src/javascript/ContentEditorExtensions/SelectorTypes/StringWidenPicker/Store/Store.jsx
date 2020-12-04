@@ -84,6 +84,7 @@ const init = context => {
             {value: 'DESC', label: 'sortDown', symbol: '-'}
         ],
         searchQuery: null,
+        searchQueryExecuted:false,
         searchResultPerPage: Number.parseInt(resultPerPage, 10), // Be sure it is an integer base 10
         searchResultMaxPage: null,
         searchResultPageIndex: 1,
@@ -111,10 +112,16 @@ const reducer = (state, action) => {
 
         case 'RESET_TEXT_QUERY': {
             console.debug('[STORE] RESET_TEXT_QUERY');
+            let needToFetch = false;
+            //Reload catalog only if a query was made before
+            if(state.searchQueryExecuted)
+                needToFetch= true;
+
             return {
                 ...state,
                 searchQuery: '',
-                needToFetch: true,
+                searchQueryExecuted:false,
+                needToFetch,
                 searchResultPageIndex: 1, // New search reset paging
             };
         }
@@ -123,6 +130,7 @@ const reducer = (state, action) => {
             console.debug('[STORE] EXECUTE_QUERY');
             return {
                 ...state,
+                searchQueryExecuted:true,
                 searchResultPageIndex: 1, // New search reset paging
                 needToFetch: true
             };
@@ -150,16 +158,10 @@ const reducer = (state, action) => {
             //TODO do a graphQL call to the EDP to get uuid and return this jContent
             // const editorValue = `${mountPoint}/${widenID}`;
             const widenPath4EDP = `${mountPoint}/${widenID}`;
-            // editorOnChange(JSON.stringify(editorValue));
-            //TODO create a specific event for that
-            //editorOnChange(editorValue);
 
             return {
                 ...state,
                 widenPath4EDP,
-                //editorValue,
-                // selectedItem:payload,
-                //showPickerDialog: !state.showPickerDialog //Moved to UPDATE_SELECTED_ITEM_UUID
             };
         }
 

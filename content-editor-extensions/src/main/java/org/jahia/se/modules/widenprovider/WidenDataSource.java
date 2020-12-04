@@ -140,7 +140,7 @@ public class WidenDataSource implements ExternalDataSource {
                         cache.put(new Element("/"+identifier, widenAsset.toString()));
                     }
 
-//                    logger.info("***** WidenDataSource ***** widenAsset : "+widenAsset);
+                    logger.info("***** WidenDataSource ***** widenAsset : "+widenAsset);
 
                     properties = new HashMap<String, String[]>();
                     properties.put("jcr:title", new String[]{widenAsset.getString("filename")});
@@ -316,9 +316,17 @@ public class WidenDataSource implements ExternalDataSource {
 
             long l = System.currentTimeMillis();
             GetMethod getMethod = new GetMethod(url.toString());
-            getMethod.setRequestHeader(new Header("Authorization","Bearer "+this.widenSite+"/"+this.widenToken));
+
+            getMethod.setRequestHeader("Authorization","Bearer "+this.widenSite+"/"+this.widenToken);
+            getMethod.setRequestHeader("Content-Type","application/json");
+            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
+
+//            getMethod.setRequestHeader(new Header("Authorization","Bearer "+this.widenSite+"/"+this.widenToken));
+//            getMethod.setRequestHeader(new Header("Content-Type","application/json"));
+//            getMethod.setRequestHeader(new Header("Accept-Charset","ISO-8859-1"));
             try {
                 httpClient.executeMethod(getMethod);
+                logger.info("***** WidenDataSource ***** getMethod.getResponseCharSet : "+getMethod.getResponseCharSet());
                 return new JSONObject(getMethod.getResponseBodyAsString());
             } finally {
                 getMethod.releaseConnection();
