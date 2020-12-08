@@ -30,6 +30,12 @@ const WidenPickerFilledQuery = gql`
                 aspectRatio: property(name: "wden:aspectRatio") {
                     value
                 }
+                width: property(name: "wden:width") {
+                    value
+                }
+                height: property(name: "wden:height") {
+                    value
+                }
                 updatedDate: property(name: "wden:updatedDate") {
                     value
                 }

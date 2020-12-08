@@ -117,6 +117,8 @@ const WidenPickerCmp = ({classes}) => {
             sizeKB:get(widenJcrData, "sizeKB.value"),
             duration:get(widenJcrData, "duration.value"),
             aspectRatio:get(widenJcrData, "aspectRatio.value"),
+            width:get(widenJcrData, "width.value"),
+            height:get(widenJcrData, "height.value"),
             updatedDate:get(widenJcrData, "updatedDate.value"),
             lastModified:get(widenJcrData, "lastModified.value"),
         }

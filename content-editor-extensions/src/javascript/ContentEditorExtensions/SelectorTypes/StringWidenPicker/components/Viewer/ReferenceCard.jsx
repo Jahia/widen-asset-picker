@@ -128,12 +128,7 @@ const ReferenceCardCmp = ({
     if (fieldData) {
         const {
             filename,
-            format,
-            type,
             thumbnail,
-            sizeKB,
-            duration,
-            aspectRatio
         } = fieldData;
         let {
             createdDate,
@@ -142,6 +137,32 @@ const ReferenceCardCmp = ({
             lastModified
         } = fieldData;
 
+        // const {
+        //     aspectRatio,
+        //     width,
+        //     height,
+        // } = ['width','height','aspectRatio'].reduce((reducer,key) => {
+        //     if(key === 'aspectRatio'){
+        //         reducer[key]= fieldData[key].toLocaleString(locale,{maximumFractionDigits:2}) || 'n/a';
+        //     }else{
+        //         reducer[key]= `${fieldData[key].toLocaleString(locale)} px` || 'n/a';
+        //     }
+        //
+        //     return reducer;
+        // },{});
+        //
+        // const formatDuration = () => {
+        //     if(!duration)
+        //         return 'n/a';
+        //
+        //     const dateObj = new Date(duration * 1000);
+        //     const hours = dateObj.getUTCHours().toString().padStart(2, '0');
+        //     const minutes = dateObj.getUTCMinutes().toString().padStart(2, '0');
+        //     const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+        //
+        //     return `${hours}:${minutes}:${seconds}`;
+        // }
+        //
         const formatDate = date => {
             if (!date) {
                 return;
@@ -156,37 +177,27 @@ const ReferenceCardCmp = ({
         updatedDate = formatDate(updatedDate);
         deletedDate = formatDate(deletedDate);
 
-        const _IMAGE_ = 'image';
-        const _VIDEO_ = 'video';
-        const _PDF_ = 'pdf';
-        const isImage = type === _IMAGE_;
-        const isVideo = type === _VIDEO_;
-        const isDocument = !isImage && !isVideo;
-        const isPdf = type === _PDF_;
+        //
+        // const _IMAGE_ = 'image';
+        // const _VIDEO_ = 'video';
+        // const _PDF_ = 'pdf';
+        // const isImage = type === _IMAGE_;
+        // const isVideo = type === _VIDEO_;
+        // const isDocument = !isImage && !isVideo;
+        // const isPdf = type === _PDF_;
+        //
+        // const formatFileSize = () => {
+        //     switch(true){
+        //         case sizeKB > 1000000:
+        //             return `${(sizeKB/1000000).toLocaleString(locale,{maximumFractionDigits:1})} GB`;
+        //         case sizeKB > 1000:
+        //             return `${(sizeKB/1000).toLocaleString(locale,{maximumFractionDigits:1})} MB`;
+        //         default :
+        //             return `${sizeKB.toLocaleString(locale,{maximumFractionDigits:1})} KB`;
+        //     }
+        // }
 
-        const formatFileSize = () => {
-            switch(true){
-                case sizeKB > 1000000:
-                    return `${(sizeKB/1000000).toLocaleString(locale,{maximumFractionDigits:1})} GB`;
-                case sizeKB > 1000:
-                    return `${(sizeKB/1000).toLocaleString(locale,{maximumFractionDigits:1})} MB`;
-                default :
-                    return `${sizeKB.toLocaleString(locale,{maximumFractionDigits:1})} KB`;
-            }
-        }
 
-        const getFileFormatIcon = () => {
-            switch(true){
-                case isImage :
-                    return <PhotoCameraIcon className={classes.vAlign}/>
-                case isVideo :
-                    return <VideocamIcon className={classes.vAlign}/>
-                case isPdf:
-                    return <PictureAsPdfIcon className={classes.vAlign}/>
-                default :
-                    return <DescriptionIcon className={classes.vAlign}/>
-            }
-        }
 
         // TODO faire des composants pour chaque element
         // todo manage file_properties.image_properties if type === 'image"
@@ -233,13 +244,14 @@ const ReferenceCardCmp = ({
                         >
                             {filename}
                         </Typography>
-                        <Typography
-                            data-sel-field-picker-info
-                            variant="omega"
-                            color="gamma"
-                        >
-                            {getFileFormatIcon()} | {format.toLowerCase()} | {formatFileSize()}
-                        </Typography>
+                        <ItemInfo properties={fieldData} locale={locale} />
+                        {/*<Typography*/}
+                        {/*    data-sel-field-picker-info*/}
+                        {/*    variant="omega"*/}
+                        {/*    color="gamma"*/}
+                        {/*>*/}
+                        {/*    {getFileFormatIcon()} | {format.toLowerCase()} | {formatFileSize()}*/}
+                        {/*</Typography>*/}
                         <Typography
                             data-sel-field-picker-info
                             variant="omega"

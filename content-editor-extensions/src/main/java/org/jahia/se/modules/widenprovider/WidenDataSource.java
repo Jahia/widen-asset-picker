@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class WidenDataSource implements ExternalDataSource {
@@ -140,7 +142,7 @@ public class WidenDataSource implements ExternalDataSource {
                         cache.put(new Element("/"+identifier, widenAsset.toString()));
                     }
 
-                    logger.info("***** WidenDataSource ***** widenAsset : "+widenAsset);
+                    logger.debug("***** WidenDataSource ***** widenAsset : "+widenAsset);
 
                     properties = new HashMap<String, String[]>();
                     properties.put("jcr:title", new String[]{widenAsset.getString("filename")});
@@ -317,17 +319,31 @@ public class WidenDataSource implements ExternalDataSource {
             long l = System.currentTimeMillis();
             GetMethod getMethod = new GetMethod(url.toString());
 
+            //NOTE Widen return content in ISO-8859-1 even if Accept-Charset = UTF-8 is set.
+            //Need to use appropriate charset later to read the inputstream response.
             getMethod.setRequestHeader("Authorization","Bearer "+this.widenSite+"/"+this.widenToken);
-            getMethod.setRequestHeader("Content-Type","application/json");
-            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
+//            getMethod.setRequestHeader("Content-Type","application/json");
+//            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
+           // getMethod.setRequestHeader("Accept-Charset","UTF-8");
 
-//            getMethod.setRequestHeader(new Header("Authorization","Bearer "+this.widenSite+"/"+this.widenToken));
-//            getMethod.setRequestHeader(new Header("Content-Type","application/json"));
-//            getMethod.setRequestHeader(new Header("Accept-Charset","ISO-8859-1"));
+            logger.debug("***** WidenDataSource ***** getMethod.getRequestHeaders : "+Arrays.deepToString(getMethod.getRequestHeaders()));
             try {
                 httpClient.executeMethod(getMethod);
-                logger.info("***** WidenDataSource ***** getMethod.getResponseCharSet : "+getMethod.getResponseCharSet());
-                return new JSONObject(getMethod.getResponseBodyAsString());
+
+                logger.debug("***** WidenDataSource ***** getMethod.getResponseCharSet : "+getMethod.getResponseCharSet());
+                logger.debug("***** WidenDataSource ***** getMethod.getResponseBodyAsString : "+getMethod.getResponseBodyAsString());
+
+                BufferedReader streamReader = new BufferedReader(new InputStreamReader(getMethod.getResponseBodyAsStream(),"UTF-8"));
+                StringBuilder responseStrBuilder = new StringBuilder();
+
+                String inputStr;
+                while ((inputStr = streamReader.readLine()) != null)
+                    responseStrBuilder.append(inputStr);
+
+                logger.debug("***** WidenDataSource ***** UTF-8 response : "+responseStrBuilder.toString());
+
+//                return new JSONObject(getMethod.getResponseBodyAsString());
+                return new JSONObject(responseStrBuilder.toString());
             } finally {
                 getMethod.releaseConnection();
                 logger.info("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));
