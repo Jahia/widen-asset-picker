@@ -1,5 +1,6 @@
 <%@ page import="org.jahia.settings.SettingsBean"%>
 <%@ page language="java" contentType="text/javascript" %>
+    <%--TODO faire un JCRQuery sur mon mountpoint et lire les property--%>
 <%
     SettingsBean settingsBean = SettingsBean.getInstance();
     String APIProtocol = settingsBean.getString("jahia.widen.api.protocol","https");
