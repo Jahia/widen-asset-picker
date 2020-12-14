@@ -5,12 +5,12 @@
 <wden = 'http://modules.se.jahia.org/wden/1.0'>
 
 [wdennt:mountPoint] > jnt:mountPoint
- - widenApiProtocol (string) mandatory
- - widenApiEndPoint (string) mandatory
- - widenApiSite (string) mandatory
- - widenApiToken (string) mandatory
- - widenApiVersion (string) mandatory
- - edpMountPath (string) mandatory
+ - wden:apiProtocol (string) mandatory
+ - wden:apiEndPoint (string) mandatory
+ - wden:apiSite (string) mandatory
+ - wden:apiToken (string) mandatory
+ - wden:apiVersion (string) mandatory
+ - mountPoint (weakreference) mandatory
 
 [wdenmix:widenPicker] > jmix:templateMixin mixin
  extends = wdennt:wdenAssetTest
