@@ -34,22 +34,8 @@ public class WidenProviderFactory implements ProviderFactory {
 
     @Activate
     public void onActivate(Map<String, ?> configuration) throws RepositoryException {
-        provider = (ExternalContentStoreProvider) SpringContextSingleton.getBean("WidenProvider");
-
-        if (configuration.containsKey(MountPoint.NODETYPE_PROPERTY_ENDPOINT)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            try {
-                MountPoint widenMountPoint = objectMapper.convertValue(configuration, MountPoint.class);
-                if (widenMountPoint == null || StringUtils.isBlank(widenMountPoint.getSystemname())) {
-                    throw new RepositoryException("Widen mount point not found");
-                }
-                MountPoint.getOrCreateMountPoint(widenMountPoint);
-            } catch (IllegalArgumentException e) {
-                throw new RepositoryException(e);
-            }
-            widenCacheManager.flush();
-        }
+        provider = (ExternalContentStoreProvider) SpringContextSingleton.getBean("ExternalStoreProviderPrototype");
+        widenCacheManager.flush();
     }
 
     @Reference(service = WidenDataSource.class)
@@ -64,7 +50,7 @@ public class WidenProviderFactory implements ProviderFactory {
 
     @Override
     public String getNodeTypeName() {
-        return null;
+        return MountPoint.NODETYPE;
     }
 
     @Override
@@ -76,8 +62,9 @@ public class WidenProviderFactory implements ProviderFactory {
         if (wdenStoreMountPoint.getId() == null) {
             LOGGER.warn("Widen Store not mounted (id is null): {}", wdenMountPointNode.getPath());
         } else {
-//            widenDataSource.reload(wdenStoreMountPoint);
+            widenDataSource.reload(wdenStoreMountPoint);
             provider.setDataSource(widenDataSource);
+//            widenDataSource.setJcrStoreProvider(provider);
             provider.setDynamicallyMounted(true);
             provider.setSessionFactory(JCRSessionFactory.getInstance());
             provider.setOverridableItems(OVERRIDABLE_ITEMS);

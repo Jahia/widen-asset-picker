@@ -3,9 +3,13 @@ package org.jahia.se.modules.edp.dam.widen.cache;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
+import org.jahia.se.modules.edp.dam.widen.model.WidenAsset;
 import org.jahia.services.SpringContextSingleton;
+import org.jahia.services.cache.CacheHelper;
+import org.jahia.services.cache.ModuleClassLoaderAwareCacheEntry;
 import org.jahia.services.cache.ehcache.EhCacheProvider;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -67,5 +71,11 @@ public class WidenCacheManager {
         }
     }
 
-    //TODO see if I manage put and get cache content here -> next step
+    public WidenAsset getWidenAsset(String cacheKey){
+        return (WidenAsset) CacheHelper.getObjectValue(cache, cacheKey);
+    };
+
+    public void cacheWidenAsset (WidenAsset widenAsset){
+        cache.put(new Element(widenAsset.getId(),new ModuleClassLoaderAwareCacheEntry(widenAsset, CACHE_NAME)));
+    }
 }

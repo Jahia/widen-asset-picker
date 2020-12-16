@@ -1,22 +1,27 @@
-<%@ page import="org.jahia.settings.SettingsBean"%>
 <%@ page language="java" contentType="text/javascript" %>
-    <%--TODO faire un JCRQuery sur mon mountpoint et lire les property--%>
-<%
-    SettingsBean settingsBean = SettingsBean.getInstance();
-    String APIProtocol = settingsBean.getString("jahia.widen.api.protocol","https");
-    String APIEndPoint = settingsBean.getString("jahia.widen.api.endPoint","api.widencollective.com");
-    String APIVersion = settingsBean.getString("jahia.widen.api.version","v2");
-    String JCRMountPoint = settingsBean.getString("jahia.widen.edp.mountPoint","/sites/systemsite/contents/widen");
-    String APISite = settingsBean.getString("jahia.widen.api.site");
-    String APIToken = settingsBean.getString("jahia.widen.api.token");
-%>
-<%--console.log("contextJsParameters",contextJsParameters);--%>
-<%--console.log("contextJsParameters.config",contextJsParameters.config);--%>
+<%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
 
-contextJsParameters.config.widen={
-    url:"<%= APIProtocol %>://<%= APIEndPoint %>",
-    version:"<%= APIVersion %>",
-    site:"<%= APISite %>",
-    token:"<%= APIToken %>",
-    mountPoint:"<%= JCRMountPoint %>"
-}
+<jcr:sql
+	var="mountPoints"
+	 sql="SELECT * FROM [wdennt:mountPoint]"
+/>
+<c:forEach items="${mountPoints.nodes}" var="mountPoint" end="0">
+    <c:choose>
+    <c:when test="${! empty mountPoint}">
+    contextJsParameters.config.widen={
+        url:"${mountPoint.properties['wden:apiProtocol']}://${mountPoint.properties['wden:apiEndPoint']}",
+        version:"${mountPoint.properties['wden:apiVersion']}",
+        site:"${mountPoint.properties['wden:apiSite']}",
+        token:"${mountPoint.properties['wden:apiToken']}",
+        mountPoint:"${jcr:getChildrenOfType(mountPoint.properties.mountPoint.node,'jnt:contentFolder')[0].path}"
+    }
+    console.log("contextJsParameters.config",contextJsParameters.config);
+    </c:when>
+    <c:otherwise>
+    <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>
+    console.log("no content of wdennt:mountPoint available");
+    </c:otherwise>
+    </c:choose>
+</c:forEach>

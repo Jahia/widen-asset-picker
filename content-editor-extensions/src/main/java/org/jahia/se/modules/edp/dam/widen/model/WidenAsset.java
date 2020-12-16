@@ -9,7 +9,8 @@ import java.util.Map;
 public class WidenAsset {
 
     private String jahiaNodeType;
-    private final Map<String, Object> properties;
+    private String id;
+    private final Map<String, String[]> properties;
 
     public WidenAsset(){
         properties=new HashMap<>();
@@ -23,16 +24,19 @@ public class WidenAsset {
         this.jahiaNodeType = jahiaNodeType;
     }
 
-    public Map<String, Object> getProperties() {
+    public String getId() { return id; }
+    public void setId(String id){ this.id = id;}
+
+    public Map<String, String[]> getProperties() {
         return properties;
     }
 
     public void addProperties(String name,Object value){
-        properties.put(name, value);
+        properties.put(name, new String[]{value.toString()});
     }
 
 
-//    private String id;
+
 //    private String externalId;
 //    private String filename;
 //    private String createdDate;
@@ -66,8 +70,7 @@ public class WidenAsset {
 
 
 //
-//    public String getId() { return id; }
-//    public void setId(String id){ this.id = id;}
+
 //
 //    public String getExternalId() { return externalId; }
 //    public void setExternalId(String eid){ this.externalId = eid;}

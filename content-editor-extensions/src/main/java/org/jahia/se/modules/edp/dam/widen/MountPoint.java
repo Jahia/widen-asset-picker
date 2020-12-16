@@ -19,11 +19,12 @@ public class MountPoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(MountPoint.class);
 
     public static final String NODETYPE = "wdennt:mountPoint";
-    private static final String NODETYPE_PROPERTY_PROTOCOL = "wden:apiProtocol";
-    public static final String NODETYPE_PROPERTY_ENDPOINT = "wden:apiEndPoint";
-    private static final String NODETYPE_PROPERTY_SITE = "wden:apiSite";
-    private static final String NODETYPE_PROPERTY_TOKEN = "wden:apiToken";
-    private static final String NODETYPE_PROPERTY_VERSION = "wden:apiVersion";
+    public static final String PROPERTY_PREFIX = "wden:";
+    private static final String NODETYPE_PROPERTY_PROTOCOL = "apiProtocol";
+    public static final String NODETYPE_PROPERTY_ENDPOINT = "apiEndPoint";
+    private static final String NODETYPE_PROPERTY_SITE = "apiSite";
+    private static final String NODETYPE_PROPERTY_TOKEN = "apiToken";
+    private static final String NODETYPE_PROPERTY_VERSION = "apiVersion";
 //    private static final String NODETYPE_PROPERTY_MOUNTPATH = "mountPoint";
 
     private String id;
@@ -48,11 +49,11 @@ public class MountPoint {
             id = null;
             mountPath = mountNode.getPath();
         }
-        protocol = mountNode.getPropertyAsString(NODETYPE_PROPERTY_PROTOCOL);
-        endpoint = mountNode.getPropertyAsString(NODETYPE_PROPERTY_ENDPOINT);
-        site = mountNode.getPropertyAsString(NODETYPE_PROPERTY_SITE);
-        token = mountNode.getPropertyAsString(NODETYPE_PROPERTY_TOKEN);
-        version = mountNode.getPropertyAsString(NODETYPE_PROPERTY_VERSION);
+        protocol = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_PROTOCOL);
+        endpoint = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_ENDPOINT);
+        site = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_SITE);
+        token = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_TOKEN);
+        version = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_VERSION);
     }
 
     public String getId() {

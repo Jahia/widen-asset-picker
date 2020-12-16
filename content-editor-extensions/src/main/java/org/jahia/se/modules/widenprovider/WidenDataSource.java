@@ -12,6 +12,7 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.http.HttpHeaders;
 import org.jahia.modules.external.ExternalData;
 import org.jahia.modules.external.ExternalDataSource;
 import org.jahia.services.cache.ehcache.EhCacheProvider;
@@ -321,7 +322,7 @@ public class WidenDataSource implements ExternalDataSource {
 
             //NOTE Widen return content in ISO-8859-1 even if Accept-Charset = UTF-8 is set.
             //Need to use appropriate charset later to read the inputstream response.
-            getMethod.setRequestHeader("Authorization","Bearer "+this.widenSite+"/"+this.widenToken);
+            getMethod.setRequestHeader(HttpHeaders.AUTHORIZATION,"Bearer "+this.widenSite+"/"+this.widenToken);
 //            getMethod.setRequestHeader("Content-Type","application/json");
 //            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
            // getMethod.setRequestHeader("Accept-Charset","UTF-8");

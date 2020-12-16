@@ -22,9 +22,9 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
     private static final String CONTENT_TYPE_DOC = "wdennt:document";
 
 
-//    public WidenAssetDeserializer() {
-//        this(null);
-//    }
+    public WidenAssetDeserializer() {
+        this(null);
+    }
 
     public WidenAssetDeserializer(Class<?> vc) {
         super(vc);
@@ -37,11 +37,13 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
         WidenAsset widenAsset = new WidenAsset();
 
         widenAsset.addProperties(PREFIX+"id",widenNode.get("id").textValue());
+        widenAsset.setId(widenNode.get("id").textValue());
         widenAsset.addProperties(PREFIX+"externalId",widenNode.get("external_id").textValue());
         widenAsset.addProperties(PREFIX+"filename",widenNode.get("filename").textValue());
         widenAsset.addProperties(PREFIX+"createdDate",widenNode.get("created_date").textValue());
         widenAsset.addProperties(PREFIX+"updatedDate",widenNode.get("last_update_date").textValue());
-        widenAsset.addProperties(PREFIX+"deletedDate",widenNode.get("deleted_date").textValue());
+
+        widenAsset.addProperties(PREFIX+"deletedDate",widenNode.get("deleted_date").asText());
 
         widenAsset.addProperties(PREFIX+"templatedUrl",widenNode.get("embeds").get("templated").get("url").textValue());
 
@@ -64,7 +66,7 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
         String fileType = filePropsNode.get("format_type").textValue();
         widenAsset.addProperties(PREFIX+"format",filePropsNode.get("format").textValue());
         widenAsset.addProperties(PREFIX+"type",fileType);
-        widenAsset.addProperties(PREFIX+"sizeKB",filePropsNode.get("size_in_kbytes").textValue());
+        widenAsset.addProperties(PREFIX+"sizeKB",filePropsNode.get("size_in_kbytes").longValue());
 
 //        widenAsset.setFormat(filePropsNode.get("format").textValue());
 //        widenAsset.setType(fileType);
@@ -171,6 +173,7 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
                 Double width = complementNode.get("width").doubleValue();
                 Double height = complementNode.get("height").doubleValue();
                 Double aspectRatio = complementNode.get("aspect_ratio").doubleValue();
+                Double duration = complementNode.get("duration").asDouble();
 
                 if(!width.isNaN())
                     widenAsset.addProperties(PREFIX+"width",width);
@@ -181,6 +184,8 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
                 if(!aspectRatio.isNaN())
                     widenAsset.addProperties(PREFIX+"aspectRatio",aspectRatio);
 //                    widenAsset.setAspectRatio(aspectRatio);
+                if(!duration.isNaN())
+                    widenAsset.addProperties(PREFIX+"duration",duration);
             }
         }
     }
