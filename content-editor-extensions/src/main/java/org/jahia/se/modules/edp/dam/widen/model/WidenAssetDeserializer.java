@@ -55,72 +55,37 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
         JsonNode widenNode = jsonParser.getCodec().readTree(jsonParser);
         WidenAsset widenAsset = new WidenAsset();
 
-        widenAsset.addProperties(PREFIX+"id",widenNode.get("id").textValue());
         widenAsset.setId(widenNode.get("id").textValue());
-        widenAsset.addProperties(PREFIX+"externalId",widenNode.get("external_id").textValue());
-        widenAsset.addProperties(PREFIX+"filename",widenNode.get("filename").textValue());
-        widenAsset.addProperties(PREFIX+"createdDate",widenNode.get("created_date").textValue());
-        widenAsset.addProperties(PREFIX+"updatedDate",widenNode.get("last_update_date").textValue());
-        widenAsset.addProperties(PREFIX+"deletedDate",widenNode.get("deleted_date").textValue());
+        widenAsset.addProperty(PREFIX+"id",widenNode.get("id").textValue());
+        widenAsset.addProperty(PREFIX+"externalId",widenNode.get("external_id").textValue());
+        widenAsset.addProperty(PREFIX+"filename",widenNode.get("filename").textValue());
+        widenAsset.addProperty("jcr:title",widenNode.get("filename").textValue());
+        widenAsset.addProperty(PREFIX+"createdDate",widenNode.get("created_date").textValue());
+        widenAsset.addProperty(PREFIX+"updatedDate",widenNode.get("last_update_date").textValue());
+        widenAsset.addProperty(PREFIX+"deletedDate",widenNode.get("deleted_date").textValue());
 
         JsonNode templatedURLNode = widenNode.at(TEMPLATED_URL_PATH);
         if(!(templatedURLNode==null || templatedURLNode.isNull()))
-            widenAsset.addProperties(PREFIX+"templatedUrl",templatedURLNode.textValue());
-//        widenAsset.addProperties(PREFIX+"templatedUrl",widenNode.get("embeds").get("templated").get("url").textValue());
+            widenAsset.addProperty(PREFIX+"templatedUrl",templatedURLNode.textValue());
 
         JsonNode thumbnailURLNode = widenNode.at(THUMBNAIL_URL_PATH);
         if(!(thumbnailURLNode==null || thumbnailURLNode.isNull()))
-            widenAsset.addProperties(PREFIX+"thumbnail",thumbnailURLNode.textValue());
-//            widenAsset.addProperties(PREFIX+"thumbnail",widenNode.get("thumbnails").get(THUMBNAIL_SIZE_KEY).get("url").textValue());
+            widenAsset.addProperty(PREFIX+"thumbnail",thumbnailURLNode.textValue());
 
-//        widenAsset.setId(widenNode.get("id").textValue());
-//        widenAsset.setExternalId(widenNode.get("external_id").textValue());
-//        widenAsset.setFilename(widenNode.get("filename").textValue());
-//        widenAsset.setCreatedDate(widenNode.get("created_date").textValue());
-//        widenAsset.setUpdatedDate(widenNode.get("last_update_date").textValue());
-//        widenAsset.setDeletedDate(widenNode.get("deleted_date").textValue());
-//
-//        widenAsset.setTemplatedUrl(widenNode.get("embeds").get("templated").get("url").textValue());
-//
-//        if(widenNode.get("thumbnails").get(THUMBNAIL_SIZE_KEY)!=null)
-//            widenAsset.setThumbnail(widenNode.get("thumbnails").get(THUMBNAIL_SIZE_KEY).get("url").textValue());
-
-//        JsonNode filePropsNode = widenNode.get("file_properties");
         String fileType = widenNode.at(FILE_TYPE_PATH).textValue();
-        widenAsset.addProperties(PREFIX+"format",widenNode.at(FILE_FORMAT_PATH).textValue());
-        widenAsset.addProperties(PREFIX+"type",fileType);
-        widenAsset.addProperties(PREFIX+"sizeKB",widenNode.at(FILE_SIZE_PATH).longValue());
-
-//        widenAsset.setFormat(filePropsNode.get("format").textValue());
-//        widenAsset.setType(fileType);
-//        widenAsset.setSizeKB(filePropsNode.get("size_in_kbytes").longValue());
+        widenAsset.addProperty(PREFIX+"format",widenNode.at(FILE_FORMAT_PATH).textValue());
+        widenAsset.addProperty(PREFIX+"type",fileType);
+        widenAsset.addProperty(PREFIX+"sizeKB",widenNode.at(FILE_SIZE_PATH).longValue());
 
         switch (fileType){
             case FILE_TYPE_IMAGE :
                 widenAsset.setJahiaNodeType(CONTENT_TYPE_IMAGE);
                 extendFileProps(widenNode,widenAsset,FILE_IMAGE_PROPS_PATH);
-
-//                JsonNode imageProps = widenNode.get("file_properties").get("image_properties");
-//                if(!imageProps.isNull()){
-//                    Double width = imageProps.get("width").doubleValue();
-//                    Double height = imageProps.get("height").doubleValue();
-//                    Double aspectRatio = imageProps.get("aspect_ratio").doubleValue();
-//
-//                    if(!width.isNaN())
-//                        widenAsset.setWidth(width);
-//                    if(!height.isNaN())
-//                        widenAsset.setHeight(height);
-//                    if(!aspectRatio.isNaN())
-//                        widenAsset.setAspectRatio(aspectRatio);
-//                }
                 break;
+
             case FILE_TYPE_VIDEO:
                 widenAsset.setJahiaNodeType(CONTENT_TYPE_VIDEO);
                 extendFileProps(widenNode,widenAsset,FILE_VIDEO_PROPS_PATH);
-
-//                JsonNode playerNode = widenNode.get("embeds").get("video_player");
-//                JsonNode streamNode = widenNode.get("embeds").get("video_stream");
-//                JsonNode posterNode = widenNode.get("embeds").get("video_poster");
 
                 JsonNode playerURLNode = widenNode.at(VIDEO_PLAYER_URL_PATH);
                 JsonNode streamURLNode = widenNode.at(VIDEO_STREAM_URL_PATH);
@@ -128,45 +93,20 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
                 JsonNode posterURLNode = widenNode.at(VIDEO_POSTER_URL_PATH);
 
                 if(!(playerURLNode==null || playerURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"videoPlayer",playerURLNode.textValue());
-//                    widenAsset.setVideoPlayer(playerNode.get("url").textValue());
+                    widenAsset.addProperty(PREFIX+"videoPlayer",playerURLNode.textValue());
 
                 if(!(streamURLNode == null || streamURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"videoStreamURL",streamURLNode.textValue());
+                    widenAsset.addProperty(PREFIX+"videoStreamURL",streamURLNode.textValue());
 
                 if(!(streamHTMLNode == null || streamHTMLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"videoStreamHTML",streamHTMLNode.textValue());
-
-//                    widenAsset.setVideoStreamURL(streamNode.get("url").textValue());
-//                    widenAsset.setVideoStreamHTML(streamNode.get("html").textValue());
+                    widenAsset.addProperty(PREFIX+"videoStreamHTML",streamHTMLNode.textValue());
 
                 if(!(posterURLNode == null || posterURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"videoPoster",posterURLNode.textValue());
-
-//                    widenAsset.setVideoPlayer(posterNode.get("url").textValue());
-
-//                JsonNode videoProps = widenNode.get("file_properties").get("video_properties");
-//                if(!videoProps.isNull()){
-//                    Double width = videoProps.get("width").doubleValue();
-//                    Double height = videoProps.get("height").doubleValue();
-//                    Double aspectRatio = videoProps.get("aspect_ratio").doubleValue();
-//
-//                    if(!width.isNaN())
-//                        widenAsset.setWidth(width);
-//                    if(!height.isNaN())
-//                        widenAsset.setHeight(height);
-//                    if(!aspectRatio.isNaN())
-//                        widenAsset.setAspectRatio(aspectRatio);
-//                }
-
+                    widenAsset.addProperty(PREFIX+"videoPoster",posterURLNode.textValue());
                 break;
+
             case FILE_TYPE_PDF:
                 widenAsset.setJahiaNodeType(CONTENT_TYPE_PDF);
-
-//                JsonNode html5ViewerNode = widenNode.get("embeds").get("document_html5_viewer");
-//                JsonNode viewerNode = widenNode.get("embeds").get("document_viewer");
-//                JsonNode thumbnailNode = widenNode.get("embeds").get("document_thumbnail");
-//                JsonNode originalNode = widenNode.get("embeds").get("original");
 
                 JsonNode html5ViewerURLNode = widenNode.at(DOCUMENT_HTML5_VIEWER_URL_PATH);
                 JsonNode viewerURLNode = widenNode.at(DOCUMENT_VIEWER_URL_PATH);
@@ -175,31 +115,25 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
                 JsonNode originalHTMLLinkNode = widenNode.at(DOCUMENT_ORIGINAL_HTML_LINK_PATH);
 
                 if(!(html5ViewerURLNode==null || html5ViewerURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"viewerHtml5",html5ViewerURLNode.textValue());
-//                    widenAsset.setViewerHtml5(html5ViewerNode.get("url").textValue());
+                    widenAsset.addProperty(PREFIX+"viewerHtml5",html5ViewerURLNode.textValue());
 
                 if(!(viewerURLNode==null || viewerURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"viewer",viewerURLNode.textValue());
-//                    widenAsset.setViewer(viewerNode.get("url").textValue());
+                    widenAsset.addProperty(PREFIX+"viewer",viewerURLNode.textValue());
 
                 if(!(docThumbnailURLNode==null || docThumbnailURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"docThumbnail",docThumbnailURLNode.textValue());
-//                    widenAsset.setDocThumbnail(thumbnailNode.get("url").textValue());
+                    widenAsset.addProperty(PREFIX+"docThumbnail",docThumbnailURLNode.textValue());
 
                 if(!(originalURLNode==null || originalURLNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"docURL",originalURLNode.textValue());
+                    widenAsset.addProperty(PREFIX+"docURL",originalURLNode.textValue());
 
                 if(!(originalHTMLLinkNode==null || originalHTMLLinkNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"docHTMLLink",originalHTMLLinkNode.textValue());
-//                    widenAsset.setDocURL(originalNode.get("url").textValue());
-//                    widenAsset.setDocHTMLLink(originalNode.get("html").textValue());
+                    widenAsset.addProperty(PREFIX+"docHTMLLink",originalHTMLLinkNode.textValue());
                 break;
+
             default:
                 widenAsset.setJahiaNodeType(CONTENT_TYPE_DOC);
                 break;
         }
-
-
         return widenAsset;
     }
 
@@ -213,18 +147,16 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
 
                 JsonNode durationNode = propsNode.get("duration");
                 if(!(durationNode == null || durationNode.isNull()))
-                    widenAsset.addProperties(PREFIX+"duration",durationNode.doubleValue());
+                    widenAsset.addProperty(PREFIX+"duration",durationNode.doubleValue());
 
                 if( !(width==null || width.isNaN()) )
-                    widenAsset.addProperties(PREFIX+"width",width);
-//                    widenAsset.setWidth(width);
-                if( !(height==null || height.isNaN()) )
-                    widenAsset.addProperties(PREFIX+"height",height);
-//                    widenAsset.setHeight(height);
-                if( !(aspectRatio==null || aspectRatio.isNaN()))
-                    widenAsset.addProperties(PREFIX+"aspectRatio",aspectRatio);
-//                    widenAsset.setAspectRatio(aspectRatio);
+                    widenAsset.addProperty(PREFIX+"width",width);
 
+                if( !(height==null || height.isNaN()) )
+                    widenAsset.addProperty(PREFIX+"height",height);
+
+                if( !(aspectRatio==null || aspectRatio.isNaN()))
+                    widenAsset.addProperty(PREFIX+"aspectRatio",aspectRatio);
             }
         }
     }

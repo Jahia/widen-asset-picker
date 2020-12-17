@@ -1,8 +1,5 @@
 package org.jahia.se.modules.edp.dam.widen;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringUtils;
 import org.jahia.exceptions.JahiaInitializationException;
 import org.jahia.modules.external.ExternalContentStoreProvider;
 import org.jahia.se.modules.edp.dam.widen.cache.WidenCacheManager;
@@ -55,7 +52,6 @@ public class WidenProviderFactory implements ProviderFactory {
 
     @Override
     public JCRStoreProvider mountProvider(JCRNodeWrapper wdenMountPointNode) throws RepositoryException {
-//        widenDataSource.disconnect();
         provider.setKey(wdenMountPointNode.getIdentifier());
         provider.setMountPoint(wdenMountPointNode.getPath());
         MountPoint wdenStoreMountPoint = new MountPoint(wdenMountPointNode);

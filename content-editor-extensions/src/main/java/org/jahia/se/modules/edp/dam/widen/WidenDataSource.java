@@ -37,23 +37,10 @@ public class WidenDataSource implements ExternalDataSource{
 
     private static final String ASSET_ENTRY = "assets";
     private static final String ASSET_ENTRY_EXPAND = "embeds,thumbnails,file_properties";
-//    private static final String FILE_TYPE_IMAGE = "image";
-//    private static final String FILE_TYPE_VIDEO = "video";
-//    private static final String FILE_TYPE_PDF = "pdf";
-//    private static final String CONTENT_TYPE_IMAGE = "wdennt:image";
-//    private static final String CONTENT_TYPE_VIDEO = "wdennt:video";
-//    private static final String CONTENT_TYPE_PDF = "wdennt:pdf";
-//    private static final String CONTENT_TYPE_DOC = "wdennt:document";
 
     private WidenCacheManager widenCacheManager;
-
-    public MountPoint getStoreMountPoint() {
-        return wdenStoreMountPoint;
-    }
-    
     private MountPoint wdenStoreMountPoint;
     private HttpClient httpClient;
-
     private JahiaTemplatesPackage jahiaTemplatesPackage;
 
     public WidenDataSource() {
@@ -68,14 +55,15 @@ public class WidenDataSource implements ExternalDataSource{
 
     @Activate
     public void onActivate(BundleContext bundleContext) {
-//        storeIsReady = false;
         jahiaTemplatesPackage = BundleUtils.getModule(bundleContext.getBundle());
     }
 
     @Deactivate
     public void onDeactivate() {
-//        disconnect();
-//        storeIndexer = null;
+    }
+
+    public MountPoint getStoreMountPoint() {
+        return wdenStoreMountPoint;
     }
 
     public void reload(MountPoint wdenStoreMountPoint){
@@ -102,6 +90,7 @@ public class WidenDataSource implements ExternalDataSource{
             }else{
                 WidenAsset widenAsset = widenCacheManager.getWidenAsset(identifier);
                 if(widenAsset == null){
+                    LOGGER.info("***** WidenDataSource ***** no cacheEntry for : "+identifier);
                     String path = "/"+wdenStoreMountPoint.getVersion()+"/"+ASSET_ENTRY+"/"+identifier;
                     Map<String, String> query = new LinkedHashMap<String, String>();
                     query.put("expand",ASSET_ENTRY_EXPAND);
@@ -191,14 +180,11 @@ public class WidenDataSource implements ExternalDataSource{
             getMethod.setRequestHeader(HttpHeaders.AUTHORIZATION,"Bearer "+widenSite+"/"+widenToken);
 //            getMethod.setRequestHeader("Content-Type","application/json");
 //            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
-            // getMethod.setRequestHeader("Accept-Charset","UTF-8");
+//            getMethod.setRequestHeader("Accept-Charset","UTF-8");
 
             LOGGER.debug("***** WidenDataSource ***** getMethod.getRequestHeaders : "+Arrays.deepToString(getMethod.getRequestHeaders()));
             try {
                 httpClient.executeMethod(getMethod);
-
-                LOGGER.debug("***** WidenDataSource ***** getMethod.getResponseCharSet : "+getMethod.getResponseCharSet());
-                LOGGER.debug("***** WidenDataSource ***** getMethod.getResponseBodyAsString : "+getMethod.getResponseBodyAsString());
 
                 BufferedReader streamReader = new BufferedReader(new InputStreamReader(getMethod.getResponseBodyAsStream(),"UTF-8"));
                 StringBuilder responseStrBuilder = new StringBuilder();
@@ -207,12 +193,11 @@ public class WidenDataSource implements ExternalDataSource{
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
 
-                LOGGER.debug("***** WidenDataSource ***** UTF-8 response : "+responseStrBuilder.toString());
                 ObjectMapper mapper = new ObjectMapper();
                 WidenAsset widenAsset = mapper.readValue(responseStrBuilder.toString(),WidenAsset.class);
+
                 return widenAsset;
-//                return new JSONObject(getMethod.getResponseBodyAsString());
-//                return new JSONObject(responseStrBuilder.toString());
+
             } finally {
                 getMethod.releaseConnection();
                 LOGGER.info("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));

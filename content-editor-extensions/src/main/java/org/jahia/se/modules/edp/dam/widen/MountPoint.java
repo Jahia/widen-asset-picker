@@ -1,14 +1,8 @@
 package org.jahia.se.modules.edp.dam.widen;
 
-import org.apache.commons.lang.LocaleUtils;
-import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.content.decorator.JCRMountPointNode;
-import org.jahia.services.scheduler.SchedulerService;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +14,16 @@ public class MountPoint {
 
     public static final String NODETYPE = "wdennt:mountPoint";
     public static final String PROPERTY_PREFIX = "wden:";
-    private static final String NODETYPE_PROPERTY_PROTOCOL = "apiProtocol";
-    public static final String NODETYPE_PROPERTY_ENDPOINT = "apiEndPoint";
-    private static final String NODETYPE_PROPERTY_SITE = "apiSite";
-    private static final String NODETYPE_PROPERTY_TOKEN = "apiToken";
-    private static final String NODETYPE_PROPERTY_VERSION = "apiVersion";
-//    private static final String NODETYPE_PROPERTY_MOUNTPATH = "mountPoint";
+    private static final String NODETYPE_PROPERTY_PROTOCOL = PROPERTY_PREFIX+"apiProtocol";
+    public static final String NODETYPE_PROPERTY_ENDPOINT = PROPERTY_PREFIX+"apiEndPoint";
+    private static final String NODETYPE_PROPERTY_SITE = PROPERTY_PREFIX+"apiSite";
+    private static final String NODETYPE_PROPERTY_TOKEN = PROPERTY_PREFIX+"apiToken";
+    private static final String NODETYPE_PROPERTY_VERSION = PROPERTY_PREFIX+"apiVersion";
+    private static final String NODETYPE_PROPERTY_LAZYLOAD = PROPERTY_PREFIX+"lazyLoad";
+    private static final String NODETYPE_PROPERTY_RESULT_PER_PAGE = PROPERTY_PREFIX+"resultPerPage";
+
+    private static final boolean LAZYLOAD = false;
+    private static final int RESULT_PER_PAGE = 50;
 
     private String id;
     private String systemname;
@@ -34,6 +32,8 @@ public class MountPoint {
     private String site;
     private String token;
     private String version;
+    private boolean lazyLoad;
+    private int resultPerPage;
     private String mountPath;
 
     public MountPoint() {
@@ -49,11 +49,22 @@ public class MountPoint {
             id = null;
             mountPath = mountNode.getPath();
         }
-        protocol = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_PROTOCOL);
-        endpoint = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_ENDPOINT);
-        site = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_SITE);
-        token = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_TOKEN);
-        version = mountNode.getPropertyAsString(PROPERTY_PREFIX+NODETYPE_PROPERTY_VERSION);
+        try {
+            lazyLoad = mountNode.getProperty(NODETYPE_PROPERTY_LAZYLOAD).getBoolean();
+        } catch (RepositoryException e) {
+            LOGGER.info("Set Default Lazyload {}", LAZYLOAD, e);
+        }
+        try {
+            resultPerPage = (int) mountNode.getProperty(NODETYPE_PROPERTY_RESULT_PER_PAGE).getLong();
+        } catch (RepositoryException e) {
+            LOGGER.info("Set Default Result per page {}", RESULT_PER_PAGE, e);
+        }
+
+        protocol = mountNode.getPropertyAsString(NODETYPE_PROPERTY_PROTOCOL);
+        endpoint = mountNode.getPropertyAsString(NODETYPE_PROPERTY_ENDPOINT);
+        site = mountNode.getPropertyAsString(NODETYPE_PROPERTY_SITE);
+        token = mountNode.getPropertyAsString(NODETYPE_PROPERTY_TOKEN);
+        version = mountNode.getPropertyAsString(NODETYPE_PROPERTY_VERSION);
     }
 
     public String getId() {
@@ -67,6 +78,8 @@ public class MountPoint {
     public String getSite () { return site;}
     public String getToken () { return token;}
     public String getVersion () { return version;}
+    public boolean getLazyLoad () { return lazyLoad;}
+    public int getResultPerPage () { return resultPerPage;}
     public String getMountPath () { return mountPath;}
 
     public static JCRNodeWrapper getOrCreateMountPoint(MountPoint mountPoint) throws RepositoryException {
@@ -84,59 +97,12 @@ public class MountPoint {
             wdenMountPointNode.setProperty(NODETYPE_PROPERTY_SITE, mountPoint.getSite());
             wdenMountPointNode.setProperty(NODETYPE_PROPERTY_TOKEN, mountPoint.getToken());
             wdenMountPointNode.setProperty(NODETYPE_PROPERTY_VERSION, mountPoint.getVersion());
+            wdenMountPointNode.setProperty(NODETYPE_PROPERTY_LAZYLOAD, mountPoint.getLazyLoad());
+            wdenMountPointNode.setProperty(NODETYPE_PROPERTY_RESULT_PER_PAGE, mountPoint.getResultPerPage());
             wdenMountPointNode.setProperty(JCRMountPointNode.MOUNT_POINT_PROPERTY_NAME, session.getNode(mountPoint.getMountPath()));
 
             wdenMountPointNode.saveSession();
             return wdenMountPointNode;
         });
     }
-
-//    /**
-//     * Upon deletion of the mount point node, this method stops any background job currently executing and deletes the background job
-//     *
-//     * @param nodeIdentifier - mount point identifier
-//     * @param nodeName       - mountPoint node name
-//     */
-//    public static void deleteJob(String nodeIdentifier, String nodeName) {
-//        try {
-//            LOGGER.info("Checking if StoreIndexer background job is currently executing for mount point: {} [{}]", nodeName, nodeIdentifier);
-//            SchedulerService schedulerService = ServicesRegistry.getInstance().getSchedulerService();
-//            Scheduler scheduler = schedulerService.getScheduler();
-//            //Obtain job detail for this mount point
-//            JobDetail jobDetail = scheduler.getJobDetail(StoreIndexer.STORE_INDEXER_PREFIX + nodeIdentifier, StoreIndexer.STORE_GROUPJOBNAME);
-//            if (jobDetail != null) {
-//                //Interrupt background job process if it one is in progress
-//                if (scheduler.interrupt(StoreIndexer.STORE_INDEXER_PREFIX + nodeIdentifier, StoreIndexer.STORE_GROUPJOBNAME)) {
-//                    LOGGER.info("Successfully interrupted  Indexer background job!");
-//                } else {
-//                    LOGGER.info("No  Indexer background job was found. No interrupt is required");
-//                }
-//                LOGGER.info("Preparing to delete  Indexer job...");
-//                //Delete the background job
-//                if (scheduler.deleteJob(StoreIndexer.STORE_INDEXER_PREFIX + nodeIdentifier, StoreIndexer.STORE_GROUPJOBNAME)) {
-//                    LOGGER.info("Successfully deleted  Indexer job!");
-//                } else {
-//                    LOGGER.warn("Failed to delete  Indexer job");
-//                }
-//            }
-//        } catch (SchedulerException e) {
-//            LOGGER.error("Failed to access  indexer background job", e);
-//        }
-//    }
-
-//    public Locale getLocale(String locale) {
-//        if (mappingLocales != null && mappingLocales.has(locale)) {
-//            try {
-//                return LocaleUtils.toLocale(mappingLocales.getString(locale));
-//            } catch (Exception jsonException) {
-//                // Nothing to do
-//            }
-//        }
-//        try {
-//            return LocaleUtils.toLocale(locale);
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
 }

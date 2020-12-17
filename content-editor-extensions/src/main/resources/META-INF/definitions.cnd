@@ -11,11 +11,12 @@
  - wden:apiToken (string) mandatory
  - wden:apiVersion (string) mandatory
  - mountPoint (weakreference) mandatory
+ - wden:lazyLoad (boolean) mandatory
+ - wden:resultPerPage (long) mandatory
 
 [wdenmix:widenPicker] > jmix:templateMixin mixin
  extends = wdennt:wdenAssetTest
  - wden:extAsset (weakreference) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
-// - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
 
 [wdenmix:imagePicker] > jmix:templateMixin mixin
  extends = wdennt:wdenAssetTest
@@ -24,16 +25,14 @@
 [wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
  - wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
 
-
 [wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
  - wden:id (string) fulltextsearchable=no
  - wden:externalId (string) fulltextsearchable=no
- - wden:filename (string) fulltextsearchable=no
+ - wden:filename (string)
  - wden:createdDate (string) fulltextsearchable=no
  - wden:updatedDate (string) fulltextsearchable=no
  - wden:deletedDate (string) fulltextsearchable=no
  - wden:thumbnail (string) fulltextsearchable=no
-// - wden:embed (string) fulltextsearchable=no
 
 [wdenmix:embed] mixin
  - wden:templatedUrl (string) fulltextsearchable=no
@@ -82,13 +81,8 @@
 [wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
 [wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
 [wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
-[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent //,jmix:renderableList jmix:renderableReference, jmix:nodeReference
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference) < 'wdenmix:widenAsset'
-// - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
-//[wdenmix:assetProperties]
-// - wden:favorite (boolean)
-// - wden:popularity (long)
-//
 
 
 

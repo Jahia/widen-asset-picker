@@ -9,19 +9,21 @@
 />
 <c:forEach items="${mountPoints.nodes}" var="mountPoint" end="0">
     <c:choose>
-    <c:when test="${! empty mountPoint}">
-    contextJsParameters.config.widen={
-        url:"${mountPoint.properties['wden:apiProtocol']}://${mountPoint.properties['wden:apiEndPoint']}",
-        version:"${mountPoint.properties['wden:apiVersion']}",
-        site:"${mountPoint.properties['wden:apiSite']}",
-        token:"${mountPoint.properties['wden:apiToken']}",
-        mountPoint:"${jcr:getChildrenOfType(mountPoint.properties.mountPoint.node,'jnt:contentFolder')[0].path}"
-    }
-    console.log("contextJsParameters.config",contextJsParameters.config);
-    </c:when>
-    <c:otherwise>
-    <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>
-    console.log("no content of wdennt:mountPoint available");
-    </c:otherwise>
+        <c:when test="${! empty mountPoint}">
+            contextJsParameters.config.widen={
+                url:"${mountPoint.properties['wden:apiProtocol']}://${mountPoint.properties['wden:apiEndPoint']}",
+                version:"${mountPoint.properties['wden:apiVersion']}",
+                site:"${mountPoint.properties['wden:apiSite']}",
+                token:"${mountPoint.properties['wden:apiToken']}",
+                mountPoint:"${jcr:getChildrenOfType(mountPoint.properties.mountPoint.node,'jnt:contentFolder')[0].path}",
+                lazyLoad:${mountPoint.properties['wden:lazyLoad']},
+                resultPerPage:${mountPoint.properties['wden:resultPerPage']}
+            }
+            console.debug("contextJsParameters.config",contextJsParameters.config);
+        </c:when>
+        <c:otherwise>
+            <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>
+            console.log("no content of wdennt:mountPoint available");
+        </c:otherwise>
     </c:choose>
 </c:forEach>
