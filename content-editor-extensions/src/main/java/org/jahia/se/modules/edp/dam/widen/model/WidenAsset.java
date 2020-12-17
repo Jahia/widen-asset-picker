@@ -32,6 +32,9 @@ public class WidenAsset {
     }
 
     public void addProperties(String name,Object value){
+        if(value == null)
+            return;
+
         properties.put(name, new String[]{value.toString()});
     }
 
