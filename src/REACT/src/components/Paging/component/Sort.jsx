@@ -2,7 +2,6 @@ import React from 'react';
 import {StoreContext} from "contexts";
 import {Dropdown,DropdownButton,Button} from 'react-bootstrap';
 import {getRandomString} from "misc/utils";
-import PageLink from "./PageLink";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const Nav=()=>{
@@ -31,10 +30,6 @@ const Nav=()=>{
             case:"TOGGLE_SORT_DIRECTION"
         });
 
-//TODO lister les options avec value et key
-    //faire un dropdown button pour chaque option
-    //faire le dispatch qui va bien -> update propertie and
-    //     <i className="fas fa-sort-amount-up"></i>
     return (
         <>
             <li>

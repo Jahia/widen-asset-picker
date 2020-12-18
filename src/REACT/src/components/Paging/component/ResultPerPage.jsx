@@ -1,6 +1,6 @@
 import React from 'react';
 import {StoreContext} from "contexts";
-import {Button, Form, InputGroup} from "react-bootstrap";
+import {Form, InputGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const ResultPerPage=() =>{

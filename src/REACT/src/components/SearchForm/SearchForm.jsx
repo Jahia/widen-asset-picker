@@ -1,7 +1,5 @@
 import React from 'react';
 import {InputGroup,Form,Button} from 'react-bootstrap';
-//import PropTypes from 'prop-types';
-//import get from "lodash.get";
 
 import {StoreContext} from "contexts";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

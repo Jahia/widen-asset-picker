@@ -8,7 +8,7 @@ function getCustomWidenPickerFrameWindow () {
     return frame.contentWindow;
 }
 function getCustomWidenPickerInterface () {
-    console.log("getCustomWidenPickerInterface !");
+    // console.debug("getCustomWidenPickerInterface !");
     const frameWindow = getCustomWidenPickerFrameWindow();
     if(!frameWindow || !frameWindow.widenPickerInterface) {
         return undefined;
@@ -17,7 +17,7 @@ function getCustomWidenPickerInterface () {
 }
 
 function widenPickerInit(data) {
-    console.log("widenPickerInit with jahiaGWTParameters : ",jahiaGWTParameters);
+    // console.debug("widenPickerInit with jahiaGWTParameters : ",jahiaGWTParameters);
     const iframe = `<iframe 
             id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
             src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
@@ -25,7 +25,7 @@ function widenPickerInit(data) {
 }
 //called when the picker is loaded
 function widenPickerLoad(data) {
-    console.log("widenPickerLoad ! data -> ",data);
+    // console.debug("widenPickerLoad ! data -> ",data);
     const $data = data;
 
     let pickerInterface = getCustomWidenPickerInterface();
@@ -35,7 +35,7 @@ function widenPickerLoad(data) {
         const frameWindow = getCustomWidenPickerFrameWindow();
         if(frameWindow !== undefined) {
             frameWindow.addEventListener("load", event => {
-                console.log('iframe picker is completely loaded');
+                // console.debug('iframe picker is completely loaded');
                 pickerInterface = getCustomWidenPickerInterface();
                 pickerInterface.load($data);
             });

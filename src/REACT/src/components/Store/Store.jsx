@@ -2,13 +2,6 @@ import React from "react";
 import {StoreContext} from "contexts";
 import axios from "axios";
 
-import {getRandomString} from "misc/utils";
-// import {fetchSearchData} from "misc/data";
-
-// import {getRandomString} from "misc/utils";
-// import {syncQuizScore} from "misc/tracker";
-// import QuizMapper from "components/Quiz/QuizModel";
-
 const init = context => {
     const widenEngine = axios.create({
         baseURL:`${context.widen.url}/${context.widen.version}`,
@@ -20,34 +13,6 @@ const init = context => {
         responseType:"json",
         timeout:10000
     });
-    // widenEngine.interceptors.request.use((config) => {
-    //     config.params = config.params || {};
-    //     config.params["token"] = context.widen.token;
-    //     config.params["action"] ="widenSearch";//wordWheel fuzzy
-    //     config.params["all_items"] ="true";
-    //     config.params["user_locale"] =context.widen.locale.user;
-    //     config.params["search_locale"] =context.widen.locale.search;
-    //     return config;
-    // });
-
-    // const graphQLEngine = axios.create({
-    //     baseURL:context.gql_endpoint,
-    //     headers:{
-    //         // "Content-Type":"application/json",
-    //         // Accept:"application/json",
-    //         Authorization:context.gql_authorization
-    //     },
-    //     responseType:"json",
-    //     // withCredentials: true,//important to send the context-profile-id cookie
-    //     timeout:3000
-    // });
-    // //
-    // profileEngine.interceptors.request.use((config) => {
-    //     config.headers = config.headers || {};
-    //     config.headers["Content-Type"] = "application/json";
-    //     config.headers["Accept"] ="application/json";
-    //     return config;
-    // });
 
     const {lazyLoad,resultPerPage,mountPoint} = context.widen;
     console.debug("[STORE INIT] window.widenPickerInterface.data : ", window.widenPickerInterface.data)
@@ -59,17 +24,11 @@ const init = context => {
         error:null,
         isLoading:false,
         needToFetch:!lazyLoad,//false,
-        //needToFetch:false,
-        // profileEngine,
-        // userProfile:{},
         selectedItem:selectedId?{id:selectedId}:{},
         widenEngine,
         mountPoint,
-        // graphQLEngine,
         searchAnswers:[],
-        searchIframe:null,//not needed if I use searchAnswers
-        //searchContexts:{},
-        searchSortBy:"created_date",//newest assets first //TODO voir si je passe ça configurable au niveau jahia
+        searchSortBy:"created_date",
         searchSortByDirection:"DESC",
         searchSortList:[
             {value:"created_date",label:"Date Added"},
@@ -125,40 +84,10 @@ const reducer = (state, action) => {
             // const {graphQLEngine,mountPoint} = state
             console.debug("[STORE] UPDATE_SELECTED_ITEM - payload: ",payload);
 
-            // const synchWidenPickerInterface = async () => {
-            //     //Call jahia to generate the UUID of the virtual node
-            //     const query = `query getWiden($workspace: Workspace!,$path: String!){
-            //                       response: jcr(workspace: $workspace) {
-            //                         node:nodeByPath(path:$path){
-            //                           uuid
-            //                         }
-            //                       }
-            //                     }`;
-            //     const variables = {
-            //         workspace:"EDIT",
-            //         path:`${state.mountPoint}/${id}`
-            //     }
-            //     const data = {
-            //         query,
-            //         variables
-            //     }
-            //     try {
-            //         const response = await graphQLEngine.post("",data);
-            //         // console.log("response : ",response);
-            //         const uuid = response.data.data.response.node.uuid;
-            //         return uuid;
-            //         console.log("jContent uuid is generated : ",uuid);
-            //     } catch (error) {
-            //         console.error("oups ! something wrong with graphQL : ",error)
-            //     }
-            // }
-            //
-            // synchWidenPickerInterface().then( uuid => { });
-
-            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
+            // console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface: ",window.widenPickerInterface);
             window.widenPickerInterface.removeAll();
             window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
-            console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
+            // console.log("[STORE] UPDATE_SELECTED_ITEM - window.widenPickerInterface.data: ",window.widenPickerInterface.data);
 
             return {
                 ...state,
@@ -173,16 +102,6 @@ const reducer = (state, action) => {
             let {searchResultMaxPage} = state;
             const searchResultAvailableAnswersCount = total_count;
 
-            //TODO si catalogue empty gerer le cas avec un boolean
-
-            //refine calatog based on existing filters !
-            // catalogs.map(facet => {
-            //     facet.list.map(filter => {
-            //         filter.id = getRandomString(8,"#aA");
-            //         return filter;
-            //     })
-            //     return facet;
-            // });
 
             //new search
             if(searchResultPageIndex === 1)
@@ -191,9 +110,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 searchAnswers:items,
-                // searchFacets:catalogs,
-                // searchFilters:filters,
-                // searchBanners:banners || [],
                 searchResultAvailableAnswersCount,
                 searchResultMaxPage,
                 needToFetch:false

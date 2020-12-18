@@ -23,8 +23,7 @@
  - wden:createdDate (string) fulltextsearchable=no
  - wden:updatedDate (string) fulltextsearchable=no
  - wden:deletedDate (string) fulltextsearchable=no
-// - wden:thumbnail (string) fulltextsearchable=no
-// - wden:embed (string) fulltextsearchable=no
+ - wden:thumbnail (string) fulltextsearchable=no
 
 [wdenmix:embed] mixin
  - wden:templatedUrl (string) fulltextsearchable=no
@@ -73,12 +72,9 @@
 [wdennt:video] > jnt:content, wdenmix:widenAsset, wdenmix:videoFileProperties, wdenmix:embedVideo
 [wdennt:pdf] > jnt:content, wdenmix:widenAsset, wdenmix:pdfFileProperties, wdenmix:embedPdf
 [wdennt:document] > jnt:content, wdenmix:widenAsset, wdenmix:fileProperties
-[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent //,jmix:renderableList jmix:renderableReference, jmix:nodeReference
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
-//[wdenmix:assetProperties]
-// - wden:favorite (boolean)
-// - wden:popularity (long)
-//
+
 
 
 

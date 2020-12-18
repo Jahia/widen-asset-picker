@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+
 import {StoreContext} from "contexts";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Nav from "./component/Nav";
@@ -12,7 +12,6 @@ const Paging=(props)=>{
 
     const { state,dispatch } = React.useContext(StoreContext);
     const {
-        searchResultPerPage,
         searchResultMaxPage,
         searchResultAvailableAnswersCount
     } = state

@@ -11,35 +11,35 @@ import get from "lodash.get";
 //         return params;
 //     }, {});
 
-const computeFacetContext = ({searchFacets}) =>
-    searchFacets.reduce((params,facet) => {
-        // console.log("[computeFilterContext] facet : ",facet);
-        const filters = facet.list.reduce((params,filter)=>{
-            // console.log("filter.id : ",filter.id)
-            // console.log("filter.selected : ",filter.selected)
-            if(filter.selected){
+// const computeFacetContext = ({searchFacets}) =>
+//     searchFacets.reduce((params,facet) => {
+//         // console.log("[computeFilterContext] facet : ",facet);
+//         const filters = facet.list.reduce((params,filter)=>{
+//             // console.log("filter.id : ",filter.id)
+//             // console.log("filter.selected : ",filter.selected)
+//             if(filter.selected){
+//
+//                 params[`filters[${filter.type}][values][]`] = filter.filter;
+//                 params[`filters[${filter.type}][operations][]`]="and"
+//             }
+//             return params;
+//         },{});
+//         // console.log("[computeFilterContext] filters : ",filters);
+//         return{
+//             ...params,
+//             ...filters
+//         }
+//     },{});
 
-                params[`filters[${filter.type}][values][]`] = filter.filter;
-                params[`filters[${filter.type}][operations][]`]="and"
-            }
-            return params;
-        },{});
-        // console.log("[computeFilterContext] filters : ",filters);
-        return{
-            ...params,
-            ...filters
-        }
-    },{});
-
-const computeFilterContext = ({searchFilters}) =>
-    searchFilters.reduce((params,filter) => {
-        // console.log("[computeFilterContext] facet : ",filter);
-        params[`filters[${filter.id}][values][]`] = filter.value;
-        params[`filters[${filter.id}][operations][]`]= filter.operation;
-
-        // console.log("[computeFilterContext] filters : ",filters);
-        return params;
-    },{});
+// const computeFilterContext = ({searchFilters}) =>
+//     searchFilters.reduce((params,filter) => {
+//         // console.log("[computeFilterContext] facet : ",filter);
+//         params[`filters[${filter.id}][values][]`] = filter.value;
+//         params[`filters[${filter.id}][operations][]`]= filter.operation;
+//
+//         // console.log("[computeFilterContext] filters : ",filters);
+//         return params;
+//     },{});
 
 
 const paging = ({searchResultPerPage,searchResultPageIndex}) => {
@@ -63,8 +63,8 @@ const fetchSearchData = async ({path = "/",state,dispatch}) => {
         widenEngine,
         searchQuery,
         //searchContexts,
-        searchFacets,
-        searchFilters,
+        // searchFacets,
+        // searchFilters,
         searchResultPerPage,
         searchResultPageIndex,
         searchSortBy,

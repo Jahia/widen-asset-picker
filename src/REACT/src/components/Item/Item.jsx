@@ -213,34 +213,13 @@ const Item=({item})=>{
             }
         });
 
-
-    // <Card className={active} onClick={handleClick}>
-    //     {thumbnailURL &&
-    //     <Card.Img variant="top" src={thumbnailURL}/>
-    //     }
-    //     <Card.Body>
-    //         <Card.Title>{filename}</Card.Title>
-    //         {/*<Card.Text>*/}
-    //         {/*    {meta.description}*/}
-    //         {/*</Card.Text>*/}
-    //     </Card.Body>
-    //     <Card.Footer className="text-center">
-    //         {/*{discount &&*/}
-    //         {/*    <Decote*/}
-    //         {/*        discount={meta.decote}*/}
-    //         {/*        price={meta.prix_barre}/>*/}
-    //         {/*}*/}
-    //         {date}
-    //     </Card.Footer>
-    // </Card>
-
     return(
         // <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div className={`card tile ${active}`} onClick={handleClick}>
                 <div className="wrapper">
 
                     <div className="banner-img">
-                        <img src={thumbnailURL} alt="Image 1"/>
+                        <img src={thumbnailURL} alt={filename}/>
                     </div>
 
                     <div className="header">{filename}</div>

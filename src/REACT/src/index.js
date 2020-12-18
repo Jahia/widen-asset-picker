@@ -60,14 +60,6 @@ const render = (target,context) =>{
     try{
         // console.log("context : ",JSON.stringify(context));
         context = contextValidator(context);
-        const headers={};
-        // if(context.gql_authorization)
-        //     headers.Authorization=context.gql_authorization;
-
-        // const client = new ApolloClient({
-        //     uri:context.gql_endpoint,
-        //     headers
-        // })
 
         ReactDOM.render(
             <Store context={context}>
@@ -79,9 +71,7 @@ const render = (target,context) =>{
         // ReactDOM.render(
         //     <React.StrictMode>
         //         <Store context={context}>
-        //             {/*<ApolloProvider client={client}>*/}
         //             <App />
-        //             {/*</ApolloProvider>*/}
         //         </Store>
         //     </React.StrictMode>,
         //     document.getElementById(target)
