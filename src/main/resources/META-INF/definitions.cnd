@@ -4,18 +4,6 @@
 <wdennt = 'http://modules.se.jahia.org/wden/nt/1.0'>
 <wden = 'http://modules.se.jahia.org/wden/1.0'>
 
-[wdenmix:widenPicker] > jmix:templateMixin mixin
-  extends = wdennt:wdenAssetTest
-  - wden:extAsset (weakreference, picker[type='custom',config='widenPicker']) internationalized indexed=no noqueryorder nofulltext < 'wdenmix:widenAsset'
-
-[wdenmix:imagePicker] > jmix:templateMixin mixin
-  extends = wdennt:wdenAssetTest
-  - wden:intAsset (weakreference, picker[type='image']) internationalized < 'jmix:image'
-
-[wdennt:wdenAssetTest] > jnt:content, jmix:editorialContent, jmix:droppableContent, mix:title
-- wden:assetType (string, choicelist[assetFinderInitializer,resourceBundle]) indexed=no
-
-
 [wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
  - wden:id (string) fulltextsearchable=no
  - wden:externalId (string) fulltextsearchable=no
