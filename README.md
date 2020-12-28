@@ -143,7 +143,130 @@ the use of a Widen CDN guarantees good loading performance as well as the proper
     ![](./doc/images/0061_widenAssetInSite.png)
    
 ### Widen content in jContent
-WORK IN PROGRESS
+jContent v7 restrict the usage of a picker to a JCR node only. Thus, to be able to pick an external widen content,
+an equivalent of this widen content is required as a node in jContent.
+A node is also usefull to create a dedicated rendering thought a set of views.
+
+
+#### Architecture overview
+The node type architecture implemented in this module is design to be easily extended
+by a customer or its integrator.
+Indeed, a customer can create in Widen its own metadata and content definition. So, this modules cannot cover
+all the possible case. But, new multimedia node types can be easily created.
+
+**Note :** Node types and mixin definitions, discussed later in this section, are written in the file [definition.cnd](./src/main/resources/META-INF/definitions.cnd).
+
+The module provides multiple mixins (explained later) and 5 node types :
+1. `wdennt:widenReference`
+1. `wdennt:image`
+1. `wdennt:video`
+1. `wdennt:pdf`
+1. `wdennt:document`
+
+![](./doc/images/040_nodeArch.png)
+
+From this 5 node types only `wdennt:widenReference` is accessible thought the creation menu.
+ 
+#### wdennt:widenReference
+This node type is the only accessible thought the creation menu. In other words,
+to add a widen asset into a page, a contributor must create new `wdennt:widenReference` alias *Widen* in the UI.
+
+![](./doc/images/0011_menuSelect2.png)
+<!-- .element style="max-width:350px;" -->
+
+##### Definition
+This node type is defined like this :
+```
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
+ - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
+```
+
+`wdennt:widenReference` is extended by 3 jContent mixins :
+1. `jnt:content` : the node type is a content node type
+1. `jmix:multimediaContent` : the node type will appear in the *Content:Multimedia* menu entry (see image above)
+1. `jmix:nodeReference` : the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
+    this mixin provide a default attribute `j:node` uses to store the path of the node in reference. 
+
+The property `j:node` is overwritten to use a custom picker named [widenPicker](#widen-picker)
+and restrict the allowed node type to be picked to `wdenmix:widenAsset`.
+
+###### Mixin
+####### wdenmix:widenAsset
+TODO
+
+##### Views
+
+
+#### wdennt:image
+##### Definition
+
+
+###### Mixins
+Mixins are used to mapp the properties of the JSON returned by the Widen API 
+Widen API JSON
+```
+{}
+```
+
+Node definition
+```
+[wdenmix:fileProperties] mixin
+ - wden:format (string)
+ - wden:type (string)
+ - wden:sizeKB (long)
+```
+
+
+
+##### Views
+
+#### wdennt:video
+##### Definition
+##### Views
+
+#### wdennt:pdf
+##### Definition
+##### Views
+
+#### wdennt:document
+##### Definition
+##### Views
+
+
+
+#### How to extend? example of the audio content type
+
+Thus, if in your Widen Server you create a new media content type like *audio*.
+To be able to pick it and store a specific set of metadata related to this type into jContent,
+you need a specific node type definition. Also, you will create something like `wdennt:audio`.
+
+To be able to pick this node type from the picker you just need to extend your `wdennt:audio`
+node type with the mixin `wdenmix:widenAsset`. Like this, you don't need to touch the definition
+of `wdennt:widenReference`)
+
+At this stage, the audio node type definition should looks like :
+```
+[wdennt:audio] > jnt:content, wdenmix:widenAsset
+```
+
+**Note :** you must update the mapping part of the [Widen Provider](#widen-provider)
+to have your `wdennt:audio` fully usable in jContent.
+
+#### Usage
+This wrapper is required to use the referenced node in a particular "context",
+for example to apply a specific view or to fill a set of specific options. 
+
+TODO schema view et params
+
+
+##### image, video...
+Based on the JSON property filetype returned by the API jContent create the appropriate node type (cf. [Widen Provider](#widen-provider))
+why ? -> view and specific properties
+
+Pas de table car pas de code bloc...
+
+
+#### Views
     
 ### Widen Picker
 WORK IN PROGRESS
