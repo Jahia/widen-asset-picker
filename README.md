@@ -88,7 +88,7 @@ If the module is properly deployed :
 
 ## Module details
 
-To pick a widen asset (video, image, pdf...) from a Widen Cloud intance, Jahia needs 2 mains implemention :
+To pick a widen asset (video, image, pdf...) from a Widen Cloud intance, Jahia needs 2 mains implementations :
 1. A light External Data Provider (EDP), named `Widen Provider`, used to map a Widen asset return as JSON by the widen API into a Jahia node
 1. A React application, named `Widen Picker`, used as content picker into Jahia. 
 This picker is a user interface (UI) from which jahia contributor can query a Widen server to find and 
@@ -181,34 +181,124 @@ This node type is defined like this :
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 ```
 
-`wdennt:widenReference` is extended by 3 jContent mixins :
+`wdennt:widenReference` extends 3 supertypes :
 1. `jnt:content` : the node type is a content node type
 1. `jmix:multimediaContent` : the node type will appear in the *Content:Multimedia* menu entry (see image above)
 1. `jmix:nodeReference` : the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
     this mixin provide a default attribute `j:node` uses to store the path of the node in reference. 
 
 The property `j:node` is overwritten to use a custom picker named [widenPicker](#widen-picker)
-and restrict the allowed node type to be picked to `wdenmix:widenAsset`.
+and restrict the allowed node type to be picked to node types that extends `wdenmix:widenAsset`.
 
 ###### Mixin
 ####### wdenmix:widenAsset
-TODO
+The mixin `wdenmix:widenAsset` is used to map the commons JSON properties return by the Widen API.
+As, these properties are common to all assets return by widen, each jContent node type must be extends this mixin.
 
-##### Views
+**Note :** the mapping process is covered later in section [Widen Provider](#widen-provider).
 
+The Widen API allows client to expand the JSON response with the *expand* property (cf. [Assets - List by search query](https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query)
+or [Assets - Retrieve by id](https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id) documentation).
 
-#### wdennt:image
-##### Definition
+In our case we expand the query with *embeds*, *thumbnails* and *file_properties*. The JSON response returned by the API looks
+like this: 
 
-
-###### Mixins
-Mixins are used to mapp the properties of the JSON returned by the Widen API 
-Widen API JSON
 ```
-{}
+{
+    "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
+    "external_id": "jzrdv8kipa",
+    "filename": "Image dog + cat in snow.jpg",
+    "created_date": "2020-11-18T14:31:10Z",
+    "last_update_date": "2020-11-18T16:17:58Z",
+    "file_upload_date": "2020-11-18T14:31:10Z",
+    "deleted_date": null,
+    "released_and_not_expired": true,
+    "asset_properties": null,
+    "file_properties": {...},
+    "metadata": null,
+    "metadata_info": null,
+    "security": null,
+    "status": null,
+    "thumbnails": {...},
+    "embeds": {...},
+    "expanded": {...},
+    "_links": {...}
+}
+```
+From this JSON, commons properties to map are :
+`id`, `external_id`, `filename`, `created_date`, `last_update_date`, `deleted_date` and `thumbnails`
+
+Thus, the definition of our mixin looks like this :
+```
+[wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
+ - wden:id (string) fulltextsearchable=no
+ - wden:externalId (string) fulltextsearchable=no
+ - wden:filename (string) fulltextsearchable=no
+ - wden:createdDate (string) fulltextsearchable=no
+ - wden:updatedDate (string) fulltextsearchable=no
+ - wden:deletedDate (string) fulltextsearchable=no
+ - wden:thumbnail (string) fulltextsearchable=no
 ```
 
-Node definition
+As discussed before, the API is expanded with *embeds*, *thumbnails* and *file_properties*.
+`embeds` and `file_properties` depend on the asset type return by the API, but contains also commons properties.
+Thus, the module contains 2 others mixins `wdenmix:embed` and `wdenmix:fileProperties` to map these commons properties.
+
+####### wdenmix:embed
+The mixin `wdenmix:embed` is used to map the commons properties available in the `embeds` object returned by the Widen API.
+
+```
+{
+    "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
+    ...
+    "embeds": {
+        "(àX()": {...},
+        "640px-landscape": {...},
+        "640px-portrait": {...},
+        "Facebook-cover": {...},
+        "PostFacebook/Instagram": {...},
+        "Website": {...},
+        "original": {...},
+        ...
+        "templated": {
+            "url": "https://embed.widencdn.net/img/<acme>/jzrdv8kipa/{size}px@{scale}x/Image-dog--cat-in-snow.jpg?q={quality}&x.template=y",
+            "html": null,
+            "share": null,
+            "apps": []
+        }
+    },
+    ...
+}
+```
+In our case, we want to map the property `embeds.templated.url`. So the mixin definition looks like this :
+```
+[wdenmix:embed] mixin
+ - wden:templatedUrl (string) fulltextsearchable=no
+```
+
+####### wdenmix:fileProperties
+The mixin `wdenmix:fileProperties` is used to map the commons properties available in the `file_properties` object returned by the Widen API.
+```
+{
+    "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
+    ...
+    "file_properties": {
+        "format": "JPEG",
+        "format_type": "image",
+        "size_in_kbytes": 2255,
+        "image_properties": {...},
+        "video_properties": null
+    },
+    ...
+}
+```
+In the case above, the asset is an image so `image_properties` is an object and `video_properties` is null.
+Indeed, These properties are respectively populated only if the asset is an image or a video.
+
+Properties common to each asset type are `format`, `format_type` and `size_in_kbytes`.
+ 
+So the mixin definition looks like this :
+
 ```
 [wdenmix:fileProperties] mixin
  - wden:format (string)
@@ -216,10 +306,141 @@ Node definition
  - wden:sizeKB (long)
 ```
 
+##### Views
+The module provides the [default view](./src/main/resources/wdennt_widenReference/html/widenReference.jsp) 
+for the node type. This view is in charge to call the appropriate view for the content in reference.
+Extra parameters are defined to provide a set of image width in case content in reference is an image or
+the pdf viewer height in case the content in reference is a PDF.
 
+These paramaters are contributed from the UI.
+Enable *Image Advanced Settings* in case of image or *PDF Advanced Settings* in case of PDF.
+
+![](./doc/images/005_widenReferenceSelected.png)
+
+These parameters are defined by the mixins `wdenmix:imageMediaSettings` and `wdenmix:pdfMediaSettings`.
+
+###### wdenmix:imageMediaSettings
+```
+[wdenmix:imageMediaSettings] mixin
+ extends = wdennt:widenReference
+ itemtype = content
+ - wden:defaultImageSize (long)
+ - wden:imageSizes (long) multiple
+```
+###### wdenmix:pdfMediaSettings
+```
+[wdenmix:pdfMediaSettings] mixin
+ extends = wdennt:widenReference
+ itemtype = content
+ - wden:pdfMinHeight (long)
+```
+
+If needed, you can create your own mixin to extend `wdennt:widenReference`
+and offer the contributor the capacity fine-tuning a specific content.
+
+#### wdennt:image
+This node type is used to map a Widen Asset of type *image* : `file_properties.format_type = 'image'`.
+A `wdennt:image` node has a dedicated set of properties and views.
+
+
+##### Definition
+This node type is defined like this :
+```
+[wdennt:image] > jnt:content, wdenmix:widenAsset, wdenmix:imageFileProperties, wdenmix:embed
+```
+
+`wdennt:image` extends 4 supertypes :
+1. `jnt:content` : the node type is a content node type
+1. `wdenmix:widenAsset` : the node will inherit commons attributes of a widen node type (see [above](#-wdenmixwidenasset))
+1. `wdenmix:imageFileProperties` : the node will inherit commons attributes of file properties (see [above](#-wdenmixfileproperties))
+    and new one specific to image asset (explain [below](#-wdenmiximagefileproperties)).
+1. `wdenmix:embed` : the node will inherit commons attributes of embed properties (see [above](#-wdenmixembed))
+
+The node type doesn't have specific property. All the property comes from supertypes.
+
+###### Mixins
+
+####### wdenmix:imageFileProperties
+The mixin `wdenmix:imageFileProperties` extends the mixin `wdenmix:fileProperties`. The mixin is used to map
+the specifics JSON properties returned for an image or a video asset.
+
+For an image, those properties are `image_properties.width`, `image_properties.height` and `image_properties.aspect_ratio` as presented in the JSON below.
+
+```
+{
+    "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
+    ...
+    "file_properties": {
+        "format": "JPEG",
+        "format_type": "image",
+        "size_in_kbytes": 2255,
+        "image_properties": {
+            "width": 4288.0,
+            "height": 2848.0,
+            "aspect_ratio": 1.505617977528
+        },
+        "video_properties": null
+    },
+    ...
+}
+```
+
+To store those properties, the mixin is defined like this :
+```
+[wdenmix:fileProperties] mixin
+ - wden:format (string)
+ - wden:type (string)
+ - wden:sizeKB (long)
+```
 
 ##### Views
+The module provides :
+* a [default view](./src/main/resources/wdennt_image/html/image.jsp) which return the HTML tag 
 
+    ```
+    <img width="100%"
+         src="<widen cdn image url>" 
+         srcset="<widen cdn image urls for each selected width>"
+         sizes="<prefered image sizes based on element width>"
+         class="<css classname to apply>"
+         alt="<filename>"
+    />
+    ``` 
+    The widen cdn image URL is the value stored in the property `wden:templatedUrl`.
+    This value contains variables `{size}`, `{scale}` (cf. [json](#-wdenmixembed)) resolved by the view.
+    This allows the user (cf. [Image Advanced Settings](#wdenmiximagemediasettings))
+    or the template integrator to get the image with the desired size (`defaultWith` : 768).
+    
+    A srcset can also be created based on width in a list (`widths` : [256, 512, 768, 1024, 1280, 1600, 2000]).
+    
+    Other variables can be provided to the view to customize the rendering of the tag :
+    * `sizes` : default `'(min-width: 600px) 1024px, 512px'`
+    * `class` : no default value
+
+* an [hidden view](./src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp)
+
+    ```
+    <c:set target="${moduleMap}" property="src" value="${src}" />
+    <c:set target="${moduleMap}" property="srcset" value="${srcset}" />
+    ```
+    This view return the image src and srcset resolved in the same way as we did for the default view.
+    Here the view doesn't return an HTML tag, but only variables which can be used by the caller this way :
+    ```
+    <template:include view="hidden.getSrc">
+        <template:param name="widths" value="1024"/>
+        <template:param name="defaultWidth" value="1024"/>
+    </template:include>
+    
+    <div class="scaling-image h-100">
+        <div class="frame h-100">
+            <div class="feature-img-bg h-100" style="background-image: url('${moduleMap.src}');">
+            </div>
+        </div>
+    </div>
+    ```
+    **Note :** To resolve the case above, **best practice** should be to create a dedicated **tag library** to resolve the URL.
+    Feel free to contribute.
+    
 #### wdennt:video
 ##### Definition
 ##### Views
