@@ -190,8 +190,8 @@ This node type is defined like this :
 The property `j:node` is overwritten to use a custom picker named [widenPicker](#widen-picker)
 and restrict the allowed node type to be picked to node types that extends `wdenmix:widenAsset`.
 
-###### Mixin
-####### wdenmix:widenAsset
+###### Mixins
+###### wdenmix:widenAsset
 The mixin `wdenmix:widenAsset` is used to map the commons JSON properties return by the Widen API.
 As, these properties are common to all assets return by widen, each jContent node type must be extends this mixin.
 
@@ -244,7 +244,7 @@ As discussed before, the API is expanded with *embeds*, *thumbnails* and *file_p
 `embeds` and `file_properties` depend on the asset type return by the API, but contains also commons properties.
 Thus, the module contains 2 others mixins `wdenmix:embed` and `wdenmix:fileProperties` to map these commons properties.
 
-####### wdenmix:embed
+###### wdenmix:embed
 The mixin `wdenmix:embed` is used to map the commons properties available in the `embeds` object returned by the Widen API.
 
 ```
@@ -276,7 +276,7 @@ In our case, we want to map the property `embeds.templated.url`. So the mixin de
  - wden:templatedUrl (string) fulltextsearchable=no
 ```
 
-####### wdenmix:fileProperties
+###### wdenmix:fileProperties
 The mixin `wdenmix:fileProperties` is used to map the commons properties available in the `file_properties` object returned by the Widen API.
 ```
 {
@@ -358,9 +358,9 @@ This node type is defined like this :
 
 The node type doesn't have specific property. All the property comes from supertypes.
 
-###### Mixins
+###### Mixin
 
-####### wdenmix:imageFileProperties
+###### wdenmix:imageFileProperties
 The mixin `wdenmix:imageFileProperties` extends the mixin `wdenmix:fileProperties`. The mixin is used to map
 the specifics JSON properties returned for an image or a video asset.
 
