@@ -24,7 +24,7 @@ This module contains :
 1. A *light* implementation of an External Data Provide (EDP) named `Widen Provider` ([WidenDataSource.java](./src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java)).
 
 Not covered by this module :
-1. Ckeditor media piker
+1. Ckeditor media picker
 
 ## Quick Start
 ### Prerequisites
@@ -88,11 +88,11 @@ If the module is properly deployed :
 
 ## Module details
 
-To pick a widen asset (video, image, pdf...) from a Widen Cloud intance, Jahia needs 2 mains implementations :
+To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, Jahia needs 2 mains implementations :
 1. A light External Data Provider (EDP), named `Widen Provider`, used to map a Widen asset return as JSON by the widen API into a Jahia node
 1. A React application, named `Widen Picker`, used as content picker into Jahia. 
 This picker is a user interface (UI) from which jahia contributor can query a Widen server to find and 
-select the media asset he wants to use in website.
+select the media asset he wants to use on the website.
 
 ### Data flow
 
@@ -108,7 +108,7 @@ select the media asset he wants to use in website.
     ![](./doc/images/002_widenReference.png)
 
 1. When user click the field *Media Content* in the form above, the React application `Widen Picker` is launch in iframe. 
-    By default, lazyload is false and the application executes an AJAX call to the widen API endpoint to populate the picker -
+    By default, lazyload is false, and the application executes an AJAX call to the widen API endpoint to populate the picker -
     [more details here](#widen-picker).
     
     *The picker uses the Widen API : [Assets - List by search query](https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query)*.
@@ -408,7 +408,7 @@ The module provides :
     ``` 
     The widen cdn image URL is the value stored in the property `wden:templatedUrl`.
     This value contains variables `{size}`, `{scale}` (cf. [json](#-wdenmixembed)) resolved by the view.
-    This allows the user (cf. [Image Advanced Settings](#wdenmiximagemediasettings))
+    This allows the user (cf. [Image Advanced Settings](#views))
     or the template integrator to get the image with the desired size (`defaultWith` : 768).
     
     A srcset can also be created based on width in a list (`widths` : [256, 512, 768, 1024, 1280, 1600, 2000]).
