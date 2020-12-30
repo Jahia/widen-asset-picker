@@ -39,7 +39,7 @@ public class WidenAssetDeserializer extends StdDeserializer<WidenAsset> {
     private static final String DOCUMENT_VIEWER_URL_PATH =          "/embeds/document_viewer/url";
     private static final String DOCUMENT_THUMBNAIL_URL_PATH =       "/embeds/document_thumbnail/url";
     private static final String DOCUMENT_ORIGINAL_URL_PATH =        "/embeds/original/url";
-    private static final String DOCUMENT_ORIGINAL_HTML_LINK_PATH =  "/embeds/original/url";
+    private static final String DOCUMENT_ORIGINAL_HTML_LINK_PATH =  "/embeds/original/html";
 
     public WidenAssetDeserializer() {
         this(null);
