@@ -58,7 +58,7 @@ Before to deploy the module some adjustment must be done in the jahia.properties
     jahia.widen.api.site = acme
     jahia.widen.api.token = ba2d0a71907a17sff9eb9dc1fc91fd3a
     jahia.widen.api.version = v2
-    jahia.widen.edp.mountPoint = /sites/systemsite/contents/widen
+    jahia.widen.edp.mountPoint = /sites/systemsite/contents/dam-widen
     ```
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon)

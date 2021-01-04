@@ -67,6 +67,38 @@ public class WidenAsset {
 }
 ```
 
+## Configuration
+The provider is configured via a spring configuration file named [widen-picker.xml](../../src/main/resources/META-INF/spring/widen-picker.xml).
+In this file, there is two main configuration part, one for the picker and the other one for the provider.
+For the provider, two beans are configured :
+ 1. one to create the provider itsef
+ 
+    ```
+    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>
+    
+    <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
+              parent="AbstractJCRStoreProvider">
+        <property name="key" value="WidenProvider"/>
+        <property name="mountPoint" value="${jahia.widen.edp.mountPoint:/sites/systemsite/contents/dam-widen}"/>
+        <property name="externalProviderInitializerService" ref="ExternalProviderInitializerService"/>
+        <property name="extendableTypes">
+            <list>
+                <value>nt:base</value>
+            </list>
+        </property>
+        <property name="dataSource" ref="WidenDataSource"/>
+    </bean>
+    ```
+2. the other one to create the data source used by the provider. This configuration maps
+variables declare in the file jahia.properties (cf. [prerequisites](../../README.md#prerequisites)).
 
-
+    ```
+    <bean name="WidenDataSource" class="org.jahia.se.modules.widenprovider.WidenDataSource" init-method="start">
+        <property name="cacheProvider" ref="ehCacheProvider"/>
+        <property name="widenEndpoint" value="${jahia.widen.api.endPoint:api.widencollective.com}"/>
+        <property name="widenSite" value="${jahia.widen.api.site:}"/>
+        <property name="widenToken" value="${jahia.widen.api.token:}"/>
+        <property name="widenVersion" value="${jahia.widen.api.version:v2}"/>
+    </bean>
+    ```
 \[[<< back](../../README.md)\]
