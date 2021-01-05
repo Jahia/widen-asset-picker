@@ -14,7 +14,6 @@
 
 <%--<%@ page language="java" contentType="text/javascript" %>--%>
 <%
-//    SettingsBean settingsBean = SettingsBean.getInstance();
     Properties properties = (Properties) (Properties) SpringContextSingleton.getBean("jahiaProperties");
     String APIProtocol = properties.getProperty("jahia.widen.api.protocol");
     String APIEndPoint = properties.getProperty("jahia.widen.api.endPoint");

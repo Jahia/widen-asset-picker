@@ -73,9 +73,7 @@ In this file, there is two main configuration part, one for the picker and the o
 For the provider, two beans are configured :
  1. one to create the provider itsef
  
-    ```
-    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>
-    
+    ```   
     <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
               parent="AbstractJCRStoreProvider">
         <property name="key" value="WidenProvider"/>
