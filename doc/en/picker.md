@@ -1,7 +1,24 @@
 \[[<< back](../../README.md)\]
 # Widen Picker
+
+- [Reminder about picker](#module-content)
+- [Components](#quick-start)
+    - [Overview](#data-flow)
+        - [Data flow](#data-flow)
+    - [Javascript Interface](#javascript-interface)
+        - [Architecture](#architecture-1)
+        - [Configuration](#configuration-1)
+    - [Widen Picker React Application](#widen-picker-react-application)
+        - [Architecture](#architecture-2)
+        - [Configuration](#configuration-2)
+        - [Run and deploy the App](#run-and-deploy-the-app)
+            - [Run the App as standalone for development](#run-the-app-as-standalone-for-development-)
+            - [Build and deploy the app for production](#build-and-deploy-the-app-for-production-)
+
+
 This section presents details about the picker used by a contributor to search and select a widen content from
 a jContent node.
+
 Before to deep dive into the widen picker, few words about the default jContent picker.
 
 ## Reminder about picker
@@ -75,7 +92,7 @@ and the other one from the react app ([widenPickerInterface object](../../src/RE
 
 From jContent side, the interface is composed by three main functions :
 1. `widenPickerInit()`. This function creates and returns an iframe HTML tag.
-    ```
+    ```js
     const iframe = `<iframe 
         id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
         src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
@@ -88,7 +105,7 @@ From jContent side, the interface is composed by three main functions :
     ![](../images/template.png)
     
     The view loads the build of the picker React application and runs the script
-    ```
+    ```jsp
     <%-- Load the build --%>
     <template:addResources type="javascript" resources="REACTBuildApp/2.4ff4ff0b.chunk.js" />
     <template:addResources type="javascript" resources="REACTBuildApp/main.8e3d683f.chunk.js" />
@@ -100,7 +117,7 @@ From jContent side, the interface is composed by three main functions :
    ```
 2. `widenPickerLoad(data)`. This function provides to the `widenPickerInterface` the current value of the form field.
 3. `widenPickerGet()`. This function is called when the contributor clicks the *save* button of the picker.
-The function get from the `widenPickerInterface` the node path of the selected asset and return it to jContent.
+The function get the node path of the selected asset from the `widenPickerInterface` and return the path to jContent.
     ```
     const pickerInterface = getCustomWidenPickerInterface();
     if(pickerInterface !== undefined) {
@@ -110,7 +127,7 @@ The function get from the `widenPickerInterface` the node path of the selected a
 
 #### Configuration
 The picker is declared in the [content definition file](../../src/main/resources/META-INF/definitions.cnd),
-```
+```cnd
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 ```
@@ -119,7 +136,7 @@ This configuration is made in the spring configuration file [widen-picker.xml](.
 
 First of all, the functions in the [widen-asset-picker.js](../../src/main/resources/javascript/edit-mode/widen-asset-picker.js)
 file must be set in the javascriptResources pool for GWT.
-```
+```xml
 <bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
     <property name="javascriptResources">
         <list>
@@ -129,7 +146,7 @@ file must be set in the javascriptResources pool for GWT.
 </bean>
 ```
 Then the functions can be used in the `widenPicker` configuration.
-```
+```xml
 <bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
     <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
     <property name="customPickerConfiguration">
@@ -144,7 +161,7 @@ Then the functions can be used in the `widenPicker` configuration.
 the `widenPickerInterface` object called in the functions above is declared in the [index](../../src/REACT/src/index.js)
 of the React application.
 
-```
+```js
 const widenPickerInterface = {
     _context: {},
     _data: [],
@@ -161,21 +178,49 @@ const widenPickerInterface = {
 ```
 Finally, the object is defined as a global javascript variable attached to the window js object.
 Like this, the `widenPickerInterface` is accessible at the iframe level.
-```
+```js
 ...
 window.widenPickerInterface = widenPickerInterface;
 ```
 
 ### Widen picker React application
-Standalone application Front end of the Widen API. Allways synch with Widen catalog
+The core of the Widen Picker is a standalone application used like a front end of the Widen API.
+The application requests directly the Widen API and its search capabilities, so the
+assets returned are always synchronized with the Widen catalog.
 #### Architecture
+
+![](../images/reactAppArch.png)
+
+The application starts in the [index.js](../../src/REACT/src/index.js) file where the context parameters
+are checked based on the [douane's schema](../../src/REACT/src/douane/lib/schema/index.js).
+If a parameter is missing a default value is set based on the value declared in the [.env](../../src/REACT/.env) file.
+
+Then, the cleaned context is send to the [store](../../src/REACT/src/Store/Store.jsx). The `store` is
+a key part of the application. The `store` is the place where :
+* all the actions are defined
+* all the updates are made
+* the `widenPickerInterface` is updated with the selected value :
+
+    ```js
+    case "UPDATE_SELECTED_ITEM": {
+        ...
+        window.widenPickerInterface.removeAll();
+        window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
+        ...
+    },
+    ```
+
+The `store` is used by all the application components. These components are in charge of the UI rendering,
+as illustrated in the image below.
+
+![](../images/appComponent.png)
 
 
 #### Configuration
 config is done in the [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp).
 Read the config variable declare in the file jahia.properties (cf. [prerequisites](../../README.md#prerequisites)).
 
-```
+```jsp
 <%
     Properties properties = (Properties) (Properties) SpringContextSingleton.getBean("jahiaProperties");
     String APIProtocol = properties.getProperty("jahia.widen.api.protocol");
@@ -187,7 +232,7 @@ Read the config variable declare in the file jahia.properties (cf. [prerequisite
 %>
 ```
 Then populate a js context object 
-```
+```js
 const context_${targetId}={
     widen:{
         url:"<%= APIProtocol %>://<%= APIEndPoint %>",
@@ -199,7 +244,7 @@ const context_${targetId}={
 };
 ```
 Finally, when the react widenPicker is ready, it is call with the context.
-```
+```js
 window.widenPicker("${targetId}",context_${targetId});
 ```
 
@@ -210,10 +255,46 @@ To do it, you must follow these steps :
 1. create a new property in the jahia.properties
 2. in the view [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp), get the property and add it to the context object
 3. declare this new property in the [validation schema](../../src/REACT/src/douane/lib/schema/index.js)
-4. read/map/use the property to the [store](../../src/REACT/src/components/Store/Store.jsx).
+4. read/map/use the property to the [store](../../src/REACT/src/Store).
 By default, the store exposes the context, so the property can be accessed where you want.
 
 
+#### Run and deploy the App
+configure the context in the file [index.html](../../src/REACT/public/index.html) or set the appropriate values in the [.env](../../src/REACT/.env)
+with the appropriate values.
+##### Run the app as standalone for development :
+The application is a standard React application build with `npx create-react-app` (cf. [reactjs.org](https://reactjs.org/docs/create-a-new-react-app.html)).
+Thus, the command line to run the application is : `npm start`.
 
+##### Build and deploy the app for production :
+The application is not build by the jContent module as we do in v8 release.
+Also, when your development is finished, you must build and deploy the application.
+1. Build the application : `npm run-script build`
+2. Deploy the build :
+    1. Copy/past files from /src/REACT/build/static/css to /src/main/resources/css
+    2. Copy/past files from /src/REACT/build/static/media to /src/main/resources/icons
+    3. Copy/past files from /src/REACT/build/static/js to /src/main/resources/javascript.
+    
+        ***Note :*** Update the `main.xxxxxx.chunk.js` with the appropriate url for the *loader* image :
+        replace `static/media/` by `modules/widen-picker/icons/`
+3. Update the import in the view [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp)
+with the appropriate file name. The content of the file `runtime-main.xxxxxxx.js` is directly past
+to the end of the view.
+    ```jsp
+    <template:addResources type="css" resources="REACTBuildApp/2.xxxxxxxx.chunk.css" />
+    <template:addResources type="css" resources="REACTBuildApp/main.xxxxxxxxx.chunk.css" />
+    
+    <template:addResources type="javascript" resources="REACTBuildApp/2.xxxxxxxxx.chunk.js" />
+    <template:addResources type="javascript" resources="REACTBuildApp/main.xxxxxxxxx.chunk.js" />
+    ...
+   
+    <script>
+    ...
+   
+        !function(e){function r(r){for(var n,i,l=r[0],p=r[1],f=r[2],c=0,s=[];c<l.length;c++)i=l[c],Object.prototype.hasOwnProperty.call(o,i)&&o[i]&&s.push(o[i][0]),o[i]=0;for(n in p)Object.prototype.hasOwnProperty.call(p,n)&&(e[n]=p[n]);for(a&&a(r);s.length;)s.shift()();return u.push.apply(u,f||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,l=1;l<t.length;l++){var p=t[l];0!==o[p]&&(n=!1)}n&&(u.splice(r--,1),e=i(i.s=t[0]))}return e}var n={},o={1:0},u=[];function i(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,i),t.l=!0,t.exports}i.m=e,i.c=n,i.d=function(e,r,t){i.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},i.r=function(e){"undefined"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.t=function(e,r){if(1&r&&(e=i(e)),8&r)return e;if(4&r&&"object"===typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(i.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)i.d(t,n,function(r){return e[r]}.bind(null,n));return t},i.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(r,"a",r),r},i.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},i.p="/";var l=this["webpackJsonpwiden-picker"]=this["webpackJsonpwiden-picker"]||[],p=l.push.bind(l);l.push=r,l=l.slice();for(var f=0;f<l.length;f++)r(l[f]);var a=p;t()}([]);
+        //# sourceMappingURL=runtime-main.4b203344.js.map
+   </script>
+   
+   ```
 
 \[[<< back](../../README.md)\]

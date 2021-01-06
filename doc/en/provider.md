@@ -1,5 +1,14 @@
 \[[<< back](../../README.md)\]
 # Widen Provider
+
+- [Architecture](#architecture)
+    - [Resolve the path](#resolve-the-path)
+    - [Query Widen API](#query-widen-api)
+        - [Before to Query check the cache](#before-to-query-check-the-cache-)
+        - [Query Widen API](#query-widen-api)
+    - [JSON to JCRNodeWrapper](#json-to-jcrnodewrapper)
+- [Configuration](#configuration)
+
 The provider is an implementation of an External Data Provider (EDP).
 In jContent, an EDP is used :
 1. to map an external asset to a jContent node (JCRNodeWrapper)
@@ -29,6 +38,19 @@ The mapping is done in 3 steps :
 Steps 1 & 2 are done in [WidenDataSource.java](../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java)
 and steps 3 is done in [WidenAssetDeserializer.java](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java)
 ### Resolve the path
+To resolve a path the provider implements two methods :
+1. `getItemByPath`
+2. `getItemByIdentifier`
+
+#### getItemByPath
+This method is basic and it is charge to extract the widen ID from the JCR node path received.
+Then the method `getItemByIdentifier` is called with the extracted id as parameter.
+
+#### getItemByIdentifier
+This method is in charge :
+1. to find the Widen asset identified by its id 
+2. to tranform the Widen asset into a JCR node
+
 
 ### Query Widen API
 
@@ -40,7 +62,7 @@ The cache is set up in the function :
 
 This cache is configured to keep 1 hour (3600s) an idle object and finally to remove an object after 8 hours (28800s).
 The configuration looks like this :
-```
+```java
 CACHE_NAME = "cacheWiden";
 TIME_TO_LIVE_SECONDS = 28800;
 TIME_TO_IDLE_SECONDS = 3600;
@@ -60,7 +82,7 @@ As the Widen JSON properties and the JCR node do not have the same names we crea
 [deserializer](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java)
 used by our class [WidenAsset](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAsset.java)
 to create a cacheable object :
-```
+```java
 @JsonDeserialize(using = WidenAssetDeserializer.class)
 public class WidenAsset {
 ...
@@ -73,7 +95,7 @@ In this file, there is two main configuration part, one for the picker and the o
 For the provider, two beans are configured :
  1. one to create the provider itsef
  
-    ```   
+    ```xml
     <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
               parent="AbstractJCRStoreProvider">
         <property name="key" value="WidenProvider"/>
@@ -90,7 +112,7 @@ For the provider, two beans are configured :
 2. the other one to create the data source used by the provider. This configuration maps
 variables declare in the file jahia.properties (cf. [prerequisites](../../README.md#prerequisites)).
 
-    ```
+    ```xml
     <bean name="WidenDataSource" class="org.jahia.se.modules.widenprovider.WidenDataSource" init-method="start">
         <property name="cacheProvider" ref="ehCacheProvider"/>
         <property name="widenEndpoint" value="${jahia.widen.api.endPoint:api.widencollective.com}"/>

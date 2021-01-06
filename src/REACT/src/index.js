@@ -6,7 +6,7 @@ import * as serviceWorker from 'misc/serviceWorker';
 
 import AjvError from "components/Error/Ajv";
 import {contextValidator} from "douane";
-import {Store} from "components/Store";
+import {Store} from "Store";
 
 const widenPickerInterface = {
     _context: {},

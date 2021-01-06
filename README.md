@@ -2,18 +2,18 @@
 
 This module contains the implementation of the Widen Content Picker for Jahia v7.3.x.
 
-With this modules a contributor can easily add a widen media content to a jahia page.
+With this modules a contributor can easily add a widen media asset to a jahia page.
 
 ![](./doc/images/master.png)
+
 
 - [Module content](#module-content)
 - [Quick Start](#quick-start)
 - [Module details](#module-details)
     - [Data flow](#data-flow)
-    - [Widen Content in jContent](#widen-content-in-jcontent)
+    - [Widen assets in jContent](#widen-assets-in-jcontent)
     - [Widen Picker](#widen-picker)
     - [Widen Provider](#widen-provider)
-- [Discussion around content picker in jContent v7](./doc/extra.md)
 
 
 ## Module content
@@ -37,7 +37,7 @@ Before to deploy the module some adjustment must be done in the jahia.properties
     (+) jahia.jcr.maxNameSize = 64
    ```
 1. Add your widen configuration to the end of file :
-    ```
+    ```properties
     ####
     # Widen Config
     ####
@@ -49,7 +49,7 @@ Before to deploy the module some adjustment must be done in the jahia.properties
     jahia.widen.edp.mountPoint = <jContent mount point>
     ```
     For example :
-    ```
+    ```properties
     ####
     # Widen Config
     ####
@@ -142,7 +142,7 @@ the use of a Widen CDN guarantees good loading performance as well as the proper
 
     ![](./doc/images/0061_widenAssetInSite.png)
    
-### Widen content in jContent
+### Widen assets in jContent
 [Read this dedicated page](doc/en/contentDefinition.md)
  
 ### Widen Picker
@@ -162,7 +162,7 @@ node type with the mixin `wdenmix:widenAsset`. Like this, you don't need to touc
 of `wdennt:widenReference`)
 
 At this stage, the audio node type definition should looks like :
-```
+```cnd
 [wdennt:audio] > jnt:content, wdenmix:widenAsset
 ```
 
