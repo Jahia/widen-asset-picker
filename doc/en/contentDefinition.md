@@ -284,7 +284,7 @@ To store those properties, the mixin is defined like this :
 The module provides 2 views:
 1. a [default view][image.jsp] which return the HTML tag 
 
-    ```html
+    ```jsp
     <img width="100%"
          src="<widen cdn image url>" 
          srcset="<widen cdn image urls for each selected width>"
