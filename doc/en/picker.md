@@ -1,4 +1,4 @@
-\[[<< back](../../README.md)\]
+\[[<< back][README.md]\]
 # Widen Picker
 
 - [Reminder about picker](#module-content)
@@ -6,11 +6,11 @@
     - [Overview](#data-flow)
         - [Data flow](#data-flow)
     - [Javascript Interface](#javascript-interface)
+        - [Architecture](#architecture)
+        - [Configuration](#configuration)
+    - [Widen Picker React Application](#widen-picker-react-application)
         - [Architecture](#architecture-1)
         - [Configuration](#configuration-1)
-    - [Widen Picker React Application](#widen-picker-react-application)
-        - [Architecture](#architecture-2)
-        - [Configuration](#configuration-2)
         - [Run and deploy the App](#run-and-deploy-the-app)
             - [Run the App as standalone for development](#run-the-app-as-standalone-for-development-)
             - [Build and deploy the app for production](#build-and-deploy-the-app-for-production-)
@@ -28,10 +28,10 @@ A picker is a user interface used by a jContent contributor to search and select
 With a picker, a contributor can
 1. Browse a content tree (internal or external)
 
-    ![](../images/default_picker_1.png)
+    ![01_defaultPicker]
 2. Run a fulltext search through metadata like name or tags
 
-    ![](../images/default_Picker_2.png)
+    ![02_defaultPicker]
 3. Upload a binary (text file, image, video...) from the file system
 4. Select the content to reference
 
@@ -44,7 +44,7 @@ However, this module doesn't use the default picker, because :
 
 So, we have decided to create our own picker. 
 
-![](../images/003_widenPicker.png)
+![003]
 
 Note : Even if, for the moment, this modules doesn't use facet approach,
 the picker is ready to use one and easy to extend.
@@ -54,7 +54,7 @@ the picker is ready to use one and easy to extend.
 The picker is based on a standalone REACT application.
 This application is a frontend of the Widen Asset API. The widen picker is used :
 1. to search and select the appropriate media content in the widen asset catalog.
-2. to create and returned a node path to jContent. This path is resolved later by the [provider](./provider.md)
+2. to create and returned a node path to jContent. This path is resolved later by the [provider][provider.md]
 to create the node.
 
 Even if the picker is a standalone REACT application, it must be linked to jContent to reference the selected
@@ -62,14 +62,14 @@ widen asset as a JCR node. This link is done via a Javascript interface.
 
 ### Overview
 
-![](../images/pickerarch.png)
+![pickerArch]
 
 The jContent widen picker is composed by three mains elements :
-1. A Javascript Interface written in the file [widen-asset-picker.js](../../src/main/resources/javascript/edit-mode/widen-asset-picker.js).
-2. A content view for an *nt:base* node, and named [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp).
+1. A Javascript Interface written in the file [widen-asset-picker.js][widenAssetPicker.js].
+2. A content view for an *nt:base* node, and named [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
 this view is displayed through a *main resource display* template named `widen-asset-edit-picker`.
 
-3. A [React application](../../src/REACT/src/index.js)
+3. A [React application][react:index.js]
 
 
 #### Data flow
@@ -79,14 +79,14 @@ this view is displayed through a *main resource display* template named `widen-a
 requests the last updated content to Widen.
 
     The picker uses the Widen API :
-    [Assets - List by search query](https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query).
+    [Assets - List by search query][widenAPI:AssetByQuery].
 4. The React application displays the assets returned by the API.
 5. The user selects a Widen asset.
 
 ### Javascript Interface
 The javascript interface is the bridge between the content form, and the picker to exchange data.
-It is splited in two parts, one from jContent side ([widen-asset-picker.js](../../src/main/resources/javascript/edit-mode/widen-asset-picker.js))
-and the other one from the react app ([widenPickerInterface object](../../src/REACT/src/index.js)).
+It is splited in two parts, one from jContent side ([widen-asset-picker.js][widenAssetPicker.js])
+and the other one from the react app ([widenPickerInterface object][react:index.js]).
 
 #### Architecture
 
@@ -100,9 +100,9 @@ From jContent side, the interface is composed by three main functions :
     ```
 
     The src of this iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
-    This template calls the view [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp).
+    This template calls the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
     
-    ![](../images/template.png)
+    ![template]
     
     The view loads the build of the picker React application and runs the script
     ```jsp
@@ -118,7 +118,7 @@ From jContent side, the interface is composed by three main functions :
 2. `widenPickerLoad(data)`. This function provides to the `widenPickerInterface` the current value of the form field.
 3. `widenPickerGet()`. This function is called when the contributor clicks the *save* button of the picker.
 The function get the node path of the selected asset from the `widenPickerInterface` and return the path to jContent.
-    ```
+    ```js
     const pickerInterface = getCustomWidenPickerInterface();
     if(pickerInterface !== undefined) {
         return pickerInterface.data;
@@ -126,15 +126,15 @@ The function get the node path of the selected asset from the `widenPickerInterf
     ```
 
 #### Configuration
-The picker is declared in the [content definition file](../../src/main/resources/META-INF/definitions.cnd),
+The picker is declared in the [content definition file][definition.cnd],
 ```cnd
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 ```
 Based one this definition, jContent knows that it must use a custom picker configured by the `widenPicker` config.
-This configuration is made in the spring configuration file [widen-picker.xml](../../src/main/resources/META-INF/spring/widen-picker.xml).
+This configuration is made in the spring configuration file [widen-picker.xml][widenPicker.xml].
 
-First of all, the functions in the [widen-asset-picker.js](../../src/main/resources/javascript/edit-mode/widen-asset-picker.js)
+First of all, the functions in the [widen-asset-picker.js][widenAssetPicker.js]
 file must be set in the javascriptResources pool for GWT.
 ```xml
 <bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
@@ -158,7 +158,7 @@ Then the functions can be used in the `widenPicker` configuration.
     </property>
 </bean>
 ```
-the `widenPickerInterface` object called in the functions above is declared in the [index](../../src/REACT/src/index.js)
+the `widenPickerInterface` object called in the functions above is declared in the [index][react:index.js]
 of the React application.
 
 ```js
@@ -189,13 +189,13 @@ The application requests directly the Widen API and its search capabilities, so 
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
 
-![](../images/reactAppArch.png)
+![reactAppArch]
 
-The application starts in the [index.js](../../src/REACT/src/index.js) file where the context parameters
-are checked based on the [douane's schema](../../src/REACT/src/douane/lib/schema/index.js).
-If a parameter is missing a default value is set based on the value declared in the [.env](../../src/REACT/.env) file.
+The application starts in the [index.js][react:index.js] file where the context parameters
+are checked based on the [douane's schema][react:douaneSchemaIndex.js].
+If a parameter is missing a default value is set based on the value declared in the [.env][react:env.js] file.
 
-Then, the cleaned context is send to the [store](../../src/REACT/src/Store/Store.jsx). The `store` is
+Then, the cleaned context is send to the [store][react:store.jsx]. The `store` is
 a key part of the application. The `store` is the place where :
 * all the actions are defined
 * all the updates are made
@@ -213,12 +213,12 @@ a key part of the application. The `store` is the place where :
 The `store` is used by all the application components. These components are in charge of the UI rendering,
 as illustrated in the image below.
 
-![](../images/appComponent.png)
+![appComponent]
 
 
 #### Configuration
-config is done in the [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp).
-Read the config variable declare in the file jahia.properties (cf. [prerequisites](../../README.md#prerequisites)).
+config is done in the [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
+Read the config variable declare in the file jahia.properties (cf. [prerequisites]).
 
 ```jsp
 <%
@@ -253,17 +253,17 @@ in the React application.
 For example, you could expose the timeout variable, or the default result per page, etc.
 To do it, you must follow these steps :
 1. create a new property in the jahia.properties
-2. in the view [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp), get the property and add it to the context object
-3. declare this new property in the [validation schema](../../src/REACT/src/douane/lib/schema/index.js)
-4. read/map/use the property to the [store](../../src/REACT/src/Store).
+2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
+3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
+4. read/map/use the property to the [store][react:store.jsx].
 By default, the store exposes the context, so the property can be accessed where you want.
 
 
 #### Run and deploy the App
-configure the context in the file [index.html](../../src/REACT/public/index.html) or set the appropriate values in the [.env](../../src/REACT/.env)
+configure the context in the file [index.html][react:index.html] or set the appropriate values in the [.env][react:env.js]
 with the appropriate values.
 ##### Run the app as standalone for development :
-The application is a standard React application build with `npx create-react-app` (cf. [reactjs.org](https://reactjs.org/docs/create-a-new-react-app.html)).
+The application is a standard React application build with `npx create-react-app` (cf. [reactjs.org][react.org:CreateNewApp]).
 Thus, the command line to run the application is : `npm start`.
 
 ##### Build and deploy the app for production :
@@ -271,13 +271,13 @@ The application is not build by the jContent module as we do in v8 release.
 Also, when your development is finished, you must build and deploy the application.
 1. Build the application : `npm run-script build`
 2. Deploy the build :
-    1. Copy/past files from /src/REACT/build/static/css to /src/main/resources/css
-    2. Copy/past files from /src/REACT/build/static/media to /src/main/resources/icons
-    3. Copy/past files from /src/REACT/build/static/js to /src/main/resources/javascript.
+    1. Copy/past files from [src/REACT/build/static/media] to [src/main/resources/icons]
+    2. Copy/past files from [src/REACT/build/static/css] to [src/main/resources/css/REACTBuildApp]
+    3. Copy/past files from [src/REACT/build/static/js] to [src/main/resources/javascript/REACTBuildApp]
     
-        ***Note :*** Update the `main.xxxxxx.chunk.js` with the appropriate url for the *loader* image :
+        > Update the `main.xxxxxx.chunk.js` with the appropriate url for the *loader* image :
         replace `static/media/` by `modules/widen-picker/icons/`
-3. Update the import in the view [hidden.widenPicker.jsp](../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp)
+3. Update the import in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp]
 with the appropriate file name. The content of the file `runtime-main.xxxxxxx.js` is directly past
 to the end of the view.
     ```jsp
@@ -297,4 +297,52 @@ to the end of the view.
    
    ```
 
-\[[<< back](../../README.md)\]
+\[[<< back][README.md]\]
+
+[01_defaultPicker]: ../images/default_picker_1.png
+[02_defaultPicker]: ../images/default_Picker_2.png
+[003]: ../images/003_widenPicker.png
+[pickerArch]: ../images/pickerarch.png
+[template]: ../images/template.png
+[reactAppArch]: ../images/reactAppArch.png
+[appComponent]:  ../images/appComponent.png
+
+[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
+[widenAssetPicker.js]: ../../src/main/resources/javascript/edit-mode/widen-asset-picker.js
+[hidden.widenPicker.jsp]: ../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp
+[react:index.js]: ../../src/REACT/src/index.js
+[react:douaneSchemaIndex.js]: ../../src/REACT/src/douane/lib/schema/index.js
+[react:env.js]: ../../src/REACT/.env
+[react:store.jsx]: ../../src/REACT/src/Store/Store.jsx
+[react:index.html]: ../../src/REACT/public/index.html
+[widenPicker.xml]: ../../src/main/resources/META-INF/spring/widen-picker.xml
+[src/REACT/build/static/css]: ../../src/REACT/build/static/css
+[src/REACT/build/static/js]: ../../src/REACT/build/static/js
+[src/REACT/build/static/media]: ../../src/REACT/build/static/media
+
+[src/main/resources/css/REACTBuildApp]: ../../src/main/resources/css/REACTBuildApp
+[src/main/resources/javascript/REACTBuildApp]: ../../src/main/resources/javascript/REACTBuildApp
+[src/main/resources/icons]: ../../src/main/resources/icons
+
+[README.md]: ../../README.md
+[prerequisites]: ../../README.md#prerequisites
+[provider.md]: ./provider.md
+
+[widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
+[react.org:CreateNewApp]: https://reactjs.org/docs/create-a-new-react-app.html
+
+
+[image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
+[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
+[video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
+[video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp
+[pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
+[pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
+[pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
+
+
+
+[videojs.com]: https://videojs.com
+
+[widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id

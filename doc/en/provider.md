@@ -1,4 +1,4 @@
-\[[<< back](../../README.md)\]
+\[[<< back][README.md]\]
 # Widen Provider
 
 - [Architecture](#architecture)
@@ -17,7 +17,7 @@ In jContent, an EDP is used :
 or *Augmented Search*
 4. to add new properties to an external asset. A user can contribute those properties
 
-The main example of an EDP is the [tmdb-provider](https://github.com/Jahia/tmdb-provider).
+The main example of an EDP is the [tmdb-provider][tmdbProvider].
 
 But in our case we don't need all of these features. Indeed, we only want to pick asset one by one :
 1. no need to create a folder with children inside
@@ -29,14 +29,14 @@ EDP as Light EDP.
 
 ## Architecture
 
-As presented in the [data flow](../../README.md#data-flow), the provider maps a Widen asset (JSON) to a jContent node (JCRNodeWrapper).
+As presented in the [data flow][dataFlow], the provider maps a Widen asset (JSON) to a jContent node (JCRNodeWrapper).
 The mapping is done in 3 steps :
 1. Resolve the path returned by the picker `jahia.widen.edp.mountPoint`/`id` of the widen asset
 2. Query Widen API to get the properties of the asset
 3. Map the JSON to a JCRNodeWrapper
 
-Steps 1 & 2 are done in [WidenDataSource.java](../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java)
-and steps 3 is done in [WidenAssetDeserializer.java](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java)
+Steps 1 & 2 are done in [WidenDataSource.java]
+and steps 3 is done in [WidenAssetDeserializer.java]
 ### Resolve the path
 To resolve a path the provider implements two methods :
 1. `getItemByPath`
@@ -58,29 +58,29 @@ This method is in charge :
 To avoid not necessary call, the module use a dedicated
 cache to store jContent nodes created after a widen call. The name of this cache is "cacheWiden".
 The cache is set up in the function :
-[start()](../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java).
+[start()][WidenDataSource.java].
 
 This cache is configured to keep 1 hour (3600s) an idle object and finally to remove an object after 8 hours (28800s).
 The configuration looks like this :
 ```java
-CACHE_NAME = "cacheWiden";
-TIME_TO_LIVE_SECONDS = 28800;
-TIME_TO_IDLE_SECONDS = 3600;
+private static final String CACHE_NAME = "cacheWiden";
+private static final int TIME_TO_LIVE_SECONDS = 28800;
+private static final int TIME_TO_IDLE_SECONDS = 3600;
 ```
 
 #### Query Widen API
-If the requested node is not in cache, the provider calls the Widen API from the funtion : [queryWiden()](../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java)
+If the requested node is not in cache, the provider calls the Widen API from the funtion : [queryWiden()][WidenDataSource.java]
 to get all relevant information about the media content.
 
-The provider use the Widen API : [Assets - Retrieve by id](https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id).
+The provider use the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
 
 
 ### JSON to JCRNodeWrapper
-The JSON return by the API is mapped to a JCR node object. To do this mapping we use the [jackson](https://github.com/FasterXML/jackson) library.
+The JSON return by the API is mapped to a JCR node object. To do this mapping we use the [jackson] library.
 
 As the Widen JSON properties and the JCR node do not have the same names we created a custom
-[deserializer](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java)
-used by our class [WidenAsset](../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAsset.java)
+[deserializer][WidenAssetDeserializer.java]
+used by our class [WidenAsset.java]
 to create a cacheable object :
 ```java
 @JsonDeserialize(using = WidenAssetDeserializer.class)
@@ -90,7 +90,7 @@ public class WidenAsset {
 ```
 
 ## Configuration
-The provider is configured via a spring configuration file named [widen-picker.xml](../../src/main/resources/META-INF/spring/widen-picker.xml).
+The provider is configured via a spring configuration file named [widen-picker.xml][widenPicker.xml].
 In this file, there is two main configuration part, one for the picker and the other one for the provider.
 For the provider, two beans are configured :
  1. one to create the provider itsef
@@ -110,7 +110,7 @@ For the provider, two beans are configured :
     </bean>
     ```
 2. the other one to create the data source used by the provider. This configuration maps
-variables declare in the file jahia.properties (cf. [prerequisites](../../README.md#prerequisites)).
+variables declare in the file jahia.properties (cf. [prerequisites]).
 
     ```xml
     <bean name="WidenDataSource" class="org.jahia.se.modules.widenprovider.WidenDataSource" init-method="start">
@@ -121,4 +121,18 @@ variables declare in the file jahia.properties (cf. [prerequisites](../../README
         <property name="widenVersion" value="${jahia.widen.api.version:v2}"/>
     </bean>
     ```
-\[[<< back](../../README.md)\]
+\[[<< back][README.md]\]
+
+[WidenDataSource.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java
+[WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java
+[WidenAsset.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAsset.java
+[widenPicker.xml]: ../../src/main/resources/META-INF/spring/widen-picker.xml
+
+[README.md]: ../../README.md
+[dataFlow]: ../../README.md#data-flow
+[prerequisites]: ../../README.md#prerequisites
+
+[tmdbProvider]: https://github.com/Jahia/tmdb-provider
+[widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
+[jackson]: https://github.com/FasterXML/jackson
+
