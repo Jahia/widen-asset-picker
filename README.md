@@ -91,7 +91,7 @@ If the module is properly deployed :
 
 1. You should be able to create a new `Widen Reference` content.
 
-    ![][001]
+    ![][0011]
 
 ## Module details
 
@@ -108,7 +108,9 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 
 1. The Contributor creates a new `Widen` content (aka as `Widen Reference`).
 
-    ![][0011]
+    <img src="./doc/images/0011_menuSelect2.png" style="max-width: 375px;"/>
+    
+    ![0011]
     
     Then jContent displays a contributor form with a field Media Content.
 
