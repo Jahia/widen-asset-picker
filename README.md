@@ -2,7 +2,7 @@
 
 This module contains the implementation of the Widen Content Picker for Jahia v7.3.x.
 
-With this modules a contributor can easily add a widen media asset to a jahia page.
+With this module, a contributor can easily add a widen media asset to a jahia page.
 
 ![](./doc/images/master.png)
 
@@ -120,13 +120,13 @@ select the media asset he wants to use on the website.
 1. When the user save its choice from the picker, a content path is returned to jContent. This path is build with the value of `jahia.widen.edp.mountPoint`
     and the `id` of the widen asset.
     
-    **Note :** jContent checks if this path refers to a jahia node. For that, the path is mapped to a jahia node 
+    > jContent checks if this path refers to a jahia node. For that, the path is mapped to a jahia node 
     through the `Widen Provider`.
     
 1. If the asset picked is not in the jContent cache, the provider call the widen API endpoint to get all the relevant properties about the asset picked - [more details here](#widen-provider).
         
-    *The provider use the Widen API : [Assets - Retrieve by id](https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id)*.
-    
+    > The provider use the Widen API : [Assets - Retrieve by id][widenAPIAssetById].
+
 1. The JSON response returned by the API is mapped to a jahia node and cached into an ehcache instance named `cacheWiden`.
     By default, This cache is configured to keep the content 8h maximum and to drop the content if it is idle more than 1 hour. 
     
@@ -169,7 +169,11 @@ At this stage, the audio node type definition should looks like :
 **Note :** you must update the mapping part of the [Widen Provider](#widen-provider)
 to have your `wdennt:audio` fully usable in jContent.
 
-TO BE CONTINUED
+
+
+
+
+[widenAPIAssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
 
 
 
