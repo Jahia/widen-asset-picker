@@ -181,11 +181,11 @@ to have your `wdennt:audio` fully usable in jContent.
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
 [001]: ./doc/images/001_menu-select.png
-{: width="350px"}
+{width="375px"}
 
 [010]: ./doc/images/010_archi.png
 [0011]: ./doc/images/0011_menuSelect2.png
-{: max-width="350px"}
+{max-width="375px"}
 
 [002]: ./doc/images/002_widenReference.png
 [0041]: ./doc/images/0041_widenPickerSelected.png
