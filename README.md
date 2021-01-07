@@ -108,7 +108,7 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 
 1. The Contributor creates a new `Widen` content (aka as `Widen Reference`).
 
-    <img src="./doc/images/0011_menuSelect2.png" style="width: 375px;"/>
+    <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
     
     ![0011]
     
