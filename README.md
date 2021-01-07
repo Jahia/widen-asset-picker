@@ -91,7 +91,7 @@ If the module is properly deployed :
 
 1. You should be able to create a new `Widen Reference` content.
 
-    ![][001]
+    ![][001]{ max-width="375px" }
 
 ## Module details
 
@@ -108,7 +108,7 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 
 1. The Contributor creates a new `Widen` content (aka as `Widen Reference`).
 
-    ![][0011]
+    ![][0011]{ width="375px" }
     
     Then jContent displays a contributor form with a field Media Content.
 
@@ -181,12 +181,8 @@ to have your `wdennt:audio` fully usable in jContent.
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
 [001]: ./doc/images/001_menu-select.png
-{width="375px"}
-
 [010]: ./doc/images/010_archi.png
 [0011]: ./doc/images/0011_menuSelect2.png
-{max-width="375px"}
-
 [002]: ./doc/images/002_widenReference.png
 [0041]: ./doc/images/0041_widenPickerSelected.png
 [005]: ./doc/images/005_widenReferenceSelected.png
