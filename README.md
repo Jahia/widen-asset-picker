@@ -70,11 +70,12 @@ Before to deploy the module, some adjustment must be done in the jahia.propertie
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon)
 #### From the source
-1. Clone or download the zip of the latest release.
-1. If you dowload the zip, unzip it
+1. Clone or download the zip archive of the latest release.
+1. Go to root of the repository
+1. Run the command line `mvn clean install`. This create a jar file in the *target* repository
 1. From jContent Goto `Administration` mode
 1. Expand `System components` entry and click `Modules`
-1. From the right panel click `SELECT MODULE`, and select the jar file in the target repository
+1. From the right panel click `SELECT MODULE`, and select the jar file in the *target* repository
 1. Finaly click `UPLOAD` 
 
     ![][030]
@@ -94,22 +95,21 @@ If the module is properly deployed :
 
 ## Module details
 
-To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, Jahia needs 2 mains implementations :
-1. A light External Data Provider (EDP), named `Widen Provider`,
-    used to map a Widen asset return as JSON by the widen API into a Jahia node
-1. A React application, named `Widen Picker`, used as content picker into Jahia. 
-    This picker is a user interface (UI) from which jahia contributor can query a Widen server to find and 
+To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you need to implement :
+1. A *light* External Data Provider (EDP), named `Widen Provider`,
+    used to map the JSON returned by the widen API and representing the Widen asset into a Jahia node
+1. A React application, named `Widen Picker`, used as a content picker into Jahia. 
+    This picker is a user interface (UI) from which a jContent contributor can query a Widen server to find and 
     select the media asset he wants to use on the website.
 
 ### Data flow
 
 ![][010]
 
-1. User creates a new `Widen` content (aka as `Widen Reference`, cf. [Module content](#module-content) ).
+1. The Contributor creates a new `Widen` content (aka as `Widen Reference`).
 
     ![][0011]
-    <!-- .element style="max-width:350px;" -->
-
+    
     Then jContent displays a contributor form with a field Media Content.
 
     ![][002]
@@ -181,8 +181,12 @@ to have your `wdennt:audio` fully usable in jContent.
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
 [001]: ./doc/images/001_menu-select.png
+{: width="350px"}
+
 [010]: ./doc/images/010_archi.png
 [0011]: ./doc/images/0011_menuSelect2.png
+{: max-width="350px"}
+
 [002]: ./doc/images/002_widenReference.png
 [0041]: ./doc/images/0041_widenPickerSelected.png
 [005]: ./doc/images/005_widenReferenceSelected.png
