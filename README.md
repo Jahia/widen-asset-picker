@@ -22,16 +22,16 @@ This module contains :
 1. The definition of a `Widen Reference` content ([definition.cnd][definition.cnd]).
 1. A React application named `Widen Picker` ([index.js][react:index.js]).
     This application is a custom jContent picker and is used to pick a widen asset .
-1. A *light* implementation of an External Data Provide (EDP) named
+1. A *light* implementation of an External Data Provider (EDP) named
     `Widen Provider` ([WidenDataSource.java]).
 
 Not covered by this module :
-1. Ckeditor media picker
+1. Ckeditor widen media picker
 
 ## Quick Start
 ### Prerequisites
-Before to deploy the module some adjustment must be done in the jahia.properties file (./digital-factory-config/jahia/jahia.properties):
-1. Jahia `maxNameSize` must be at least 64 to save widen asset id as system-name.
+Before to deploy the module, some adjustment must be done in the jahia.properties file (*digital-factory-config/jahia/jahia.properties*):
+1. The size of the `System name` must be greater than the default 32 characters to save a widen asset id in it.
 
     uncomment line 260 and change value 32 to 64
     ```
@@ -62,15 +62,19 @@ Before to deploy the module some adjustment must be done in the jahia.properties
     jahia.widen.api.version = v2
     jahia.widen.edp.mountPoint = /sites/systemsite/contents/dam-widen
     ```
+   
+   > You must restart jContent to have these properties available in the environment.
+
+   > The connector released for jContent v8 use a .cfg file and properties can be hot deployed
+
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon)
 #### From the source
-1. Clone this repository or download the zip archive.
-1. Go to root of the repository
-1. Run the command line `mvn clean install`. This create a jar file in the `target` repository
+1. Clone or download the zip of the latest release.
+1. If you dowload the zip, unzip it
 1. From jContent Goto `Administration` mode
 1. Expand `System components` entry and click `Modules`
-1. From the right panel click `SELECT MODULE`, and select the jar file created in step 3
+1. From the right panel click `SELECT MODULE`, and select the jar file in the target repository
 1. Finaly click `UPLOAD` 
 
     ![][030]

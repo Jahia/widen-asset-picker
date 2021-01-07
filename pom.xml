@@ -61,10 +61,11 @@
     <packaging>bundle</packaging>
     <description>This is the custom module (Widen Picker) for running on a Jahia server.</description>
 
-<!--    <scm>-->
-<!--        <connection>scm:dummy:uri</connection>-->
-<!--        <developerConnection>scm:dummy:uri</developerConnection>-->
-<!--    </scm>-->
+    <scm>
+        <connection>scm:git:git@github.com:Jahia/widen-asset-picker.git</connection>
+        <developerConnection>scm:git:git@github.com:Jahia/widen-asset-picker.git</developerConnection>
+        <url>https://github.com/Jahia/widen-asset-picker</url>
+    </scm>
 
     <dependencies>
         <dependency>
