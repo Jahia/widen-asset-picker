@@ -14,6 +14,7 @@ With this module, a contributor can easily add a widen media asset to a jahia pa
     - [Widen assets in jContent](#widen-assets-in-jcontent)
     - [Widen Picker](#widen-picker)
     - [Widen Provider](#widen-provider)
+    - [How to handle a new media content created in Widen - example of the audio content type](#how-to-handle-a-new-media-content-created-in-widen---example-of-the-audio-content-type)
 
 
 ## Module content
@@ -99,53 +100,54 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
     used to map the JSON returned by the widen API and representing the Widen asset into a Jahia node
 1. A React application, named `Widen Picker`, used as a content picker into Jahia. 
-    This picker is a user interface (UI) from which a jContent contributor can query a Widen server to find and 
+    This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
     select the media asset he wants to use on the website.
 
 ### Data flow
 
 ![][010]
 
-1. The Contributor creates a new `Widen` content (aka as `Widen Reference`).
+1. The user creates a new `Widen` content (aka as `Widen Reference`).
 
     <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
     
-    Then jContent displays a contributor form with a field Media Content.
+    Then, jContent displays a user form with a field **Media Content**.
 
     ![][002]
 
-1. When user click the field *Media Content* in the form above, the React application `Widen Picker` is launch in iframe. 
-    By default, lazyload is false, and the application executes an AJAX call to the widen API endpoint to populate the picker -
-    [more details here](#widen-picker).
+2. When user clicks the field **Media Content** in the form above, the React application `Widen Picker` is launched into an iframe. 
+    By default, the lazy-loading is set to false, and the application executes an AJAX call to the widen API endpoint to populate the picker -
+    more details later in [the Widen Picker][picker.md] section.
     
     > The picker uses the Widen API : [Assets - List by search query][widenAPI:AssetByQuery].
 
-1. The widen endpoint return a JSON file uses by the app to display the search contents. Now the user can refine the search or select a widen asset.
+3. The widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a widen asset.
 
     ![][0041]
 
-1. When the user save its choice from the picker, a content path is returned to jContent. This path is build with the value of `jahia.widen.edp.mountPoint`
+4. When the user saves his choice from the picker, a content path is returned to jContent. This path is build with the value of `jahia.widen.edp.mountPoint`
     and the `id` of the widen asset.
     
-    > jContent checks if this path refers to a jahia node. For that, the path is mapped to a jahia node 
-    through the `Widen Provider`.
+    > jContent checks if this path refers to a jahia node. The path is resolved and mapped to a jahia node 
+    with the help of the `Widen Provider`.
     
-1. If the asset picked is not in the jContent cache, the provider call the widen API endpoint to get all the relevant properties about the asset picked - [more details here](#widen-provider).
+5. If the asset picked is not in the jContent cache, the provider calls the widen API endpoint to get all the relevant properties
+about the asset picked - more details later in [the Widen Provider][provider.md] section.
         
-    > The provider use the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
+    > The provider uses the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
 
-1. The JSON response returned by the API is mapped to a jahia node and cached into an ehcache instance named `cacheWiden`.
+6. The JSON response returned by the API is mapped to a jahia node and cached into an ehcache instance named `cacheWiden`.
     By default, This cache is configured to keep the content 8h maximum and to drop the content if it is idle more than 1 hour. 
     
-1. If the path provided in step 4 is correct, the provider return a jahia reference node and the contributor can save its `Widen Reference`
+7. If the path provided in step 4 is correct, the provider return a jahia reference node, and the user can save his `Widen Reference`
     content.
     
     ![][005]
     
-1. The content can be used by a jContent Page. This module provides jContent views for different type of widen asset (image, video...).
+8. The content can be used by a jContent Page. This module provides jContent views for different type of widen asset (image, video...).
 
-1. The jContent views use the widen CDN URL (aka as embeds.templated.url property) to get and display the content in webpage.
-the use of a Widen CDN guarantees good loading performance as well as the proper functioning of widen statistics.
+9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
+the use of a Widen CDN ensures good loading performance as well as the proper functioning of widen statistics.
 
     ![][0061]
    
@@ -159,29 +161,14 @@ the use of a Widen CDN guarantees good loading performance as well as the proper
 [Read this dedicated page][provider.md]
 
 ### How to handle a new media content created in Widen - example of the audio content type
-
-Thus, if in your Widen Server you create a new media content type like *audio*.
-To be able to pick it and store a specific set of metadata related to this type into jContent,
-you need a specific node type definition. Also, you will create something like `wdennt:audio`.
-
-To be able to pick this node type from the picker you just need to extend your `wdennt:audio`
-node type with the mixin `wdenmix:widenAsset`. Like this, you don't need to touch the definition
-of `wdennt:widenReference`)
-
-At this stage, the audio node type definition should looks like :
-```cnd
-[wdennt:audio] > jnt:content, wdenmix:widenAsset
-```
-
-**Note :** you must update the mapping part of the [Widen Provider](#widen-provider)
-to have your `wdennt:audio` fully usable in jContent.
+[Read this dedicated page][enhance.md]
 
 
 
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
-[001]: ./doc/images/001_menu-select.png
-<!--[010]: ./doc/images/010_archi.png
+[010]: ./doc/images/010_archi.png
+<!--[001]: ./doc/images/001_menu-select.png
 [0011]: ./doc/images/0011_menuSelect2.png-->
 [002]: ./doc/images/002_widenReference.png
 [0041]: ./doc/images/0041_widenPickerSelected.png
@@ -191,6 +178,7 @@ to have your `wdennt:audio` fully usable in jContent.
 [contentDefinition.md]: ./doc/en/contentDefinition.md
 [picker.md]: ./doc/en/picker.md
 [provider.md]: ./doc/en/provider.md
+[enhance.md]: ./doc/en/enhance.md
 
 [definition.cnd]: ./src/main/resources/META-INF/definitions.cnd
 [react:index.js]: ./src/REACT/src/index.js
