@@ -140,7 +140,7 @@ The mixin `wdenmix:embed` is used to map the common properties available in the 
         "(àX()": {},
         "640px-landscape": {},
         "640px-portrait": {},
-        "Facebook-cover": {...},
+        "Facebook-cover": {},
         "PostFacebook/Instagram": {},
         "Website": {},
         "original": {},
@@ -257,7 +257,7 @@ For an image, those properties are `width`, `height`, and`aspect_ratio` as prese
 ```json
 {
     "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
-    ...
+    
     "file_properties": {
         "format": "JPEG",
         "format_type": "image",
@@ -269,7 +269,7 @@ For an image, those properties are `width`, `height`, and`aspect_ratio` as prese
         },
         "video_properties": null
     },
-    ...
+    
 }
 ```
 
@@ -361,7 +361,7 @@ For a video, those properties are `width`, `height`, `aspect_ratio`, and `durati
 ```json
 {
     "id": "2eca8de8-f57b-4974-96e4-c7d24cb7a82f",
-    ...
+    
     "file_properties": {
         "format": "MPEG4",
         "format_type": "video",
@@ -374,7 +374,7 @@ For a video, those properties are `width`, `height`, `aspect_ratio`, and `durati
             "duration": 8.88
         }
     },
-    ...
+    
 }
 ```
 
@@ -399,9 +399,9 @@ as presented in the JSON below.
 ```json
 {
     "id": "2eca8de8-f57b-4974-96e4-c7d24cb7a82f",
-    ...
+    
     "embeds": {
-        "VideoWithPlayerAndDownload": {...},
+        "VideoWithPlayerAndDownload": {},
         "video_player": {
             "url": "https://acme.widen.net/view/video/87tlstii2j/08_Aout.mp4?u=2spbki",
             "html": "<div style=\"position:relative;width:100%;height:0;padding-bottom:56.25%;\"><iframe src=\"https://acme.widen.net/view/video/87tlstii2j/08_Aout?u=2spbki\" webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder=\"0\" allowtransparency=\"true\" scrolling=\"no\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" ></iframe></div>",
@@ -420,9 +420,9 @@ as presented in the JSON below.
             "share": "https://acme.widen.net/view/video/87tlstii2j/08_Aout.mp4?u=2spbki&x.share=t",
             "apps": []
         }
-        ...
+        
     },
-    ...
+    
 }
 ```
 
@@ -491,7 +491,7 @@ as presented in the JSON below.
 ```json
 {
     "id": "866b23a5-442b-4f31-8cf7-5b27363f35be",
-    ...
+    
     "embeds": {
         "document_html5_viewer": {
             "url": "https://acme.widen.net/view/pdf/utqlxflgpa/acme_overview.pdf?u=2spbki",
@@ -517,9 +517,9 @@ as presented in the JSON below.
             "share": "https://acme.widen.net/content/utqlxflgpa/original/acme_overview.pdf?u=2spbki&download=true&x.share=t",
             "apps": []
         },
-        ...
+        
     },
-    ...
+    
 }
 ```
 
