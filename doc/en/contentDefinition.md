@@ -168,15 +168,15 @@ object returned by the Widen API.
 ```json
 {
     "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
-    ...
+    
     "file_properties": {
         "format": "JPEG",
         "format_type": "image",
         "size_in_kbytes": 2255,
-        "image_properties": {...},
+        "image_properties": {},
         "video_properties": null
     },
-    ...
+    
 }
 ```
 In the case above, the asset is an image, so `image_properties` is an object and `video_properties` is null.
