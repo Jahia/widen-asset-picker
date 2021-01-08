@@ -67,9 +67,9 @@ This node type is defined like this :
 ```
 
 `wdennt:widenReference` extends 3 supertypes :
-1. `jnt:content` : meaning the node type is a content node type
-1. `jmix:multimediaContent` : meaning the node type appears in the **Content:Multimedia** menu entry (see image above)
-1. `jmix:nodeReference` : meaning the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
+1. `jnt:content` meaning the node type is a content node type
+1. `jmix:multimediaContent` meaning the node type appears in the **Content:Multimedia** menu entry (see image above)
+1. `jmix:nodeReference` meaning the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
     this mixin provides a default attribute `j:node` used to store the path of the referenced node.
 
 >In this defintion, the property `j:node` is overwritten. Indeed, we want to use a custom picker named [widenPicker][picker.md]
@@ -156,7 +156,7 @@ The mixin `wdenmix:embed` is used to map the common properties available in the 
     
 }
 ```
-The module only maps the property `embeds.templated.url`. So the mixin definition looks like this :
+The module only maps the property `embeds.templated.url`. So, the mixin definition looks like this :
 ```cnd
 [wdenmix:embed] mixin
  - wden:templatedUrl (string) fulltextsearchable=no
@@ -180,7 +180,7 @@ object returned by the Widen API.
     
 }
 ```
-In the case above, the asset is an image, so `image_properties` is an object and `video_properties` is null.
+In the case above, the asset is an image, so `file_properties.image_properties` is an object and `file_properties.video_properties` is null.
 Indeed, These properties are respectively populated only if the asset is an image or a video.
 
 The common properties are `format`, `format_type` and `size_in_kbytes`.
@@ -196,13 +196,13 @@ The mixin definition looks like this :
 
 ### Views
 The module provides a [default view][widenReference.jsp] 
-for the node type. This view is in charge to call the appropriate view for the content in reference.
+for the node type `wdennt:widenReference`. The goal of this view is to call the appropriate view for the content in reference.
 
 Template parameters are defined to provide a set of image width in case content in reference is an image or
 the pdf viewer height in case the content in reference is a PDF.
 
 These parameters are contributed from the UI.
-Enable **Image Advanced Settings** in case of image or **PDF Advanced Settings** in case of PDF.
+For example, enable **Image Advanced Settings** in case of image or **PDF Advanced Settings** in case of PDF.
 
 ![005]
 
@@ -228,7 +228,7 @@ If needed, you can create your own mixin to extend `wdennt:widenReference`
 and offer the contributor the capacity fine-tuning a specific content.
 
 ## wdennt:image
-This node type is used to map a Widen Asset of type *image* : `file_properties.format_type = 'image'`.
+This node type is used to map a Widen asset of type **image** : `file_properties.format_type = 'image'`.
 A `wdennt:image` node has a dedicated set of properties and views.
 
 
@@ -239,10 +239,10 @@ This node type is defined like this :
 ```
 
 `wdennt:image` extends 4 supertypes :
-1. `jnt:content` : the node type is a content node type
-1. `wdenmix:widenAsset` : the node inherits properties of the mixin ([+](#wdenmixwidenasset))
-1. `wdenmix:imageFileProperties` : the node inherits properties of the mixin ([+](#wdenmiximagefileproperties))
-1. `wdenmix:embed` : the node inherits properties of the mixin ([+](#wdenmixembed))
+1. `jnt:content` meaning the node type is a content node type
+1. `wdenmix:widenAsset` meaning the node inherits properties of the mixin ([+](#wdenmixwidenasset))
+1. `wdenmix:imageFileProperties` meaning the node inherits properties of the mixin ([+](#wdenmiximagefileproperties))
+1. `wdenmix:embed` meaning the node inherits properties of the mixin ([+](#wdenmixembed))
 
 The node type doesn't have specific property. All the property comes from supertypes.
 
@@ -343,10 +343,10 @@ This node type is defined like this :
 ```
 
 `wdennt:video` extends 4 supertypes :
-1. `jnt:content` : the node type is a content node type
-1. `wdenmix:widenAsset` : the node inherits properties of the mixin ([+](#wdenmixwidenasset))
-1. `wdenmix:videoFileProperties` : the node inherits properties of the mixin ([+](#wdenmixvideofileproperties))
-1. `wdenmix:embedVideo` : the node inherits properties of the mixin ([+](#wdenmixembedvideo))
+1. `jnt:content` meaning the node type is a content node type
+2. `wdenmix:widenAsset` meaning the node inherits properties of the mixin ([+](#wdenmixwidenasset))
+3. `wdenmix:videoFileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixvideofileproperties))
+4. `wdenmix:embedVideo` meaning the node inherits properties of the mixin ([+](#wdenmixembedvideo))
 
 The node type doesn't have specific property. All the property comes from supertypes.
 
@@ -461,10 +461,10 @@ This node type is defined like this :
 ```
 
 `wdennt:pdf` extends 4 supertypes :
-1. `jnt:content` : the node type is a content node type
-1. `wdenmix:widenAsset` : the node inherits properties of the mixin ([+](#wdenmixwidenasset))
-1. `wdenmix:pdfFileProperties` : the node inherits properties of the mixin ([+](#wdenmixfileproperties)).
-1. `wdenmix:embedPdf` : the node inherits properties of the mixin ([+](#wdenmixembedpdf))
+1. `jnt:content` meaning the node type is a content node type
+2. `wdenmix:widenAsset` meaning the node inherits properties of the mixin ([+](#wdenmixwidenasset))
+3. `wdenmix:pdfFileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixfileproperties)).
+4. `wdenmix:embedPdf` meaning the node inherits properties of the mixin ([+](#wdenmixembedpdf))
 
 The node type doesn't have specific property. All the property comes from supertypes.
 
@@ -564,9 +564,9 @@ This node type is defined like this :
 ```
 
 `wdennt:document` extends 3 supertypes :
-1. `jnt:content` : the node type is a content node type
-1. `wdenmix:widenAsset` : the node inherits properties of the mixin ([+](#wdenmixwidenasset))
-1. `wdenmix:fileProperties` : the node inherits properties of the mixin ([+](#wdenmixfileproperties))
+1. `jnt:content` meaning the node type is a content node type
+2. `wdenmix:widenAsset` meaning the node inherits properties of the mixin ([+](#wdenmixwidenasset))
+3. `wdenmix:fileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixfileproperties))
 
 The node type doesn't have specific property. All the property comes from supertypes.
 Those properties are used by views to display pdf node within an HTML5 view or like a link.
