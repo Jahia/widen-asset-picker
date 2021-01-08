@@ -390,8 +390,8 @@ To store these properties, the mixin is defined like this :
 
 #### wdenmix:embedVideo
 The mixin `wdenmix:embedVideo` extends the mixin `wdenmix:embed` and inherits its
-properties ([+](#wdenmixembed)). The mixin is used to map the specifics `embeds` JSON properties
-returned for a video asset.
+properties ([+](#wdenmixembed)). 
+The mixin is used to map the specifics properties of the JSON object `embeds` returned for a video asset.
 
 For a video, these properties are :
 * `video_player.url`
@@ -439,7 +439,7 @@ To store these properties, the mixin is defined like this :
  - wden:videoPoster (string) fulltextsearchable=no
 ```
 
-Those properties are used by views to display HTML5 video players.
+These properties are used by views to display HTML5 video players.
 
 ### Views
 The module provides 3 views :
@@ -482,9 +482,10 @@ properties. PDF asset only uses properties common to files, so the mixin is defi
 
 #### wdenmix:embedPdf
 The mixin `wdenmix:embedPdf` extends the mixin `wdenmix:embed` and inherits its
-properties ([+](#wdenmixembed)). The mixin is used to map the specifics `embeds` JSON properties returned for a video asset.
+properties ([+](#wdenmixembed)).
+The mixin is used to map the specifics properties of the JSON object `embeds` returned for a pdf asset.
 
-For a video, these properties are :
+For a pdf, these properties are :
 * `document_html5_viewer.url`
 * `document_viewer.url`
 * `document_thumbnail.url`
@@ -537,7 +538,7 @@ To store these properties, the mixin is defined like this :
  - wden:docHTMLLink (string) fulltextsearchable=no
 ```
 
-Those properties are used by views to display pdf node within an HTML5 view or like a link.
+These properties are used by views to display pdf node within an HTML5 view or like a link.
 
 ### Views
 The module provides 3 views :
@@ -572,7 +573,7 @@ This node type is defined like this :
 3. `wdenmix:fileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixfileproperties))
 
 The node type doesn't have specific property. All the property comes from supertypes.
-Those properties are used by views to display pdf node within an HTML5 view or like a link.
+These properties are used by views to display pdf node within an HTML5 view or like a link.
 
 ### Views
 The module provides a default empty view. Feel free to customize it.
