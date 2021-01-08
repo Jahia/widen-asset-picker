@@ -334,7 +334,7 @@ The module provides 2 views:
     
     
 ## wdennt:video
-This node type is used to map a Widen Asset of type **video** : `file_properties.format_type = 'video'`.
+This node type is used to map a Widen asset of type **video** : `file_properties.format_type = 'video'`.
 A `wdennt:video` node has a dedicated set of properties and views.
 
 
@@ -453,7 +453,7 @@ The module provides 3 views :
     of `wden:videoStreamHTML`. The view uses directly the HTML code returned by the Widen API with few css adjustments.
 
 ## wdennt:pdf
-This node type is used to map a Widen Asset of type **pdf** : `file_properties.format_type = 'pdf'`.
+This node type is used to map a Widen asset of type **pdf** : `file_properties.format_type = 'pdf'`.
 A `wdennt:pdf` node has a dedicated set of properties and views.
 
 ### Definition
@@ -556,7 +556,7 @@ The module provides 3 views :
 
 
 ## wdennt:document
-This node type is used to map a Widen Asset which is not *image*, *video* or *pdf*. It is the default
+This node type is used to map a Widen asset which is **not** image, video or pdf. It is the default
 node type. A `wdennt:document` node extends the generic mixins.
 
 ### Definition
