@@ -466,7 +466,7 @@ This node type is defined like this :
 `wdennt:pdf` extends 4 supertypes :
 1. `jnt:content` meaning the node type is a content node type
 2. `wdenmix:widenAsset` meaning the node inherits properties of the mixin ([+](#wdenmixwidenasset))
-3. `wdenmix:pdfFileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixfileproperties)).
+3. `wdenmix:pdfFileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixpdffileproperties)).
 4. `wdenmix:embedPdf` meaning the node inherits properties of the mixin ([+](#wdenmixembedpdf))
 
 The node type doesn't have specific property. All the property comes from supertypes.
@@ -475,7 +475,7 @@ The node type doesn't have specific property. All the property comes from supert
 
 #### wdenmix:pdfFileProperties
 The mixin `wdenmix:pdfFileProperties` extends the mixin `wdenmix:fileProperties` and inherits its
-properties. PDF asset only uses properties common to files, so the mixin is defined like this :
+properties ([+](#wdenmixfileproperties)). PDF asset only uses properties common to files, so the mixin is defined like this :
 ```cnd
 [wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
 ```
