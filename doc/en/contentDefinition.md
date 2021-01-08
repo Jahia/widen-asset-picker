@@ -1,6 +1,6 @@
 \[[<< back][README.md]\]
 # Widen asset in jContent
-jContent v7 restricts the usage of a picker to a JCR node only. Thus, to pick an external Widen asset,
+jContent v7 restricts the usage of a picker to a *jcr* node only. Thus, to pick an external Widen asset,
 jContent must create a JCR node equivalent of this Widen asset.
 A node is also useful to create a dedicated rendering through a set of views.
 
@@ -77,15 +77,15 @@ and restrict the allowed node type to be picked to node types that extend `wdenm
 
 #### Mixins
 #### wdenmix:widenAsset
-The mixin `wdenmix:widenAsset` defines a set of jcr properties used to map the properties common to all Widen assets and returned by 
+The mixin `wdenmix:widenAsset` defines a set of *jcr* properties used to map the properties common to all Widen assets and returned by 
 the JSON api. As these properties are common to all Widen assets, each jContent node type must extend this mixin.
 
 > the mapping process is covered in section [Widen Provider][provider.md].
 
-The Widen API allows client to expand the JSON response with the *expand* property
-(cf. [Assets - List by search query][widenAPI:AssetByQuery] or [Assets - Retrieve by id][widenAPI:AssetById] documentation).
+The Widen API allows client to expand the JSON response with the *expand* query parameter
+(cf. Widen documentation [Assets - List by search query][widenAPI:AssetByQuery] or [Assets - Retrieve by id][widenAPI:AssetById] ).
 
-In our case we expand the query with **embeds**, **thumbnails** and **file_properties**. The JSON response returned by the API looks
+In our case we expand the response with **embeds**, **thumbnails** and **file_properties**. The JSON response returned by the API looks
 like this: 
 
 ```json
@@ -99,7 +99,7 @@ like this:
     "deleted_date": null,
     "released_and_not_expired": true,
     "asset_properties": null,
-    "file_properties": {...},
+    "file_properties": {```},
     "metadata": null,
     "metadata_info": null,
     "security": null,
