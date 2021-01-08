@@ -1,8 +1,8 @@
 \[[<< back][README.md]\]
 # Widen asset in jContent
-jContent v7 restrict the usage of a picker to a JCR node only. Thus, to pick an external widen asset,
-an equivalent of this widen asset is required as a node in jContent.
-A node is also usefull to create a dedicated rendering through a set of views.
+jContent v7 restricts the usage of a picker to a JCR node only. Thus, to pick an external Widen asset,
+jContent must create a JCR node equivalent of this Widen asset.
+A node is also useful to create a dedicated rendering through a set of views.
 
 - [Architecture overview](#architecture-overview)
 - [wdennt:widenReference](#wdenntwidenreference)
@@ -55,8 +55,7 @@ From this 5 node types only `wdennt:widenReference` is accessible through the cr
 This node type is the only accessible through the creation menu. In other words,
 to add a widen asset into a page, a contributor must create new `wdennt:widenReference` alias *Widen* in the UI.
 
-![0011]
-<!-- .element style="max-width:350px;" -->
+<img src="./doc/images/0011_menuSelect2.png" width="375px"/>
 
 ### Definition
 This node type is defined like this :
@@ -575,7 +574,7 @@ The module provides a default empty view. Feel free to customize it.
 \[[< back][README.md]\]
 
 [040]: ../images/040_nodeArch.png
-[0011]: ../images/0011_menuSelect2.png
+<!--[0011]: ../images/0011_menuSelect2.png-->
 [005]: ../images/005_widenReferenceSelected.png
 
 [definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
