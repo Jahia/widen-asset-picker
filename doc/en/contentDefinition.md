@@ -72,13 +72,13 @@ This node type is defined like this :
 1. `jmix:nodeReference` : meaning the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
     this mixin provides a default attribute `j:node` used to store the path of the referenced node.
 
->In this defintion, the property `j:node` is overwritten. Indeed, we want to use a custom picker named [widenPicker](#widen-picker)
-and restrict the allowed node type to be picked to node type that extends `wdenmix:widenAsset`.
+>In this defintion, the property `j:node` is overwritten. Indeed, we want to use a custom picker named [widenPicker][picker.md]
+and restrict the allowed node type to be picked to node types that extend `wdenmix:widenAsset`.
 
 #### Mixins
 #### wdenmix:widenAsset
-The mixin `wdenmix:widenAsset` defines jcr properties used to map the JSON properties shared by all nodes.
-These JSON properties are common to all assets return by widen, also each jContent node type must extend this mixin.
+The mixin `wdenmix:widenAsset` defines a set of jcr properties used to map the properties common to all Widen assets and returned by 
+the JSON api. As these properties are common to all Widen assets, each jContent node type must extend this mixin.
 
 > the mapping process is covered in section [Widen Provider][provider.md].
 
@@ -594,6 +594,7 @@ The module provides a default empty view. Feel free to customize it.
 
 [README.md]: ../../README.md
 [provider.md]: ./provider.md
+[picker.md]: ./picker.md
 
 [videojs.com]: https://videojs.com
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
