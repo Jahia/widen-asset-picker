@@ -296,24 +296,26 @@ The module provides 2 views:
     />
     ``` 
     The *\<widen cdn image url\>* is the value stored in the property `wden:templatedUrl` ([+](#wdenmixembed)).
-    This value contains variables `{size}`, `{scale}` and `{quality}` (cf. [json](#wdenmixembed)) resolved by the view.
+    This value contains variables `{size}`, `{scale}` and `{quality}` resolved by the view.
     This allows the user (cf. [Image Advanced Settings](#views))
     or the template integrator to get the image with the desired size (`defaultWith` : 768).
     
-    A srcset can also be created based on width in a list (`widths` : [256, 512, 768, 1024, 1280, 1600, 2000]).
+    A srcset can also be created based on *width number* in a list (`widths` : [256, 512, 768, 1024, 1280, 1600, 2000]).
     
     Other variables can be provided to the view to customize the rendering of the tag :
     * `sizes` : default `'(min-width: 600px) 1024px, 512px'`
     * `class` : no default value
 
-1. an [hidden view][image.hidden.getSrc.jsp]
+1. an hidden view named [getSrc.jsp][image.hidden.getSrc.jsp].
+    This view returns the image src and srcset resolved in the same way as we did for the default view.
+    Here the view doesn't return an HTML tag, but only variables :
 
     ```jsp
     <c:set target="${moduleMap}" property="src" value="${src}" />
     <c:set target="${moduleMap}" property="srcset" value="${srcset}" />
     ```
-    This view return the image src and srcset resolved in the same way as we did for the default view.
-    Here the view doesn't return an HTML tag, but only variables which can be used by the caller this way :
+    which can be used by the caller this way :
+    
     ```jsp
     <template:include view="hidden.getSrc">
         <template:param name="widths" value="1024"/>
@@ -327,8 +329,8 @@ The module provides 2 views:
         </div>
     </div>
     ```
-    > To resolve the case above, **best practice** should be to create a dedicated **tag library** to resolve the URL.
-    Feel free to contribute.
+    > To solve the case above, **best practice** should be to create a dedicated **tag library** to resolve the URL.
+    *Feel free to contribute*.
     
     
 ## wdennt:video
