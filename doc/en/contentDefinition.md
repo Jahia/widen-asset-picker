@@ -550,13 +550,13 @@ These properties are used by views to display pdf node within an HTML5 view or l
 The module provides 3 views :
 1. a [default view][pdf.jsp] which return the Widen PDF viewer
     loaded through an iframe. The iframe src is the value stored in the property `wden:viewer`.
-    The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views-1))
+    The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views))
     or the template integrator (`pdfMinHeight` : 512).
 
 1. a [HTML5 viewer][pdf.viewerHTML5.jsp] which use the
     native pdf viewer loaded through an iframe. TThe iframe src is the value stored in the 
     property `wden:viewerHtml5`.
-    The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views-1))
+    The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views))
     or the template integrator (`pdfMinHeight` : 512).
 
 1. a [link][pdf.link.jsp] which return the value
