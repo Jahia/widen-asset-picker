@@ -548,18 +548,18 @@ These properties are used by views to display pdf node within an HTML5 view or l
 
 ### Views
 The module provides 3 views :
-1. a [default view][pdf.jsp] which return the Widen PDF viewer
+1. a [default view][pdf.jsp] which returns the Widen PDF viewer
     loaded through an iframe. The iframe src is the value stored in the property `wden:viewer`.
     The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views))
     or the template integrator (`pdfMinHeight` : 512).
 
-1. a [HTML5 viewer][pdf.viewerHTML5.jsp] which use the
-    native pdf viewer loaded through an iframe. TThe iframe src is the value stored in the 
+1. an [HTML5 viewer][pdf.viewerHTML5.jsp] which uses the
+    native pdf viewer loaded through an iframe. The iframe src is the value stored in the 
     property `wden:viewerHtml5`.
     The minimal height of the viewer can be forced by the user (cf. [PDF Advanced Settings](#views))
     or the template integrator (`pdfMinHeight` : 512).
 
-1. a [link][pdf.link.jsp] which return the value
+1. a [link][pdf.link.jsp] which returns the value
     of `wden:docHTMLLink`. The view uses directly the HTML code returned by the Widen API.
 
 
@@ -579,10 +579,9 @@ This node type is defined like this :
 3. `wdenmix:fileProperties` meaning the node inherits properties of the mixin ([+](#wdenmixfileproperties))
 
 The node type doesn't have specific property. All the property comes from supertypes.
-These properties are used by views to display pdf node within an HTML5 view or like a link.
 
 ### Views
-The module provides a default empty view. Feel free to customize it.
+The module provides a default empty view. *Feel free to customize it*.
 
 \[[< back][README.md]\]
 
