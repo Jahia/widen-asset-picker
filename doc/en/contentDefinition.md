@@ -381,7 +381,7 @@ For a video, these properties are `width`, `height`, `aspect_ratio`, and `durati
 }
 ```
 
-To store those properties, the mixin is defined like this :
+To store these properties, the mixin is defined like this :
 ```cnd
 [wdenmix:videoFileProperties] > wdenmix:imageFileProperties mixin
  - wden:duration (double)
@@ -392,7 +392,7 @@ The mixin `wdenmix:embedVideo` extends the mixin `wdenmix:embed` and inherits it
 properties ([+](#wdenmixembed)). The mixin is used to map the specifics `embeds` JSON properties
 returned for a video asset.
 
-For a video, those properties are :
+For a video, these properties are :
 * `video_player.url`
 * `video_stream.url`
 * `video_stream.html`
@@ -429,7 +429,7 @@ as presented in the JSON below.
 }
 ```
 
-To store those properties, the mixin is defined like this :
+To store these properties, the mixin is defined like this :
 ```cnd
 [wdenmix:embedVideo] > wdenmix:embed  mixin
  - wden:videoPlayer (string) fulltextsearchable=no
@@ -483,7 +483,7 @@ properties. PDF asset only uses properties common to files, so the mixin is defi
 The mixin `wdenmix:embedPdf` extends the mixin `wdenmix:embed` and inherits its
 properties ([+](#wdenmixembed)). The mixin is used to map the specifics `embeds` JSON properties returned for a video asset.
 
-For a video, those properties are :
+For a video, these properties are :
 * `document_html5_viewer.url`
 * `document_viewer.url`
 * `document_thumbnail.url`
@@ -526,7 +526,7 @@ as presented in the JSON below.
 }
 ```
 
-To store those properties, the mixin is defined like this :
+To store these properties, the mixin is defined like this :
 ```cnd
 [wdenmix:embedPdf] > wdenmix:embed  mixin
  - wden:viewerHtml5 (string) fulltextsearchable=no
