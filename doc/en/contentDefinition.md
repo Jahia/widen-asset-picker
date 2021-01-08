@@ -111,7 +111,7 @@ like this:
 }
 ```
 The common properties to map are :
-`id`, `external_id`, `filename`, `created_date`, `last_update_date`, `deleted_date` and `thumbnails`
+`id`, `external_id`, `filename`, `created_date`, `last_update_date`, `deleted_date` and `thumbnails`.
 
 Thus, the definition of the mixin looks like this :
 ```cnd
@@ -125,9 +125,9 @@ Thus, the definition of the mixin looks like this :
  - wden:thumbnail (string) fulltextsearchable=no
 ```
 
-As discussed before, the API is expanded with *embeds*, *thumbnails* and *file_properties*.
-`embeds` and `file_properties` depend on the asset type returned by the API, but also contain common properties.
-Thus, the module contains 2 others mixins `wdenmix:embed` and `wdenmix:fileProperties` to map these common properties.
+As discussed before, the API is expanded with **embeds**, **thumbnails** and **file_properties**.
+`embeds` and `file_properties` JSON objects depend on the asset type returned by the API. But, they also contain common properties.
+Thus, the module contains 2 other mixins `wdenmix:embed` and `wdenmix:fileProperties` to map these common properties.
 
 #### wdenmix:embed
 The mixin `wdenmix:embed` is used to map the common properties available in the `embeds` object returned by the Widen API.
@@ -135,16 +135,16 @@ The mixin `wdenmix:embed` is used to map the common properties available in the 
 ```json
 {
     "id": "1eca8de8-f57b-4974-96e4-c7d24cb7a82d",
-    ...
+    
     "embeds": {
-        "(àX()": {...},
-        "640px-landscape": {...},
-        "640px-portrait": {...},
+        "(àX()": {},
+        "640px-landscape": {},
+        "640px-portrait": {},
         "Facebook-cover": {...},
-        "PostFacebook/Instagram": {...},
-        "Website": {...},
-        "original": {...},
-        ...
+        "PostFacebook/Instagram": {},
+        "Website": {},
+        "original": {},
+        
         "templated": {
             "url": "https://embed.widencdn.net/img/<acme>/jzrdv8kipa/{size}px@{scale}x/Image-dog--cat-in-snow.jpg?q={quality}&x.template=y",
             "html": null,
@@ -152,7 +152,7 @@ The mixin `wdenmix:embed` is used to map the common properties available in the 
             "apps": []
         }
     },
-    ...
+    
 }
 ```
 The module only maps the property `embeds.templated.url`. So the mixin definition looks like this :
