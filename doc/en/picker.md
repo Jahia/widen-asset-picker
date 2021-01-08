@@ -189,7 +189,7 @@ The application requests directly the Widen API and its search capabilities, so 
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
 
-![reactAppArch]
+<img src="../images/reactAppArch.png" width="775px"/>
 
 The application starts in the [index.js][react:index.js] file where the context parameters
 are checked based on the [douane's schema][react:douaneSchemaIndex.js].
