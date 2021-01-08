@@ -48,14 +48,14 @@ The hierarchy between them is presented in the schema below :
 
 <img src="../images/040_nodeArch.png" width="675px"/>
 
-From this 5 node types only `wdennt:widenReference` is accessible through the creation menu.
+From this 5 node types only `wdennt:widenReference` is accessible through the *create menu*.
  
 > Node types and mixin definitions, discussed later in this section, are written in the file
 [definition.cnd].
 > 
 ## wdennt:widenReference
-This node type is the only accessible through the creation menu. In other words,
-to add a widen asset into a page, a contributor must create new `wdennt:widenReference` alias *Widen* in the UI.
+This node type is the only one accessible through the *create menu*. In other words,
+to add a widen asset into a page, a contributor must create a new `wdennt:widenReference` alias **Widen** in the UI.
 
 <img src="../images/0011_menuSelect2.png" width="375px"/>
 
@@ -67,12 +67,12 @@ This node type is defined like this :
 ```
 
 `wdennt:widenReference` extends 3 supertypes :
-1. `jnt:content` : the node type is a content node type
-1. `jmix:multimediaContent` : the node type appears in the *Content:Multimedia* menu entry (see image above)
-1. `jmix:nodeReference` : the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
+1. `jnt:content` : meaning the node type is a content node type
+1. `jmix:multimediaContent` : meaning the node type appears in the **Content:Multimedia** menu entry (see image above)
+1. `jmix:nodeReference` : meaning the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
     this mixin provides a default attribute `j:node` used to store the path of the referenced node.
 
-The property `j:node` is overwritten to use a custom picker named [widenPicker](#widen-picker)
+>In this defintion, the property `j:node` is overwritten. Indeed, we want to use a custom picker named [widenPicker](#widen-picker)
 and restrict the allowed node type to be picked to node type that extends `wdenmix:widenAsset`.
 
 #### Mixins
