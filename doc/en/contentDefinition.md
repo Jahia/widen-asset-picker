@@ -438,7 +438,7 @@ To store these properties, the mixin is defined like this :
  - wden:videoStreamHTML (string) fulltextsearchable=no
  - wden:videoPoster (string) fulltextsearchable=no
 ```
-> If, you need more attribute for **video** assets you can add them to this definition. Don't forget to update the mapping process 
+> If you need more attribute for **video** assets, you can add them to this definition. Don't forget to update the mapping process 
 >(cf. [Widen Provider][provider.md])
 
 These properties are used by views to display HTML5 video players.
@@ -481,7 +481,7 @@ properties ([+](#wdenmixfileproperties)). PDF asset only uses properties common 
 ```cnd
 [wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
 ```
-> If, in the future, the API returns specific file properties for **pdf** assets you can add them to this definition.
+> If, in the future, the API returns specific file properties for **pdf** assets, you can add them to this definition.
 >Don't forget to update the mapping process (cf. [Widen Provider][provider.md])
 
 #### wdenmix:embedPdf
@@ -541,7 +541,7 @@ To store these properties, the mixin is defined like this :
  - wden:docURL (string) fulltextsearchable=no
  - wden:docHTMLLink (string) fulltextsearchable=no
 ```
-> If, you need more attribute for **pdf** assets you can add them to this definition. Don't forget to update the mapping process 
+> If you need more attribute for **pdf** assets, you can add them to this definition. Don't forget to update the mapping process 
 >(cf. [Widen Provider][provider.md])
 
 These properties are used by views to display pdf node within an HTML5 view or like a link.
