@@ -32,13 +32,10 @@ A node is also useful to create a dedicated rendering through a set of views.
     - [Views](#views-4)
 
 ## Architecture overview
-The node type architecture implemented in this module is design to be easily extended
-by a customer or its integrator.
-Indeed, a customer can create in Widen its own metadata and content definition. So, this modules cannot cover
+The node type architecture, implemented in this module, is designed to be easily extended
+by a customer or his integrator.
+Indeed, a customer can create in Widen his own metadata type. So, this module cannot cover
 all the possible case. But, new multimedia node types can be easily created.
-
-> Node types and mixin definitions, discussed later in this section, are written in the file
-[definition.cnd].
 
 The module provides multiple mixins (explained later) and 5 node types :
 1. `wdennt:widenReference`
@@ -47,15 +44,20 @@ The module provides multiple mixins (explained later) and 5 node types :
 1. `wdennt:pdf`
 1. `wdennt:document`
 
-![][040]
+The hierarchy between them is presented in the schema below :
+
+<img src="../images/040_nodeArch.png" width="675px"/>
 
 From this 5 node types only `wdennt:widenReference` is accessible through the creation menu.
  
+> Node types and mixin definitions, discussed later in this section, are written in the file
+[definition.cnd].
+> 
 ## wdennt:widenReference
 This node type is the only accessible through the creation menu. In other words,
 to add a widen asset into a page, a contributor must create new `wdennt:widenReference` alias *Widen* in the UI.
 
-<img src="./doc/images/0011_menuSelect2.png" width="375px"/>
+<img src="../images/0011_menuSelect2.png" width="375px"/>
 
 ### Definition
 This node type is defined like this :
@@ -573,8 +575,10 @@ The module provides a default empty view. Feel free to customize it.
 
 \[[< back][README.md]\]
 
+<!--
 [040]: ../images/040_nodeArch.png
-<!--[0011]: ../images/0011_menuSelect2.png-->
+[0011]: ../images/0011_menuSelect2.png
+-->
 [005]: ../images/005_widenReferenceSelected.png
 
 [definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
