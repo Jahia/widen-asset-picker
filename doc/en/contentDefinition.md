@@ -386,6 +386,7 @@ To store these properties, the mixin is defined like this :
 [wdenmix:videoFileProperties] > wdenmix:imageFileProperties mixin
  - wden:duration (double)
 ```
+> remember `width`, `height` and `aspect_ratio` are inherited from `wdenmix:imageFileProperties`.
 
 #### wdenmix:embedVideo
 The mixin `wdenmix:embedVideo` extends the mixin `wdenmix:embed` and inherits its
