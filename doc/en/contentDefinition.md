@@ -85,7 +85,7 @@ the JSON api. As these properties are common to all Widen assets, each jContent 
 The Widen API allows client to expand the JSON response with the *expand* query parameter
 (cf. Widen documentation [Assets - List by search query][widenAPI:AssetByQuery] or [Assets - Retrieve by id][widenAPI:AssetById] ).
 
-In our case we expand the response with **embeds**, **thumbnails** and **file_properties**. The JSON response returned by the API looks
+In our case we expand the JSON response with **embeds**, **thumbnails** and **file_properties**. The JSON response returned by the API looks
 like this: 
 
 ```json
@@ -125,8 +125,9 @@ Thus, the definition of the mixin looks like this :
  - wden:thumbnail (string) fulltextsearchable=no
 ```
 
-As discussed before, the API is expanded with **embeds**, **thumbnails** and **file_properties**.
-`embeds` and `file_properties` JSON objects depend on the asset type returned by the API. But, they also contain common properties.
+As discussed before, the JSON response is expanded with **embeds**, **thumbnails** and **file_properties**. Thus, the JSON response contains
+2 JSON objects `embeds` and `file_properties`. The properties of these objects depend on the asset type returned. But, they also contain
+common properties.
 Thus, the module contains 2 other mixins `wdenmix:embed` and `wdenmix:fileProperties` to map these common properties.
 
 #### wdenmix:embed
