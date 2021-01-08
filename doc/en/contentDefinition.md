@@ -308,7 +308,7 @@ The module provides 2 views:
 
 1. an hidden view named [getSrc.jsp][image.hidden.getSrc.jsp].
     This view returns the image src and srcset resolved in the same way as we did for the default view.
-    Here the view doesn't return an HTML tag, but only variables :
+    But, the view doesn't return an HTML tag, only variables :
 
     ```jsp
     <c:set target="${moduleMap}" property="src" value="${src}" />
@@ -334,7 +334,7 @@ The module provides 2 views:
     
     
 ## wdennt:video
-This node type is used to map a Widen Asset of type *video* : `file_properties.format_type = 'video'`.
+This node type is used to map a Widen Asset of type **video** : `file_properties.format_type = 'video'`.
 A `wdennt:video` node has a dedicated set of properties and views.
 
 
@@ -453,7 +453,7 @@ The module provides 3 views :
     of `wden:videoStreamHTML`. The view uses directly the HTML code returned by the Widen API with few css adjustments.
 
 ## wdennt:pdf
-This node type is used to map a Widen Asset of type *pdf* : `file_properties.format_type = 'pdf'`.
+This node type is used to map a Widen Asset of type **pdf** : `file_properties.format_type = 'pdf'`.
 A `wdennt:pdf` node has a dedicated set of properties and views.
 
 ### Definition
