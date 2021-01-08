@@ -250,10 +250,10 @@ The node type doesn't have specific property. All the property comes from supert
 
 #### wdenmix:imageFileProperties
 The mixin `wdenmix:imageFileProperties` extends the mixin `wdenmix:fileProperties` and inherits its
-properties ([+](#wdenmixfileproperties)). The mixin is used to map the specifics `file_properties.image_properties`
-JSON properties returned for an image asset.
+properties ([+](#wdenmixfileproperties)). The mixin is used to map the specifics properties of the JSON object `file_properties.image_properties`
+returned for an image asset.
 
-For an image, those properties are `width`, `height`, and`aspect_ratio` as presented in the JSON below.
+For an image, these properties are `width`, `height`, and`aspect_ratio` as presented in the JSON below.
 
 ```json
 {
@@ -274,7 +274,7 @@ For an image, those properties are `width`, `height`, and`aspect_ratio` as prese
 }
 ```
 
-To store those properties, the mixin is defined like this :
+To store these properties, the mixin is defined like this :
 ```cnd
 [wdenmix:imageFileProperties] > wdenmix:fileProperties mixin
  - wden:width (double)
@@ -295,7 +295,7 @@ The module provides 2 views:
          alt="<filename>"
     />
     ``` 
-    The widen cdn image URL is the value stored in the property `wden:templatedUrl`.
+    The *<widen cdn image url>* is the value stored in the property `wden:templatedUrl` ([+](#wdenmixembed)).
     This value contains variables `{size}`, `{scale}` and `{quality}` (cf. [json](#wdenmixembed)) resolved by the view.
     This allows the user (cf. [Image Advanced Settings](#views))
     or the template integrator to get the image with the desired size (`defaultWith` : 768).
