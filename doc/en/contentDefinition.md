@@ -356,10 +356,10 @@ The node type doesn't have specific property. All the property comes from supert
 
 #### wdenmix:videoFileProperties
 The mixin `wdenmix:videoFileProperties` extends the mixin `wdenmix:imageFileProperties` and inherits its
-properties ([+](#wdenmiximagefileproperties)). The mixin is used to map the specifics `file_properties.video_properties`
-JSON properties returned for a video asset.
+properties ([+](#wdenmiximagefileproperties)).
+The mixin is used to map the specifics properties of the JSON object `file_properties.video_properties` returned for a video asset.
 
-For a video, those properties are `width`, `height`, `aspect_ratio`, and `duration` as presented in the JSON below.
+For a video, these properties are `width`, `height`, `aspect_ratio`, and `duration` as presented in the JSON below.
 
 ```json
 {
