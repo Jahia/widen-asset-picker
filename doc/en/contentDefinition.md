@@ -295,7 +295,7 @@ The module provides 2 views:
          alt="<filename>"
     />
     ``` 
-    The *<widen cdn image url>* is the value stored in the property `wden:templatedUrl` ([+](#wdenmixembed)).
+    The *\<widen cdn image url\>* is the value stored in the property `wden:templatedUrl` ([+](#wdenmixembed)).
     This value contains variables `{size}`, `{scale}` and `{quality}` (cf. [json](#wdenmixembed)) resolved by the view.
     This allows the user (cf. [Image Advanced Settings](#views))
     or the template integrator to get the image with the desired size (`defaultWith` : 768).
