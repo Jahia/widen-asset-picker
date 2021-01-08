@@ -479,6 +479,7 @@ properties ([+](#wdenmixfileproperties)). PDF asset only uses properties common 
 ```cnd
 [wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
 ```
+> If, in the future, the API returns specific properties fro **PDF** you can add them to this definition.
 
 #### wdenmix:embedPdf
 The mixin `wdenmix:embedPdf` extends the mixin `wdenmix:embed` and inherits its
