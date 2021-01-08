@@ -1,5 +1,5 @@
 \[[<< back][README.md]\]
-# Widen content in jContent
+# Widen asset in jContent
 jContent v7 restrict the usage of a picker to a JCR node only. Thus, to pick an external widen asset,
 an equivalent of this widen asset is required as a node in jContent.
 A node is also usefull to create a dedicated rendering through a set of views.

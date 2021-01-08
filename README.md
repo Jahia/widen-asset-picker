@@ -26,13 +26,13 @@ This module contains :
 1. A *light* implementation of an External Data Provider (EDP) named
     `Widen Provider` ([WidenDataSource.java]).
 
-Not covered by this module :
+Not covered in this module :
 1. Ckeditor widen media picker
 
 ## Quick Start
 ### Prerequisites
 Before to deploy the module, some adjustment must be done in the jahia.properties file (*digital-factory-config/jahia/jahia.properties*):
-1. The size of the `System name` must be greater than the default 32 characters to save a widen asset id in it.
+1. The size of the `System name` must be greater than the default 32 characters to save a widen *asset id* in it.
 
     uncomment line 260 and change value 32 to 64
     ```
@@ -66,7 +66,7 @@ Before to deploy the module, some adjustment must be done in the jahia.propertie
    
    > You must restart jContent to have these properties available in the environment.
 
-   > The connector released for jContent v8 use a .cfg file and properties can be hot deployed
+   > Note : The jContent v8 connector uses a .cfg file and properties can be hot deployed
 
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon)
@@ -100,12 +100,14 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
     used to map the JSON returned by the widen API and representing the Widen asset into a Jahia node
 1. A React application, named `Widen Picker`, used as a content picker into Jahia. 
-    This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
-    select the media asset he wants to use on the website.
+    This picker is a user interface (UI) from which a jContent user can query a Widen server, to find and 
+    select the media asset they want to use on the website.
 
 ### Data flow
 
 ![][010]
+
+The data flow is composed by 10 actions of which 4 are optionals and depend on the cache. 
 
 1. The user creates a new `Widen` content (aka as `Widen Reference`).
 
@@ -149,6 +151,8 @@ about the asset picked - more details later in [the Widen Provider][provider.md]
 9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
 the use of a Widen CDN ensures good loading performance as well as the proper functioning of widen statistics.
 
+10. The Widen asset is render into the website
+
     ![][0061]
    
 ### Widen assets in jContent
@@ -160,7 +164,7 @@ the use of a Widen CDN ensures good loading performance as well as the proper fu
 ### Widen Provider
 [Read this dedicated page][provider.md]
 
-### How to handle a new media content created in Widen - example of the audio content type
+### How to handle a new media asset created in Widen - example of the audio content type
 [Read this dedicated page][enhance.md]
 
 
