@@ -99,15 +99,15 @@ like this:
     "deleted_date": null,
     "released_and_not_expired": true,
     "asset_properties": null,
-    "file_properties": {```},
+    "file_properties": {},
     "metadata": null,
     "metadata_info": null,
     "security": null,
     "status": null,
-    "thumbnails": {...},
-    "embeds": {...},
-    "expanded": {...},
-    "_links": {...}
+    "thumbnails": {},
+    "embeds": {},
+    "expanded": {},
+    "_links": {}
 }
 ```
 The common properties to map are :
