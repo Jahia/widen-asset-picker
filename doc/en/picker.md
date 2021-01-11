@@ -99,7 +99,7 @@ From jContent side, the interface is composed by three main functions :
     return $.parseHTML(iframe)[0];
     ```
 
-    The src of this iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
+    The **src** attribute value of this iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
     This template calls the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
     
     ![template]
@@ -115,13 +115,16 @@ From jContent side, the interface is composed by three main functions :
     <%-- Run the app --%>
     !function(e){function r(r){for(var n,i,l=r[0],p=r[1],f=r[2],...
    ```
-2. `widenPickerLoad(data)`. This function provides to the `widenPickerInterface` the current value of the form field.
-3. `widenPickerGet()`. This function is called when the contributor clicks the *save* button of the picker.
-The function get the node path of the selected asset from the `widenPickerInterface` and return the path to jContent.
+2. `widenPickerLoad(data)`. This function returns to the `widenPickerInterface` object  the current value of the form field.
+3. `widenPickerGet()`. This function is called when the contributor clicks the **save** button of the picker iframe.
+The function get the node path of the selected asset from the `widenPickerInterface` object and return the path to jContent.
     ```js
-    const pickerInterface = getCustomWidenPickerInterface();
-    if(pickerInterface !== undefined) {
-        return pickerInterface.data;
+    //called when click the picker save button
+    function widenPickerGet() {
+        const pickerInterface = getCustomWidenPickerInterface();
+        if(pickerInterface !== undefined) {
+            return pickerInterface.data;
+        }
     }
     ```
 
