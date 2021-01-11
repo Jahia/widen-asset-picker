@@ -14,7 +14,7 @@ With this module, a contributor can easily add a widen media asset to a jahia pa
     - [Widen assets in jContent](#widen-assets-in-jcontent)
     - [Widen Picker](#widen-picker)
     - [Widen Provider](#widen-provider)
-    - [How to handle a new media content created in Widen - example of the audio content type](#how-to-handle-a-new-media-content-created-in-widen---example-of-the-audio-content-type)
+    - [How to handle a new media content created in Widen - example of the audio content type](#how-to-handle-a-new-media-asset-created-in-widen---example-of-the-audio-content-type)
 
 
 ## Module content
