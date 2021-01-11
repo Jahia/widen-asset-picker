@@ -252,7 +252,8 @@ First, we read the variables declared in the file jahia.properties (cf. [prerequ
     String JCRMountPoint = properties.getProperty("jahia.widen.edp.mountPoint");
 %>
 ```
-Then we populate a js context object 
+Then we populate a js context object. This context object is checked
+by the douane component of the application (cf. step 2 of the [architecture](#architecture-1)).
 ```js
 const context_${targetId}={
     widen:{
@@ -264,8 +265,7 @@ const context_${targetId}={
     }
 };
 ```
-Finally, when the react widenPicker is ready, it is called with the context. This context object is checked
-by the douane component of the application (cf. point 2 of the [architecture](#architecture-1)).
+Finally, when the react widenPicker is ready, it is called with the context. 
 ```js
 window.widenPicker("${targetId}",context_${targetId});
 ```
@@ -274,11 +274,11 @@ window.widenPicker("${targetId}",context_${targetId});
 in the React application.
 For example, you could expose the timeout variable, or the default result per page, etc.
 To do it, you must follow these steps :
-1. create a new property in the jahia.properties
-2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
-3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
-4. read/map/use the property to the [store][react:store.jsx].
-By default, the store exposes the context, so the property can be accessed where you want.
+    1. create a new property in the jahia.properties
+    2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
+    3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
+    4. read/map/use the property to the [store][react:store.jsx].
+    By default, the store exposes the context, so the property can be accessed where you want.
 
 
 #### Run and deploy the App
