@@ -7,6 +7,9 @@
         - [Data flow](#data-flow)
     - [Javascript Interface](#javascript-interface)
         - [Architecture](#architecture)
+            - [widenPickerInit()](#widenpickerinit)
+            - [widenPickerLoad(data)](#widenpickerloaddata)
+            - [widenPickerGet()](#widenpickerget)
         - [Configuration](#configuration)
     - [Widen Picker React Application](#widen-picker-react-application)
         - [Architecture](#architecture-1)
@@ -90,43 +93,55 @@ and the other one from the react app ([widenPickerInterface object][react:index.
 
 #### Architecture
 
-From jContent side, the interface is composed by three main functions :
-1. `widenPickerInit()`. This function creates and returns an iframe HTML tag.
-    ```js
-    const iframe = `<iframe 
-        id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
-        src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
-    return $.parseHTML(iframe)[0];
-    ```
+From jContent side, the interface is composed by three main functions 
+1. `widenPickerInit()`
+2. `widenPickerLoad(data)`
+3. `widenPickerGet()`
 
-    The **src** attribute value of the iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
-    This template calls the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
-    
-    ![template]
-    
-    The view loads the build of the picker React application and runs the script
-    ```jsp
-    <%-- Load the build --%>
-    <template:addResources type="javascript" resources="REACTBuildApp/2.4ff4ff0b.chunk.js" />
-    <template:addResources type="javascript" resources="REACTBuildApp/main.8e3d683f.chunk.js" />
-    
-   ...
-   
-    <%-- Run the app --%>
-    !function(e){function r(r){for(var n,i,l=r[0],p=r[1],f=r[2],...
-   ```
-2. `widenPickerLoad(data)`. This function returns to the `widenPickerInterface` object  the current value of the form field.
-3. `widenPickerGet()`. This function is called when the contributor clicks the **save** button of the picker iframe.
+##### widenPickerInit()
+
+This function creates and returns an iframe HTML tag.
+
+```js
+const iframe = `<iframe 
+    id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
+    src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
+return $.parseHTML(iframe)[0];
+```
+
+The **src** attribute value of the iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
+This template calls the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
+
+![template]
+
+The view loads the build of the picker React application and runs the script
+```jsp
+<%-- Load the build --%>
+<template:addResources type="javascript" resources="REACTBuildApp/2.4ff4ff0b.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.8e3d683f.chunk.js" />
+
+...
+
+<%-- Run the app --%>
+!function(e){function r(r){for(var n,i,l=r[0],p=r[1],f=r[2],...
+```
+
+##### widenPickerLoad(data)
+This function returns to the `widenPickerInterface` object  the current value of the form field.
+
+##### widenPickerGet()
+This function is called when the contributor clicks the **save** button of the picker iframe.
 The function get the node path of the selected asset from the `widenPickerInterface` object and return the path to jContent.
-    ```js
-    //called when click the picker save button
-    function widenPickerGet() {
-        const pickerInterface = getCustomWidenPickerInterface();
-        if(pickerInterface !== undefined) {
-            return pickerInterface.data;
-        }
+
+```js
+//called when click the picker save button
+function widenPickerGet() {
+    const pickerInterface = getCustomWidenPickerInterface();
+    if(pickerInterface !== undefined) {
+        return pickerInterface.data;
     }
-    ```
+}
+```
 
 #### Configuration
 The picker is used by the property `j:node` of the `wdennt:widenReference` node type, to reference a node which extends
@@ -138,8 +153,8 @@ the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [con
 Based on this definition, jContent knows that it must use a custom picker configured by the **bean** with the id: `widenPicker`.
 This **bean** is declared in the spring configuration file [widen-picker.xml][widenPicker.xml].
 
-First of all, the interface functions in the [widen-asset-picker.js][widenAssetPicker.js]
-file must be set in the javascriptResources pool for GWT.
+First, the interface functions in the [widen-asset-picker.js][widenAssetPicker.js]
+file must be set in the javascriptResources pool for GWT. This is done with the configuration below:
 ```xml
 <bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
     <property name="javascriptResources">
@@ -149,7 +164,7 @@ file must be set in the javascriptResources pool for GWT.
     </property>
 </bean>
 ```
-Then the functions can be used in the `widenPicker` configuration.
+Then the interface functions can be used in the `widenPicker` configuration.
 ```xml
 <bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
     <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
