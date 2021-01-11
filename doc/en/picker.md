@@ -294,9 +294,10 @@ Thus, the command line to run the application is : `npm start`.
 > the command line must done in the [root folder][rootReact] or the React application.
 
 ##### Build and deploy the app for production :
-The application is not build by the jContent module as we do in v8 release.
-Also, when your development is finished, you must build and deploy the application.
-1. Build the application : `npm run-script build`
+The application is not build by the jContent module when it is deployed (*note: it is the case for the v8 release*).
+Also, when your development is finished, you must build and deploy the application manually:
+1. Build the application : from the [root folder][rootReact] or the React application execute the command line:
+`npm run-script build`
 2. Deploy the build :
     1. Copy/past files from [src/REACT/build/static/media] to [src/main/resources/icons]
     2. Copy/past files from [src/REACT/build/static/css] to [src/main/resources/css/REACTBuildApp]
