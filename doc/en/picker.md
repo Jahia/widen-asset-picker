@@ -291,7 +291,7 @@ Configure the context in the file [index.html][react:index.html] or set the appr
 with the appropriate values.
 The application is a standard React application build with `npx create-react-app` (cf. [reactjs.org][react.org:CreateNewApp]).
 Thus, the command line to run the application is : `npm start`.
-> the command line must done in the root folder or the React application : /src/REACT/
+> the command line must done in the [root folder][rootReact] or the React application.
 
 ##### Build and deploy the app for production :
 The application is not build by the jContent module as we do in v8 release.
@@ -346,6 +346,7 @@ to the end of the view.
 [src/REACT/build/static/css]: ../../src/REACT/build/static/css
 [src/REACT/build/static/js]: ../../src/REACT/build/static/js
 [src/REACT/build/static/media]: ../../src/REACT/build/static/media
+[rootReact]: ../../src/REACT
 
 [src/main/resources/css/REACTBuildApp]: ../../src/main/resources/css/REACTBuildApp
 [src/main/resources/javascript/REACTBuildApp]: ../../src/main/resources/javascript/REACTBuildApp
