@@ -42,19 +42,19 @@ However, this module doesn't use the default picker, because :
 1. The search UI of the default picker doesn't support search facets.
 2. The search UI is a bit complex to extend, if you want to support facets.
 
-So, we have decided to create our own picker. 
+So, we have decided to create our own picker, named `Widen Picker` : 
 
 ![003]
 
-Note : Even if, for the moment, this modules doesn't use facet approach,
+> Even if, for the moment, this modules doesn't use facet approach,
 the picker is ready to use one and easy to extend.
 
 
 ## Components
 The picker is based on a standalone REACT application.
 This application is a frontend of the Widen Asset API. The widen picker is used :
-1. to search and select the appropriate media content in the widen asset catalog.
-2. to create and returned a node path to jContent. This path is resolved later by the [provider][provider.md]
+1. to search and to select the appropriate media content in the widen assets catalog.
+2. to create and to returned a node path to jContent. This path is resolved later by the [provider][provider.md]
 to create the node.
 
 Even if the picker is a standalone REACT application, it must be linked to jContent to reference the selected
@@ -75,13 +75,13 @@ this view is displayed through a *main resource display* template named `widen-a
 #### Data flow
 1. The user click the GWT form field *Media Content*.
 2. The iframe with the *nt:base* node view is loaded.
-3. The React application is launched by the view. Depending on the configuration (lazy loading is possible), the application
-requests the last updated content to Widen.
+3. The React application is launched by the view. Depending on the configuration (lazy-loading is possible), the application
+requests the last updated contents to Widen.
 
-    The picker uses the Widen API :
+    > The picker uses the Widen API :
     [Assets - List by search query][widenAPI:AssetByQuery].
 4. The React application displays the assets returned by the API.
-5. The user selects a Widen asset.
+5. The contributor selects a Widen asset.
 
 ### Javascript Interface
 The javascript interface is the bridge between the content form, and the picker to exchange data.
