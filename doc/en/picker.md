@@ -143,40 +143,6 @@ function widenPickerGet() {
 }
 ```
 
-#### Configuration
-The picker is used by the property `j:node` of the `wdennt:widenReference` node type, to reference a node which extends
-the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [content definition file][definition.cnd] as follow :
-```cnd
-[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
- - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
-```
-Based on this definition, jContent knows that it must use a custom picker configured by the **bean** with the id: `widenPicker`.
-This **bean** is declared in the spring configuration file [widen-picker.xml][widenPicker.xml].
-
-First, the interface functions in the [widen-asset-picker.js][widenAssetPicker.js]
-file must be set in the javascriptResources pool for GWT. This is done with the configuration below:
-```xml
-<bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
-    <property name="javascriptResources">
-        <list>
-            <value>/modules/widen-picker/javascript/edit-mode/widen-asset-picker.js</value>
-        </list>
-    </property>
-</bean>
-```
-Then the interface functions can be used in the `widenPicker` configuration.
-```xml
-<bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
-    <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
-    <property name="customPickerConfiguration">
-        <bean class="org.jahia.ajax.gwt.client.widget.content.CustomPickerConfiguration">
-            <property name="initMethodName" value="widenPickerInit"/>
-            <property name="loadFieldValueMethodName" value="widenPickerLoad"/>
-            <property name="getFieldValueFromPickerMethodName" value="widenPickerGet"/>
-        </bean>
-    </property>
-</bean>
-```
 the `widenPickerInterface` object called in the functions above is declared in the [index][react:index.js]
 of the React application.
 
@@ -201,6 +167,42 @@ Like this, the `widenPickerInterface` is accessible at the iframe level.
 ...
 window.widenPickerInterface = widenPickerInterface;
 ```
+
+#### Configuration
+The picker is used by the property `j:node` of the `wdennt:widenReference` node type, to reference a node which extends
+the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [content definition file][definition.cnd] as follow :
+```cnd
+[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
+ - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
+```
+Based on this definition, jContent knows that it must use a custom picker configured by the **bean** with the id: `widenPicker`.
+This **bean** is declared in the spring configuration file [widen-picker.xml][widenPicker.xml].
+
+First, the interface functions written in the [widen-asset-picker.js][widenAssetPicker.js]
+file must be set in the javascriptResources pool for GWT. This is done with the configuration below:
+```xml
+<bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
+    <property name="javascriptResources">
+        <list>
+            <value>/modules/widen-picker/javascript/edit-mode/widen-asset-picker.js</value>
+        </list>
+    </property>
+</bean>
+```
+Then the interface functions can be used in the `widenPicker` configuration.
+```xml
+<bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
+    <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
+    <property name="customPickerConfiguration">
+        <bean class="org.jahia.ajax.gwt.client.widget.content.CustomPickerConfiguration">
+            <property name="initMethodName" value="widenPickerInit"/>
+            <property name="loadFieldValueMethodName" value="widenPickerLoad"/>
+            <property name="getFieldValueFromPickerMethodName" value="widenPickerGet"/>
+        </bean>
+    </property>
+</bean>
+```
+
 
 ### Widen picker React application
 The core of the Widen Picker is a standalone application used like a front end of the Widen API.
