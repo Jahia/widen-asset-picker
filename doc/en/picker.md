@@ -252,8 +252,7 @@ First, we read the variables declared in the file jahia.properties (cf. [prerequ
     String JCRMountPoint = properties.getProperty("jahia.widen.edp.mountPoint");
 %>
 ```
-Then we populate a js context object. This context object is checked
-by the douane component of the application (cf. step 2 of the [architecture](#architecture-1)).
+Then we populate a js context object.
 ```js
 const context_${targetId}={
     widen:{
@@ -265,6 +264,9 @@ const context_${targetId}={
     }
 };
 ```
+> This context object is checked
+  by the douane component of the application (cf. step 2 of the [architecture](#architecture-1)).
+
 Finally, when the react widenPicker is ready, it is called with the context. 
 ```js
 window.widenPicker("${targetId}",context_${targetId});
