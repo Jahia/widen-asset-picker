@@ -273,9 +273,10 @@ window.widenPicker("${targetId}",context_${targetId});
 ```
 
 > You can add more variables in the context. If you want to create new features or enhance current features
-in the React application.
-For example, you could expose the timeout variable, or the default result per page, etc.
-To do it, you must follow these steps :
+in the React application. For example, you could expose the timeout variable, or the default result per page, etc.
+
+
+To add more properties in the context object, you must follow these steps :
     1. create a new property in the jahia.properties
     2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
     3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
