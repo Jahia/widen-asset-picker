@@ -129,7 +129,8 @@ The function get the node path of the selected asset from the `widenPickerInterf
     ```
 
 #### Configuration
-The picker is used by the `wdennt:widenReference` node type, as written in the [content definition file][definition.cnd]
+The picker is used by the property `j:node` of the `wdennt:widenReference` node type, to reference a node which extends
+the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [content definition file][definition.cnd] as follow :
 ```cnd
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
@@ -330,6 +331,7 @@ to the end of the view.
 [README.md]: ../../README.md
 [prerequisites]: ../../README.md#prerequisites
 [provider.md]: ./provider.md
+[contentDef.md]: ./contentDefinition.md
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
 [react.org:CreateNewApp]: https://reactjs.org/docs/create-a-new-react-app.html
