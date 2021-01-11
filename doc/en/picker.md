@@ -206,17 +206,17 @@ Then the interface functions can be used in the `widenPicker` configuration.
 
 ### Widen picker React application
 The core of the Widen Picker is a standalone application used like a front end of the Widen API.
-The application requests directly the Widen API and its search capabilities, so the
+The application requests directly the Widen API and uses its search capabilities, so the
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
 
 <img src="../images/reactAppArch.png" width="775px"/>
 
-The application starts in the [index.js][react:index.js] file where the context parameters
-are checked based on the [douane's schema][react:douaneSchemaIndex.js].
+The application starts in the [index.js][react:index.js] (1) file where the context parameters
+are checked based on the [douane's schema][react:douaneSchemaIndex.js] (2).
 If a parameter is missing a default value is set based on the value declared in the [.env][react:env.js] file.
 
-Then, the cleaned context is send to the [store][react:store.jsx]. The `store` is
+Then, the cleaned context is send to the [store][react:store.jsx] (3). The `store` is
 a key part of the application. The `store` is the place where :
 * all the actions are defined
 * all the updates are made
@@ -231,7 +231,7 @@ a key part of the application. The `store` is the place where :
     },
     ```
 
-The `store` is used by all the application components. These components are in charge of the UI rendering,
+The `store` is used by all the application components (4). These components are in charge of the UI rendering,
 as illustrated in the image below.
 
 ![appComponent]
