@@ -15,14 +15,14 @@ Now she wants to pick assets using this metadata type into jContent and applies 
 To be able to pick, store and render a specific set of metadata related to the **audio** type into jContent, 
 you should follow 3 steps:
 
-1. Create a specific node type definition. For our example, you will create something like `wdennt:audio`.
+1. Create a specific node type definition. In our example, you will create something like `wdennt:audio`.
 
     Like the others, the `wdennt:audio` extends the mixin `wdenmix:widenAsset`
     (like this, you don't need to touch the definition of `wdennt:widenReference`).
     
     We can imagine, there is a specific `file_properties.audio_properties` object with the `duration` properties.
     
-    We can also image a specific `embeds.audio_player` object, and a specific `embeds.audio_stream` object.
+    We can also imagine a specific `embeds.audio_player` object, and a specific `embeds.audio_stream` object.
 
     At this stage, the audio node type definition should look like this:
     ```cnd
