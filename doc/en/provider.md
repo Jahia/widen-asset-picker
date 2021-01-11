@@ -90,10 +90,10 @@ public class WidenAsset {
 ```
 
 ## Configuration
-The provider is configured via a spring configuration file named [widen-picker.xml][widenPicker.xml].
-In this file, there is two main configuration part, one for the picker and the other one for the provider.
-For the provider, two beans are configured :
- 1. one to create the provider itsef
+The provider is configured via a spring configuration file, named [widen-picker.xml][widenPicker.xml].
+In this file, there is two main configuration parts, one for the picker and the other one for the provider.
+For the provider, one bean is configured:
+ 1. one to configure the provider itsef
  
     ```xml
     <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
@@ -109,7 +109,7 @@ For the provider, two beans are configured :
         <property name="dataSource" ref="WidenDataSource"/>
     </bean>
     ```
-2. the other one to create the data source used by the provider. This configuration maps
+2. the other one to configure the data source used by the provider. This configuration maps
 variables declare in the file jahia.properties (cf. [prerequisites]).
 
     ```xml
