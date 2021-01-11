@@ -1,6 +1,6 @@
 # How to handle a new media asset created in Widen - example of the audio content type
 You have created a new media asset in Widen, and you want to use it in jContent with a dedicated rendering ?
-Here is the process to follow to solve this issue.
+Here is the process to follow, to solve this issue.
 
 Be sure you have read the previous sections before to start :
 * [Widen assets in jContent][contentDefinition.md]
