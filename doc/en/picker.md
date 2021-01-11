@@ -272,7 +272,7 @@ Finally, when the react widenPicker is ready, it is called with the context.
 window.widenPicker("${targetId}",context_${targetId});
 ```
 
-> You can add more variables in the context. If you want to create new features or enhance current features
+> You can add more properties in the context. If you want to create new features or enhance current features
 in the React application. For example, you could expose the timeout variable, or the default result per page, etc.
 
 
@@ -285,9 +285,10 @@ By default, the store exposes the context, so the property can be accessed where
 
 
 #### Run and deploy the App
-configure the context in the file [index.html][react:index.html] or set the appropriate values in the [.env][react:env.js]
-with the appropriate values.
+
 ##### Run the app as standalone for development :
+Configure the context in the file [index.html][react:index.html] or set the appropriate values in the [.env][react:env.js]
+with the appropriate values.
 The application is a standard React application build with `npx create-react-app` (cf. [reactjs.org][react.org:CreateNewApp]).
 Thus, the command line to run the application is : `npm start`.
 
