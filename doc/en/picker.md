@@ -16,20 +16,20 @@
             - [Build and deploy the app for production](#build-and-deploy-the-app-for-production-)
 
 
-This section presents details about the picker used by a contributor to search and select a widen content from
+This section presents details about the picker used by a contributor to search and to select a widen content from
 a jContent node.
 
 Before to deep dive into the widen picker, few words about the default jContent picker.
 
 ## Reminder about picker
-A picker is a user interface used by a jContent contributor to search and select a referenced node/content from
+A picker is a user interface (UI) used by a jContent contributor to search and to select a referenced node/content from
   a master node/content form field. In other words, this is the way to create a reference between two nodes/contents.
   
 With a picker, a contributor can
 1. Browse a content tree (internal or external)
 
     ![01_defaultPicker]
-2. Run a fulltext search through metadata like name or tags
+2. Run a fulltext search through metadata like **name** or **tags** (Sort By)
 
     ![02_defaultPicker]
 3. Upload a binary (text file, image, video...) from the file system
