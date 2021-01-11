@@ -277,11 +277,11 @@ in the React application. For example, you could expose the timeout variable, or
 
 
 To add more properties in the context object, you must follow these steps :
-    1. create a new property in the jahia.properties
-    2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
-    3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
-    4. read/map/use the property to the [store][react:store.jsx].
-    By default, the store exposes the context, so the property can be accessed where you want.
+1. create a new property in the jahia.properties
+2. in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp], get the property and add it to the context object
+3. declare this new property in the [validation schema][react:douaneSchemaIndex.js]
+4. read/map/use the property to the [store][react:store.jsx].
+By default, the store exposes the context, so the property can be accessed where you want.
 
 
 #### Run and deploy the App
