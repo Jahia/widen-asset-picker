@@ -61,7 +61,7 @@ The cache is set up in the function :
 [start()][WidenDataSource.java].
 
 This cache is configured to keep 1 hour (3600s) an idle object, and to remove an object after 8 hours (28800s).
-The configuration looks like this :
+The configuration looks like this:
 ```java
 private static final String CACHE_NAME = "cacheWiden";
 private static final int TIME_TO_LIVE_SECONDS = 28800;
