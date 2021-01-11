@@ -296,14 +296,14 @@ Thus, the command line to run the application is : `npm start`.
 ##### Build and deploy the app for production :
 The application is not build by the jContent module when it is deployed (*note: it is the case for the v8 release*).
 Also, when your development is finished, you must build and deploy the application manually:
-1. Build the application : from the [root folder][rootReact] or the React application execute the command line:
+1. Build the application : from the [root folder][rootReact] or the React application execute the command line
 `npm run-script build`
 2. Deploy the build :
     1. Copy/past files from [src/REACT/build/static/media] to [src/main/resources/icons]
     2. Copy/past files from [src/REACT/build/static/css] to [src/main/resources/css/REACTBuildApp]
     3. Copy/past files from [src/REACT/build/static/js] to [src/main/resources/javascript/REACTBuildApp]
     
-        > Update the `main.xxxxxx.chunk.js` with the appropriate url for the *loader* image :
+        > Edit and update the `main.xxxxxx.chunk.js` with the appropriate url for the *loader* image :
         replace `static/media/` by `modules/widen-picker/icons/`
 3. Update the import in the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp]
 with the appropriate file name. The content of the file `runtime-main.xxxxxxx.js` is directly past
