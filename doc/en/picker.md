@@ -99,7 +99,7 @@ From jContent side, the interface is composed by three main functions :
     return $.parseHTML(iframe)[0];
     ```
 
-    The **src** attribute value of this iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
+    The **src** attribute value of the iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
     This template calls the view [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
     
     ![template]
@@ -129,12 +129,12 @@ The function get the node path of the selected asset from the `widenPickerInterf
     ```
 
 #### Configuration
-The picker is declared in the [content definition file][definition.cnd],
+The picker is used by the `wdennt:widenReference` node type, as written in the [content definition file][definition.cnd]
 ```cnd
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 ```
-Based one this definition, jContent knows that it must use a custom picker configured by the `widenPicker` config.
+Based on this definition, jContent knows that it must use a custom picker configured by the `widenPicker` config.
 This configuration is made in the spring configuration file [widen-picker.xml][widenPicker.xml].
 
 First of all, the functions in the [widen-asset-picker.js][widenAssetPicker.js]
