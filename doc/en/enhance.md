@@ -9,10 +9,10 @@ Be sure you have read the previous sections before to start :
 
 
 ## The Audio story
-Jamie from the marketing has created a new media asset type (aka *metadata type*) named *audio* in her Widen Server.
+Jamie, from the marketing team, has created a new media asset type (aka *metadata type*) named **audio** in her Widen Server.
 Now she wants to pick assets using this metadata type into jContent and applies a dedicated view to render an audio player.
 
-To be able to pick, store and render a specific set of metadata related to the *audio* type into jContent, 
+To be able to pick, store and render a specific set of metadata related to the **audio** type into jContent, 
 you should follow 3 steps:
 
 1. Create a specific node type definition. For our example, you will create something like `wdennt:audio`.
