@@ -135,8 +135,8 @@ the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [con
 [wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
  - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
 ```
-Based on this definition, jContent knows that it must use a custom picker configured by the `widenPicker` config.
-This configuration is made in the spring configuration file [widen-picker.xml][widenPicker.xml].
+Based on this definition, jContent knows that it must use a custom picker configured by the **bean** with the id: `widenPicker`.
+This **bean** is declared in the spring configuration file [widen-picker.xml][widenPicker.xml].
 
 First of all, the functions in the [widen-asset-picker.js][widenAssetPicker.js]
 file must be set in the javascriptResources pool for GWT.
