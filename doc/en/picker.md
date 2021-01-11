@@ -238,8 +238,8 @@ as illustrated in the image below.
 
 
 #### Configuration
-config is done in the [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
-Read the config variable declare in the file jahia.properties (cf. [prerequisites]).
+The configuration is made in the [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
+First, we read the variables declared in the file jahia.properties (cf. [prerequisites]).
 
 ```jsp
 <%
@@ -252,7 +252,7 @@ Read the config variable declare in the file jahia.properties (cf. [prerequisite
     String JCRMountPoint = properties.getProperty("jahia.widen.edp.mountPoint");
 %>
 ```
-Then populate a js context object 
+Then we populate a js context object 
 ```js
 const context_${targetId}={
     widen:{
@@ -264,12 +264,13 @@ const context_${targetId}={
     }
 };
 ```
-Finally, when the react widenPicker is ready, it is call with the context.
+Finally, when the react widenPicker is ready, it is called with the context. This context object is checked
+by the douane component of the application (cf. point 2 of the [architecture](#architecture-1)).
 ```js
 window.widenPicker("${targetId}",context_${targetId});
 ```
 
-Note : You can add more variables in the context if you want to create new features or enhance current features
+> You can add more variables in the context. If you want to create new features or enhance current features
 in the React application.
 For example, you could expose the timeout variable, or the default result per page, etc.
 To do it, you must follow these steps :
