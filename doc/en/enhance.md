@@ -41,7 +41,7 @@ you should follow 3 steps:
     2. the stream : `wdennt_audio/html/audio.stream.jsp`. In this view you will get the value of the property `wden:audioStreamURL`
     and use the value into an `<audio>` HTML tag.
     
-3. Update the deserializer [WidenAssetDeserializer.java] to map properly your new content.
+3. Update the deserializer [WidenAssetDeserializer.java] to map properly your new content properties.
 
     ```java
     ...
