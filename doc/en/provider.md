@@ -2,7 +2,7 @@
 # Widen Provider
 
 - [Architecture](#architecture)
-    - [Resolve the path](#resolve-the-path)
+    - [Resolve the node path](#resolve-the-node-path)
     - [Query Widen API](#query-widen-api)
         - [Before to Query check the cache](#before-to-query-check-the-cache-)
         - [Query Widen API](#query-widen-api)
@@ -11,11 +11,11 @@
 
 The provider is an implementation of an External Data Provider (EDP).
 In jContent, an EDP is used :
-1. to map an external asset to a jContent node (JCRNodeWrapper)
+1. to map an external asset to a JCR node (JCRNodeWrapper)
 2. to create a tree hierarchy to browse nodes in content explorer
-3. to enable the search capabilities for an external asset via lucene (used by default content picker)
+3. to enable the search capabilities for an external asset via lucene (used by the default content picker)
 or *Augmented Search*
-4. to add new properties to an external asset. A user can contribute those properties
+4. to add new properties to an external asset. A user can contribute these properties
 
 The main example of an EDP is the [tmdb-provider][tmdbProvider].
 
@@ -31,20 +31,20 @@ EDP as Light EDP.
 
 As presented in the [data flow][dataFlow], the provider maps a Widen asset (JSON) to a jContent node (JCRNodeWrapper).
 The mapping is done in 3 steps :
-1. Resolve the path returned by the picker `jahia.widen.edp.mountPoint`/`id` of the widen asset
+1. Resolve the node path returned by the picker `jahia.widen.edp.mountPoint`/`id` of the widen asset
 2. Query Widen API to get the properties of the asset
 3. Map the JSON to a JCRNodeWrapper
 
 Steps 1 & 2 are done in [WidenDataSource.java]
 and steps 3 is done in [WidenAssetDeserializer.java]
-### Resolve the path
-To resolve a path the provider implements two methods :
+### Resolve the node path
+To resolve a path, the provider implements two methods :
 1. `getItemByPath`
 2. `getItemByIdentifier`
 
 #### getItemByPath
-This method is basic and it is charge to extract the widen ID from the JCR node path received.
-Then the method `getItemByIdentifier` is called with the extracted id as parameter.
+This method is very simple. It is charge to extract the widen ID from the node path received, and call
+the method `getItemByIdentifier` with the extracted id as parameter.
 
 #### getItemByIdentifier
 This method is in charge :
@@ -56,11 +56,11 @@ This method is in charge :
 
 #### Before to Query check the cache !
 To avoid not necessary call, the module use a dedicated
-cache to store jContent nodes created after a widen call. The name of this cache is "cacheWiden".
+cache to store the JCR node created after a widen call. The name of this cache is "cacheWiden".
 The cache is set up in the function :
 [start()][WidenDataSource.java].
 
-This cache is configured to keep 1 hour (3600s) an idle object and finally to remove an object after 8 hours (28800s).
+This cache is configured to keep 1 hour (3600s) an idle object, and to remove an object after 8 hours (28800s).
 The configuration looks like this :
 ```java
 private static final String CACHE_NAME = "cacheWiden";
@@ -72,13 +72,13 @@ private static final int TIME_TO_IDLE_SECONDS = 3600;
 If the requested node is not in cache, the provider calls the Widen API from the funtion : [queryWiden()][WidenDataSource.java]
 to get all relevant information about the media content.
 
-The provider use the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
+> The provider use the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
 
 
 ### JSON to JCRNodeWrapper
 The JSON return by the API is mapped to a JCR node object. To do this mapping we use the [jackson] library.
 
-As the Widen JSON properties and the JCR node do not have the same names we created a custom
+As the Widen JSON properties and the JCR node properties do not have the same names we created a custom
 [deserializer][WidenAssetDeserializer.java]
 used by our class [WidenAsset.java]
 to create a cacheable object :
