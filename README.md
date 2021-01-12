@@ -133,8 +133,7 @@ The data flow is composed by 10 actions of which 4 are optionals and depend on t
     > jContent checks if this path refers to a jahia node. The path is resolved and mapped to a jahia node 
     with the help of the `Widen Provider`.
     
-5. If the asset picked is not in the jContent cache, the provider calls the widen API endpoint to get all the relevant properties
-about the asset picked - more details later in [the Widen Provider][provider.md] section.
+5. If the selected asset is not in the jContent cache, the provider calls the widen API endpoint to get relevant properties about the asset. For more details, see [the Widen Provider][provider.md] section.
         
     > The provider uses the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
 
@@ -149,7 +148,7 @@ about the asset picked - more details later in [the Widen Provider][provider.md]
 8. The content can be used by a jContent Page. This module provides jContent views for different type of widen asset (image, video...).
 
 9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
-the use of a Widen CDN ensures good loading performance as well as the proper functioning of widen statistics.
+The Widen CDN improves performance when assets load and alllows Widen to collect statistics.
 
 10. The Widen asset is render into the website
 
