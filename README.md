@@ -19,14 +19,14 @@ With this module, a contributor can easily add a Widen media asset to a Jahia pa
 
 ## Module content
 
-This module contains :
+This module contains:
 * The definition of a `Widen Reference` content ([definition.cnd][definition.cnd]).
 * A React application named `Widen Picker` ([index.js][react:index.js]).
     This application is a custom jContent picker and is used to pick a Widen asset.
 * A *light* implementation of an External Data Provider (EDP) named
     `Widen Provider` ([WidenDataSource.java]).
 
-Not covered in this module :
+Not covered in this module:
 * CKEditor widen media picker
 
 ## Quick Start
@@ -39,7 +39,7 @@ Before deploying the module, you must make the following changes to the jahia.pr
     (-) #jahia.jcr.maxNameSize = 32
     (+) jahia.jcr.maxNameSize = 64
    ```
-1. Add your widen configuration to the end of file:
+1. Add your Widen configuration to the end of file:
     ```properties
     ####
     # Widen Config
@@ -64,12 +64,12 @@ Before deploying the module, you must make the following changes to the jahia.pr
     jahia.widen.edp.mountPoint = /sites/systemsite/contents/dam-widen
     ```
    
-   > You must restart jContent to have these properties available in the environment.
+   > You must restart jContent to have these properties available in your environment.
 
-   > Note : The jContent v8 connector uses a .cfg file and properties can be hot deployed
+   > Note: The jContent v8 connector uses a .cfg file and properties can be hot deployed.
 
 ### Deploy the module
-The module can be installed in 2 ways, from the source or from the store (available soon)
+The module can be installed in 2 ways, from the source or from the store (available soon).
 #### From the source
 1. Clone or download the zip archive of the latest release.
 1. Go to the root of the repository.
@@ -96,10 +96,10 @@ If the module is properly deployed:
 
 ## Module details
 
-To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you need to implement:
+To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud instance, you need to implement:
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
     that maps the JSON returned by the widen API and represents the Widen asset into a Jahia node.
-1. A React application, named `Widen Picker`, used as a content picker into Jahia. 
+1. A React application, named `Widen Picker`, used as a content picker in Jahia. 
     This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
     select the media asset they want to use on the website.
 
@@ -107,9 +107,9 @@ To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you ne
 
 ![][010]
 
-The data flow is composed by 10 actions of which 4 are optionals and depend on the cache. 
+The data flow is composed by 10 actions of which 4 are optional and depend on the cache. 
 
-1. The user creates a new `Widen` content (aka as `Widen Reference`).
+1. The user creates a new `Widen` content (aka a `Widen Reference`).
 
     <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
     
@@ -123,33 +123,33 @@ The data flow is composed by 10 actions of which 4 are optionals and depend on t
     
     > The picker uses the Widen API: [Assets - List by search query][widenAPI:AssetByQuery].
 
-3. The widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a Widen asset.
+3. The Widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a Widen asset.
 
     ![][0041]
 
-4. When the user saves his choice from the picker, a content path is returned to jContent. This path is build with the value of `jahia.widen.edp.mountPoint`
+4. When the user saves their choice from the picker, a content path is returned to jContent. This path is built with the value of `jahia.widen.edp.mountPoint`
     and the `id` of the Widen asset.
     
     > jContent checks if this path refers to a Jahia node. The path is resolved and mapped to a Jahia node 
     with the help of the `Widen Provider`.
     
-5. If the asset picked is not in the jContent cache, the provider calls the widen API endpoint to get all the relevant properties
-about the asset picked - more details later in [the Widen Provider][provider.md] section.
+5. If the selected asset is not in the jContent cache, the provider calls the Widen API endpoint to get the relevant properties
+about the selected asset. For more details, see [the Widen Provider][provider.md] section.
         
-    > The provider uses the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
+    > The provider uses the Widen API: [Assets - Retrieve by id][widenAPI:AssetById].
 
 6. The JSON response returned by the API is mapped to a Jahia node and cached into an Ehcache instance named `cacheWiden`.
     By default, the cache is configured to keep the content for a maximum of 8 hours and to drop the content if it is idle for more than 1 hour. 
     
-7. If the path provided in step 4 is correct, the provider return a Jahia reference node, and the user can save his `Widen Reference`
+7. If the path provided in step 4 is correct, the provider return a Jahia reference node, and the user can save their `Widen Reference`
     content.
     
     ![][005]
     
-8. The content can be used by a jContent Page. This module provides jContent views for different type of widen asset (image, video...).
+8. The content can be used by a jContent Page. This module provides jContent views for different type of widen assets (for example images and videos).
 
 9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
-the use of a Widen CDN ensures good loading performance as well as the proper functioning of widen statistics.
+The Widen CDN improves performance when assets load and allows Widen to collect statistics.
 
 10. The Widen asset is rendered into the website.
 
