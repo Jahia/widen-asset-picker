@@ -2,7 +2,7 @@
 
 This module contains the implementation of the Widen Content Picker for Jahia v7.3.x.
 
-With this module, a contributor can easily add a widen media asset to a jahia page.
+With this module, a contributor can easily add a Widen media asset to a Jahia page.
 
 ![](./doc/images/master.png)
 
@@ -20,26 +20,26 @@ With this module, a contributor can easily add a widen media asset to a jahia pa
 ## Module content
 
 This module contains :
-1. The definition of a `Widen Reference` content ([definition.cnd][definition.cnd]).
-1. A React application named `Widen Picker` ([index.js][react:index.js]).
-    This application is a custom jContent picker and is used to pick a widen asset .
-1. A *light* implementation of an External Data Provider (EDP) named
+* The definition of a `Widen Reference` content ([definition.cnd][definition.cnd]).
+* A React application named `Widen Picker` ([index.js][react:index.js]).
+    This application is a custom jContent picker and is used to pick a Widen asset.
+* A *light* implementation of an External Data Provider (EDP) named
     `Widen Provider` ([WidenDataSource.java]).
 
 Not covered in this module :
-1. Ckeditor widen media picker
+* CKEditor widen media picker
 
 ## Quick Start
 ### Prerequisites
-Before to deploy the module, some adjustment must be done in the jahia.properties file (*digital-factory-config/jahia/jahia.properties*):
-1. The size of the `System name` must be greater than the default 32 characters to save a widen *asset id* in it.
+Before deploying the module, you must make the following changes to the jahia.properties file (*digital-factory-config/jahia/jahia.properties*):
+1. The size of the `System name` must be greater than the default 32 characters to allow you to save a Widen *asset id* in it.
 
     uncomment line 260 and change value 32 to 64
     ```
     (-) #jahia.jcr.maxNameSize = 32
     (+) jahia.jcr.maxNameSize = 64
    ```
-1. Add your widen configuration to the end of file :
+1. Add your widen configuration to the end of file:
     ```properties
     ####
     # Widen Config
@@ -51,7 +51,7 @@ Before to deploy the module, some adjustment must be done in the jahia.propertie
     jahia.widen.api.version = <api version>
     jahia.widen.edp.mountPoint = <jContent mount point>
     ```
-    For example :
+    For example:
     ```properties
     ####
     # Widen Config
@@ -72,12 +72,12 @@ Before to deploy the module, some adjustment must be done in the jahia.propertie
 The module can be installed in 2 ways, from the source or from the store (available soon)
 #### From the source
 1. Clone or download the zip archive of the latest release.
-1. Go to root of the repository
-1. Run the command line `mvn clean install`. This create a jar file in the *target* repository
-1. From jContent Goto `Administration` mode
-1. Expand `System components` entry and click `Modules`
-1. From the right panel click `SELECT MODULE`, and select the jar file in the *target* repository
-1. Finaly click `UPLOAD` 
+1. Go to the root of the repository.
+1. Run the command `mvn clean install`. This create a jar file in the *target* repository.
+1. In jContent, go to `Administration` mode.
+1. Expand the `System components` entry and click `Modules`.
+1. From the right panel, click `SELECT MODULE` and select the jar file in the *target* repository.
+1. Finaly click `UPLOAD`.
 
     ![][030]
 
@@ -85,8 +85,8 @@ The module can be installed in 2 ways, from the source or from the store (availa
 Available soon.
 
 #### Check install
-If the module is properly deployed :
-1. You should see the `WidenProvider` key in the list of External provider.
+If the module is properly deployed:
+1. You should see the `WidenProvider` key in the list of External providers.
 
     ![][031]
 
@@ -96,11 +96,11 @@ If the module is properly deployed :
 
 ## Module details
 
-To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you need to implement :
+To pick a widen asset (video, image, pdf...) from a Widen Cloud instance, you need to implement:
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
-    used to map the JSON returned by the widen API and representing the Widen asset into a Jahia node
+    that maps the JSON returned by the widen API and represents the Widen asset into a Jahia node.
 1. A React application, named `Widen Picker`, used as a content picker into Jahia. 
-    This picker is a user interface (UI) from which a jContent user can query a Widen server, to find and 
+    This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
     select the media asset they want to use on the website.
 
 ### Data flow
@@ -113,24 +113,24 @@ The data flow is composed by 10 actions of which 4 are optionals and depend on t
 
     <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
     
-    Then, jContent displays a user form with a field **Media Content**.
+    Then, jContent displays a user form with a **Media Content** field.
 
     ![][002]
 
-2. When user clicks the field **Media Content** in the form above, the React application `Widen Picker` is launched into an iframe. 
-    By default, the lazy-loading is set to false, and the application executes an AJAX call to the widen API endpoint to populate the picker -
-    more details later in [the Widen Picker][picker.md] section.
+2. When user clicks the **Media Content** field, the React application `Widen Picker` is launched into an iframe. 
+    By default, the lazy-loading is set to false, and the application executes an AJAX call to the widen API endpoint to populate the picker. For
+    more details see [the Widen Picker][picker.md] section.
     
-    > The picker uses the Widen API : [Assets - List by search query][widenAPI:AssetByQuery].
+    > The picker uses the Widen API: [Assets - List by search query][widenAPI:AssetByQuery].
 
-3. The widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a widen asset.
+3. The widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a Widen asset.
 
     ![][0041]
 
 4. When the user saves his choice from the picker, a content path is returned to jContent. This path is build with the value of `jahia.widen.edp.mountPoint`
-    and the `id` of the widen asset.
+    and the `id` of the Widen asset.
     
-    > jContent checks if this path refers to a jahia node. The path is resolved and mapped to a jahia node 
+    > jContent checks if this path refers to a Jahia node. The path is resolved and mapped to a Jahia node 
     with the help of the `Widen Provider`.
     
 5. If the asset picked is not in the jContent cache, the provider calls the widen API endpoint to get all the relevant properties
@@ -138,10 +138,10 @@ about the asset picked - more details later in [the Widen Provider][provider.md]
         
     > The provider uses the Widen API : [Assets - Retrieve by id][widenAPI:AssetById].
 
-6. The JSON response returned by the API is mapped to a jahia node and cached into an ehcache instance named `cacheWiden`.
-    By default, This cache is configured to keep the content 8h maximum and to drop the content if it is idle more than 1 hour. 
+6. The JSON response returned by the API is mapped to a Jahia node and cached into an Ehcache instance named `cacheWiden`.
+    By default, the cache is configured to keep the content for a maximum of 8 hours and to drop the content if it is idle for more than 1 hour. 
     
-7. If the path provided in step 4 is correct, the provider return a jahia reference node, and the user can save his `Widen Reference`
+7. If the path provided in step 4 is correct, the provider return a Jahia reference node, and the user can save his `Widen Reference`
     content.
     
     ![][005]
@@ -151,7 +151,7 @@ about the asset picked - more details later in [the Widen Provider][provider.md]
 9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
 the use of a Widen CDN ensures good loading performance as well as the proper functioning of widen statistics.
 
-10. The Widen asset is render into the website
+10. The Widen asset is rendered into the website.
 
     ![][0061]
    
