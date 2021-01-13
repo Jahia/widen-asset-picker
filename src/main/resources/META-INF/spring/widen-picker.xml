@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                 http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
 
-<!--    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>-->
+    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>
 
     <bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
         <property name="javascriptResources">

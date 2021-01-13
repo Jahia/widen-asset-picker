@@ -27,7 +27,7 @@
 <template:addResources type="css" resources="REACTBuildApp/main.d63656a5.chunk.css" />
 
 <template:addResources type="javascript" resources="REACTBuildApp/2.4ff4ff0b.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.8e3d683f.chunk.js" />
+<template:addResources type="javascript" resources="REACTBuildApp/main.0eb2109b.chunk.js" />
 
 <c:set var="targetId" value="REACT_Widen_Finder_${fn:replace(currentNode.identifier,'-','_')}"/>
 
