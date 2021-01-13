@@ -66,6 +66,8 @@ you should follow 3 steps:
    
         break;
     ```
+4. Build and deploy the jContent module (cf. [quickstart]).
+
 Now you should be able to use your new widen asset type into jContent.
 
 [WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java
