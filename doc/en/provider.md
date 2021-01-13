@@ -92,10 +92,12 @@ public class WidenAsset {
 ## Configuration
 The provider is configured via a spring configuration file, named [widen-picker.xml][widenPicker.xml].
 In this file, there is two main configuration parts, one for the picker and the other one for the provider.
-For the provider, one bean is configured:
+For the provider, two beans are configured:
  1. one to configure the provider itsef.
  
     ```xml
+    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>
+    ...
     <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
               parent="AbstractJCRStoreProvider">
         <property name="key" value="WidenProvider"/>

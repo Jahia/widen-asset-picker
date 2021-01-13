@@ -324,6 +324,7 @@ to the end of the view.
    </script>
    
    ```
+4. Build and deploy the jContent module (cf. [quickstart])
 
 \[[<< back][README.md]\]
 
@@ -355,6 +356,7 @@ to the end of the view.
 
 [README.md]: ../../README.md
 [prerequisites]: ../../README.md#prerequisites
+[quickstart]: ../../README.md#quick-start
 [provider.md]: ./provider.md
 [contentDef.md]: ./contentDefinition.md
 
