@@ -290,6 +290,7 @@ By default, the store exposes the context, so the property can be accessed where
 Configure the context in the [index.html][react:index.html] file or set the appropriate values in the [.env][react:env.js]
 with the appropriate values.
 The application is a standard React application build with `npx create-react-app` (see [reactjs.org][react.org:CreateNewApp]).
+The command line to install the NPM modules for application is: `npm install`.
 The command line to run the application is: `npm start`.
 > The command must be run in the [root folder][rootReact] or the React application.
 
