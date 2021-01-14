@@ -54,7 +54,7 @@
     <groupId>org.jahia.se.modules</groupId>
     <artifactId>widen-picker</artifactId>
     <name>Widen Picker</name>
-    <version>7.3.3.2</version>
+    <version>7.3.3.3-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (Widen Picker) for running on a Jahia server.</description>
 
@@ -62,7 +62,7 @@
         <connection>scm:git:git@github.com:Jahia/widen-asset-picker.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/widen-asset-picker.git</developerConnection>
         <url>https://github.com/Jahia/widen-asset-picker</url>
-      <tag>widen-picker-7.3.3.2</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>
