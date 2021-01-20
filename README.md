@@ -1,6 +1,6 @@
 # widen-asset-picker
 
-This module contains the implementation of the Widen Content Picker for Jahia v7.3.x.
+This module contains the implementation of the Widen Content Picker for Jahia v8.0.1.x
 
 With this module, a contributor can easily add a Widen media asset to a Jahia page.
 
@@ -92,7 +92,7 @@ If the module is properly deployed:
 
 2. You should be able to create a new `Widen Reference` content.
 
-    <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
+    <img src="./doc/images/0011_menuSelect.png" width="375px"/>
 
 ## Module details
 
@@ -111,7 +111,7 @@ The data flow is composed by 10 actions of which 4 are optional and depend on th
 
 1. The user creates a new `Widen` content (aka a `Widen Reference`).
 
-    <img src="./doc/images/0011_menuSelect2.png" width="375px"/>
+    <img src="./doc/images/0011_menuSelect.png" width="375px"/>
     
     Then, jContent displays a user form with a **Media Content** field.
 
@@ -154,7 +154,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 10. The Widen asset is rendered into the website.
 
     ![][0061]
-   
+    > you can select the view of the content referenced. In the image above the view **bubble** is selcted
 ### Widen assets in jContent
 [Read this dedicated page][contentDefinition.md]
  
@@ -175,7 +175,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 <!--[001]: ./doc/images/001_menu-select.png
 [0011]: ./doc/images/0011_menuSelect2.png-->
 [002]: ./doc/images/002_widenReference.png
-[0041]: ./doc/images/0041_widenPickerSelected.png
+[0041]: ./doc/images/004_widenPickerSelected.png
 [005]: ./doc/images/005_widenReferenceSelected.png
 [0061]: ./doc/images/0061_widenAssetInSite.png
 
