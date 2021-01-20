@@ -19,11 +19,11 @@
                 lazyLoad:${mountPoint.properties['wden:lazyLoad']},
                 resultPerPage:${mountPoint.properties['wden:resultPerPage']}
             }
-            console.debug("contextJsParameters.config",contextJsParameters.config);
+            console.debug('%c [configs/WidenPicker.jsp] contextJsParameters.config', 'color: #3c8cba',contextJsParameters.config);
         </c:when>
         <c:otherwise>
             <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>
-            console.log("no content of wdennt:mountPoint available");
+            console.warn("no wdennt:mountPoint available");
         </c:otherwise>
     </c:choose>
 </c:forEach>

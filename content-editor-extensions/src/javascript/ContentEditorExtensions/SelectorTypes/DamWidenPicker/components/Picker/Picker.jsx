@@ -1,5 +1,4 @@
 import React from 'react';
-import {Card, Col, Container, Row} from 'react-bootstrap';
 import {StoreContext} from '../../contexts';
 import {fetchSearchData} from '../../misc/data';
 import {SearchForm} from './SearchForm';
