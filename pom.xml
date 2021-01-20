@@ -58,7 +58,7 @@
     <groupId>org.jahia.se.modules</groupId>
     <artifactId>widen-picker-parent</artifactId>
     <name>Widen Picker Parent Project</name>
-    <version>8.0.1.3-SNAPSHOT</version>
+    <version>8.0.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
