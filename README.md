@@ -31,40 +31,25 @@ Not covered in this module:
 
 ## Quick Start
 ### Prerequisites
-Before deploying the module, you must make the following changes to the jahia.properties file (*digital-factory-config/jahia/jahia.properties*):
-1. The size of the `System name` must be greater than the default 32 characters to allow you to save a Widen *asset id* in it.
+Before deploying the module, you must make the following changes to the jahia.properties.
+* The size of the **System name** `jahia.jcr.maxNameSize` must be greater than the default 32 characters to allow you to save a Widen *asset id* in it.
 
-    uncomment line 260 and change value 32 to 64
-    ```
-    (-) #jahia.jcr.maxNameSize = 32
-    (+) jahia.jcr.maxNameSize = 64
-   ```
-1. Add your Widen configuration to the end of file:
-    ```properties
-    ####
-    # Widen Config
-    ####
-    jahia.widen.api.protocol = <http protocol>
-    jahia.widen.api.endPoint = <widen api endpoint>
-    jahia.widen.api.site = <your widen site name>
-    jahia.widen.api.token = <your widen api token>
-    jahia.widen.api.version = <api version>
-    jahia.widen.edp.mountPoint = <jContent mount point>
-    ```
-    For example:
-    ```properties
-    ####
-    # Widen Config
-    ####
-    jahia.widen.api.protocol = https
-    jahia.widen.api.endPoint = api.widencollective.com
-    jahia.widen.api.site = acme
-    jahia.widen.api.token = ba2d0a71907a17sff9eb9dc1fc91fd3a
-    jahia.widen.api.version = v2
-    jahia.widen.edp.mountPoint = /sites/systemsite/contents/dam-widen
-    ```
-   
-   > You must restart jContent to have these properties available in your environment.
+#### jahia.properties On Premise 
+The file to update is located in *digital-factory-config/jahia/jahia.properties* :
+    
+uncomment line 260 and change value 32 to 64
+```
+(-) #jahia.jcr.maxNameSize = 32
+(+) jahia.jcr.maxNameSize = 64
+```  
+> You must restart jContent to have these properties available in your environment.
+
+#### jahia.properties On Cloud
+From the admin page select your environment in the left panel. Then, click **Configuration** in the main panel.
+Expand the **Jahia Configuration** entry and search for *max name*
+Click hte Jackrabbit max name size entry, update the value, save you configuration and restart.
+
+![][100]
 
    > Note: The jContent v8 connector uses a .cfg file and properties can be hot deployed.
 
@@ -72,10 +57,14 @@ Before deploying the module, you must make the following changes to the jahia.pr
 The module can be installed in 2 ways, from the source or from the store (available soon).
 #### From the source
 1. Clone or download the zip archive of the latest release.
+2. If you already know your Widen configuration (api key, site, host) you can update the default
+configuration about Widen. Update Properties starting with `mount.wden_` in the file 
+[mount-widen.cfg][mount.cfg]. 
 1. Go to the root of the repository.
 1. Run the command `mvn clean install`. This create a jar file in the *target* repository.
-1. In jContent, go to `Administration` mode.
-1. Expand the `System components` entry and click `Modules`.
+    > you must have a **java sdk** and **maven** installed
+1. In jContent, go to `Administration` panel.
+1. In the `Server` section expand the `Modules and Extensions` entry and click `Modules`.
 1. From the right panel, click `SELECT MODULE` and select the jar file in the *target* repository.
 1. Finaly click `UPLOAD`.
 
@@ -94,12 +83,31 @@ If the module is properly deployed:
 
     <img src="./doc/images/0011_menuSelect.png" width="375px"/>
 
+### Post Install (optional)
+If you didn't update the Widen default configuration (see item 2 of this [section](#from-the-source)),
+you have to configure the module with your Widen API access information. This configuration doesn't require
+a server restart. To set up your Widen API access got to the jahai tools
+(*https://\<jahia host\>/tools*). From the tools UI, click `OSGI console` in the **Administration and Guidance**
+fieldset.
+
+![][0070]
+
+In the top menu expand the entry **OSGI** and click **Configuration**
+
+![][0072]
+
+Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click. If you have more than one entry like this
+be sure to select the right, the filename must contain **org.jahia.modules.external.mount-widen.cfg**.
+
+Finally, update Properties starting with `mount.wden_` and save your change.
+
+![][0071]
 ## Module details
 
 To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud instance, you need to implement:
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
     that maps the JSON returned by the widen API and represents the Widen asset into a Jahia node.
-1. A React application, named `Widen Picker`, used as a content picker in Jahia. 
+1. A React application named `Widen Picker`, and used as a `selectorType` in jContent. 
     This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
     select the media asset they want to use on the website.
 
@@ -113,11 +121,16 @@ The data flow is composed by 10 actions of which 4 are optional and depend on th
 
     <img src="./doc/images/0011_menuSelect.png" width="375px"/>
     
-    Then, jContent displays a user form with a **Media Content** field.
+    Then, jContent displays a user form with a **Media Content** field. The React application `Widen Picker`
+    used as a `selectorType` is launched and displays a placeholder.
+    
+    >A selectorType has 2 main component :
+    one used to present the selected content, or a placeholder if no content is selected,
+    and one used to pick a content.
 
     ![][002]
 
-2. When user clicks the **Media Content** field, the React application `Widen Picker` is launched into an iframe. 
+2. When user clicks the **Media Content** field, the picker component of the React application is launched into a modal. 
     By default, the lazy-loading is set to false, and the application executes an AJAX call to the widen API endpoint to populate the picker. For
     more details see [the Widen Picker][picker.md] section.
     
@@ -127,10 +140,12 @@ The data flow is composed by 10 actions of which 4 are optional and depend on th
 
     ![][0041]
 
-4. When the user saves their choice from the picker, a content path is returned to jContent. This path is built with the value of `jahia.widen.edp.mountPoint`
-    and the `id` of the Widen asset.
+4. When the user saves their choice from the picker, a content path is created. This path is built with the value of
+    the properties `mount.j_path`, `mount.j_nodename` and the `id` of the Widen asset.
     
-    > jContent checks if this path refers to a Jahia node. The path is resolved and mapped to a Jahia node 
+    > jContent cannot use this path directly as it expect to recieve a node id. 
+    To get this id the picker executes a GraphQL call to create the node and get its id.
+    During this call, the path is resolved and mapped to a Jahia node 
     with the help of the `Widen Provider`.
     
 5. If the selected asset is not in the jContent cache, the provider calls the Widen API endpoint to get the relevant properties
@@ -154,7 +169,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 10. The Widen asset is rendered into the website.
 
     ![][0061]
-    > you can select the view of the content referenced. In the image above the view **bubble** is selcted
+    > you can select the view of the content in reference. In the image above the view **bubble** is selected
 ### Widen assets in jContent
 [Read this dedicated page][contentDefinition.md]
  
@@ -178,15 +193,20 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 [0041]: ./doc/images/004_widenPickerSelected.png
 [005]: ./doc/images/005_widenReferenceSelected.png
 [0061]: ./doc/images/0061_widenAssetInSite.png
+[0070]: ./doc/images/0070_OSGIConfig.png
+[0071]: ./doc/images/0071_OSGIConfig.png
+[0072]: ./doc/images/0072_OSGIConfig.png
+[100]: ./doc/images/100_prequisiteCloud.png
 
 [contentDefinition.md]: ./doc/en/contentDefinition.md
 [picker.md]: ./doc/en/picker.md
 [provider.md]: ./doc/en/provider.md
 [enhance.md]: ./doc/en/enhance.md
 
-[definition.cnd]: ./src/main/resources/META-INF/definitions.cnd
-[react:index.js]: ./src/REACT/src/index.js
-[WidenDataSource.java]: ./src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java
+[mount.cfg]: ./content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[definition.cnd]: ./content-editor-extensions/src/main/resources/META-INF/definitions.cnd
+[react:index.js]: ./content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/index.js
+[WidenDataSource.java]: ./content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
 [widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
