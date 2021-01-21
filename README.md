@@ -75,10 +75,14 @@ Available soon.
 
 #### Check install
 If the module is properly deployed:
-1. You should see the `WidenProvider` key in the list of External providers.
+1. You should see the `dam-widen` in the list of Mount points
 
+    ![][032]
+
+    This mount point is used by an External provider. 
+    
     ![][031]
-
+    
 2. You should be able to create a new `Widen Reference` content.
 
     <img src="./doc/images/0011_menuSelect.png" width="375px"/>
@@ -186,6 +190,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
+[032]: ./doc/images/032_install_completed.png
 [010]: ./doc/images/010_archi.png
 <!--[001]: ./doc/images/001_menu-select.png
 [0011]: ./doc/images/0011_menuSelect2.png-->
