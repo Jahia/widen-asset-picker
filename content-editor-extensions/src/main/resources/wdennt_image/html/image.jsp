@@ -21,24 +21,31 @@
 <c:set var="alt" value="${fn:escapeXml(currentNode.displayableName)}"/>
 <c:set var="url" value="${currentNode.properties['wden:templatedUrl'].string}"/>
 
-<c:set var="url" value="${fn:replace(url, '{scale}', '1')}"/>
-<c:set var="url" value="${fn:replace(url, '{quality}', '72')}"/>
+<%--<utility:logger level="INFO" value="***[widenImage] widenNode widths: ${currentResource.moduleParams.widths}"/>--%>
 
-<c:set var="widths" value="${not empty currentResource.moduleParams.widths ? currentResource.moduleParams.widths :
-    '256,512,768,1024,1280,1600,2000'}"/>
-<c:set var="defaultWidth" value="${not empty currentResource.moduleParams.defaultWidth ? currentResource.moduleParams.defaultWidth :
-    '768'}"/>
+<c:set var="scale" value="${not empty currentResource.moduleParams.quality ?
+    currentResource.moduleParams.quality : '1'}"/>
+<c:set var="quality" value="${not empty currentResource.moduleParams.quality ?
+    currentResource.moduleParams.quality : '72'}"/>
+<c:set var="widths" value="${not empty currentResource.moduleParams.widths ?
+    currentResource.moduleParams.widths : '256,512,768,1280'}"/>
+<c:set var="defaultWidth" value="${not empty currentResource.moduleParams.defaultWidth ?
+    currentResource.moduleParams.defaultWidth : '768'}"/>
+<c:set var="sizes" value="${not empty currentResource.moduleParams.sizes ?
+    currentResource.moduleParams.sizes : '(min-width: 940px) 1280px, 768px'}"/>
 
-<utility:logger level="INFO" value="*** widen asset alt : ${alt}"/>
-<utility:logger level="INFO" value="*** widen asset url : ${url}"/>
+<c:set var="url" value="${fn:replace(url, '{scale}', scale)}"/>
+<c:set var="url" value="${fn:replace(url, '{quality}', quality)}"/>
+
+<utility:logger level="DEBUG" value="*** widen asset alt : ${alt}"/>
+<utility:logger level="DEBUG" value="*** widen asset url : ${url}"/>
 
 <img src="${fn:replace(url, '{size}', defaultWidth)}" width="100%"
      srcset="<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">
                 <c:if test="${!status.first}">,</c:if>
                 <c:out value="${fn:replace(url, '{size}', width)} ${width}w" />
             </c:forEach>"
-     sizes="(min-width: 600px) 512px,
-            200px"
+     sizes="${sizes}"
      class="${class}"
      alt="${alt}"
 />

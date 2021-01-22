@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+//import 'src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/index.css.disabled';
 import AjvError from './components/Error/Ajv';
 import {WidenPicker} from './components/WidenPicker';
 import {Store} from './Store';

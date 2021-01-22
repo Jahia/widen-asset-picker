@@ -18,28 +18,30 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<c:set var="nodeType" value="${currentNode.properties['wden:assetType'].string}"/>
-<c:set var="widenNode" value="${currentNode.properties['wden:extAsset'].node}"/>
-<c:set var="jContentNode" value="${currentNode.properties['wden:intAsset'].node}"/>
+<utility:logger level="DEBUG" value="*** widen image hidden getSrc called"/>
 
-<utility:logger level="INFO" value="*** nodeType : ${nodeType}"/>
-<utility:logger level="INFO" value="*** widenNode : ${widenNode}"/>
+<c:set var="url" value="${currentNode.properties['wden:templatedUrl'].string}"/>
 
-<c:if test="${renderContext.editMode}" >
-<div>
-    <span style="color:#ccc;">Edit widen test</span>
-</c:if>
-<c:choose>
-    <c:when test="${nodeType eq 'extAsset'}">
-        <template:module node="${widenNode}" editable="true">
-            <template:param name="widths" value="256,512"/>
-            <template:param name="defaultWidth" value="512"/>
-        </template:module>
-    </c:when>
-    <c:otherwise>
-        <template:module node="${jContentNode}" editable="false"/>
-    </c:otherwise>
-</c:choose>
-<c:if test="${renderContext.editMode}" >
-</div>
-</c:if>
+<c:set var="scale" value="${not empty currentResource.moduleParams.quality ?
+    currentResource.moduleParams.quality : '1'}"/>
+<c:set var="quality" value="${not empty currentResource.moduleParams.quality ?
+    currentResource.moduleParams.quality : '72'}"/>
+<c:set var="widths" value="${not empty currentResource.moduleParams.widths ?
+    currentResource.moduleParams.widths : '256,512,768,1280'}"/>
+<c:set var="defaultWidth" value="${not empty currentResource.moduleParams.defaultWidth ?
+    currentResource.moduleParams.defaultWidth : '768'}"/>
+
+<c:set var="url" value="${fn:replace(url, '{scale}', scale)}"/>
+<c:set var="url" value="${fn:replace(url, '{quality}', quality)}"/>
+
+
+<c:set var="src" value="${fn:replace(url, '{size}', defaultWidth)}" />
+<c:forEach items="${fn:split(widths, ',')}" var="width" varStatus="status">
+    <c:if test="${!status.first}">
+        <c:set var="srcset" value="${srcset}," />
+    </c:if>
+    <c:set var="srcset" value="${srcset} ${fn:replace(url, '{size}', width)} ${width}w" />
+</c:forEach>
+
+<c:set target="${moduleMap}" property="src" value="${src}" />
+<c:set target="${moduleMap}" property="srcset" value="${srcset}" />

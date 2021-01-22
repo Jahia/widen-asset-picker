@@ -1,6 +1,6 @@
 \[[<< back][README.md]\]
 # Widen asset in jContent
-jContent v7 restricts the usage of a picker to a *jcr* node only. To pick an external Widen asset,
+For each ex To pick an external Widen asset,
 jContent must create a JCR node equivalent of this Widen asset.
 A node is also useful for creating a dedicated rendering through a set of views.
 
@@ -591,16 +591,16 @@ The module provides a default empty view. *Feel free to customize it*.
 -->
 [005]: ../images/005_widenReferenceSelected.png
 
-[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
-[widenReference.jsp]: ../../src/main/resources/wdennt_widenReference/html/widenReference.jsp
-[image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
-[video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
-[video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
-[video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp
-[pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
-[pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
-[pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
+[definition.cnd]: ../../content-editor-extensions/src/main/resources/META-INF/definitions.cnd
+[widenReference.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_widenReference/html/widenReference.jsp
+[image.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_image/html/image.jsp
+[image.hidden.getSrc.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[video.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.jsp
+[video.player.vjs.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.player.vjs.jsp
+[video.stream.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.stream.jsp
+[pdf.link.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.link.jsp
+[pdf.viewerHTML5.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
+[pdf.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.jsp
 
 [README.md]: ../../README.md
 [provider.md]: ./provider.md

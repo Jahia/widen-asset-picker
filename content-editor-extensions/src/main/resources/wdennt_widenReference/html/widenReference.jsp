@@ -22,7 +22,7 @@
 <c:set var="referenceView" value="${not empty currentNode.properties['j:referenceView'] ?
     currentNode.properties['j:referenceView'].string :
     'default'}"/>
-<utility:logger level="INFO" value="*** widenReference referenceView: ${referenceView}"/>
+<%--<utility:logger level="INFO" value="*** widenReference referenceView: ${referenceView}"/>--%>
 
 <%--<c:set var="defaultWidth" value="${currentNode.properties['wden:defaultImageSize'].long}"/>--%>
 <c:set var="_widths_" value="${currentNode.properties['wden:imageSizes']}"/>
@@ -37,11 +37,11 @@
         <c:set var="widths" value="${_widths_[0]}"/>
         <c:forEach var="width" items="${_widths_}" begin="1">
             <c:set var="widths" value="${widths},${width}"/>
-<%--            <utility:logger level="INFO" value="*** widenNode widths: ${widths}"/>--%>
+<%--            <utility:logger level="INFO" value="***[widenReference] widenNode widths: ${widths}"/>--%>
         </c:forEach>
     </c:when>
     <c:otherwise>
-        <c:set var="widths" value="256,512,768,1024,1280,1600,2000"/>
+        <c:set var="widths" value="256,512,768,1280"/>
     </c:otherwise>
 </c:choose>
 
