@@ -109,7 +109,7 @@ Finally, update Properties starting with `mount.wden_` and save your change.
 To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud instance, you need to implement:
 1. A *light* External Data Provider (EDP), named `Widen Provider`,
     that maps the JSON returned by the widen API and represents the Widen asset into a Jahia node.
-1. A React application named `Widen Picker`, and used as a `selectorType` in jContent. 
+2. A React application named `Widen Picker`, and used as a `selectorType` in jContent. 
     This picker is a user interface (UI) from which a jContent user can query a Widen server to find and 
     select the media asset they want to use on the website.
 
