@@ -7,11 +7,10 @@ import * as PropTypes from 'prop-types';
 import {contextValidator} from './douane';
 
 const DamWidenPickerCmp = ({field, id, value, editorContext,setActionContext, onChange}) => {
-    console.debug('[DamWidenPickerCmp] est dans la place !');
-    console.debug('[DamWidenPickerCmp] field',field);
-    console.debug('[DamWidenPickerCmp] id',id);
-    console.debug('[DamWidenPickerCmp] value',value);
-    console.debug('[DamWidenPickerCmp] editorContext',editorContext);
+    // console.debug('[DamWidenPickerCmp] field',field);
+    // console.debug('[DamWidenPickerCmp] id',id);
+    // console.debug('[DamWidenPickerCmp] value',value);
+    // console.debug('[DamWidenPickerCmp] editorContext',editorContext);
 
     let context = {
         widen: {

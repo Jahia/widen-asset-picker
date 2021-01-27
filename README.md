@@ -21,7 +21,7 @@ With this module, a contributor can easily add a Widen media asset to a Jahia pa
 
 This module contains:
 * The definition of a `Widen Reference` content ([definition.cnd][definition.cnd]).
-* A React application named `Widen Picker` ([index.js][react:index.js]).
+* A React application named `Widen Picker` ([DamWidenPickerCmp.jsx][react:index.js]).
     This application is a custom jContent picker and is used to pick a Widen asset.
 * A *light* implementation of an External Data Provider (EDP) named
     `Widen Provider` ([WidenDataSource.java]).
@@ -50,8 +50,6 @@ Expand the **Jahia Configuration** entry and search for *max name*
 Click hte Jackrabbit max name size entry, update the value, save you configuration and restart.
 
 ![][100]
-
-   > Note: The jContent v8 connector uses a .cfg file and properties can be hot deployed.
 
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon).
@@ -90,7 +88,7 @@ If the module is properly deployed:
 ### Post Install (optional)
 If you didn't update the Widen default configuration (see item 2 of this [section](#from-the-source)),
 you have to configure the module with your Widen API access information. This configuration doesn't require
-a server restart. To set up your Widen API access got to the jahai tools
+a server restart. To set up your Widen API access got to the jahia tools
 (*https://\<jahia host\>/tools*). From the tools UI, click `OSGI console` in the **Administration and Guidance**
 fieldset.
 
@@ -210,7 +208,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 
 [mount.cfg]: ./content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
 [definition.cnd]: ./content-editor-extensions/src/main/resources/META-INF/definitions.cnd
-[react:index.js]: ./content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/index.js
+[react:index.js]: ./content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/DamWidenPickerCmp.jsx
 [WidenDataSource.java]: ./content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
