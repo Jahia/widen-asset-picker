@@ -145,14 +145,12 @@ The data flow is composed by 10 actions of which 4 are optional and depend on th
 4. When the user saves their choice from the picker, a content path is created. This path is built with the value of
     the properties `mount.j_path`, `mount.j_nodename` and the `id` of the Widen asset.
     
-    > 
-    
-5. jContent cannot use this path directly as it expects to receive a node id. 
+    jContent cannot use this path directly as it expects to receive a node id. 
     Thus, the picker executes a GraphQL call to create the node and get its id back.
     During this call, the path is resolved and mapped to a Jahia node 
     with the help of the `Widen Provider`.
     
-    If the selected asset is not in the jContent cache,
+5. If the selected asset is not in the jContent cache,
     the provider calls the Widen API endpoint to get the relevant properties
     about the selected asset. For more details, see [the Widen Provider][provider.md] section.
         

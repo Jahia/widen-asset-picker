@@ -57,7 +57,7 @@ From the node types, only `wdennt:widenReference` is accessible through the *cre
 This node type is the only one accessible through the *create menu*. In other words,
 to add a widen asset into a page, a contributor must create a new `wdennt:widenReference` alias **Widen** in the UI.
 
-<img src="../images/0011_menuSelect2.png" width="375px"/>
+<img src="../images/0011_menuSelect.png" width="375px"/>
 
 ### Definition
 This node type is defined like this:
