@@ -65,7 +65,7 @@ Widen asset as a JCR node. This link is done through a Javascript interface.
 
 ### Overview
 
-![pickerArch]
+<img src="../images/pickerArch.png" width="775px"/>
 
 The jContent widen picker is composed of three main elements:
 1. A Javascript interface written in the [widen-asset-picker.js][widenAssetPicker.js] file.
@@ -209,8 +209,8 @@ The core of the Widen Picker is a standalone application used like a front end o
 The application directly requests the Widen API and uses its search capabilities so the
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
-![reactAppArch]
-<img src="../images/reactAppArch.png" width="775px"/>
+
+<img src="../images/reactAppArch.png" width="850px"/>
 
 The application starts in the [index.js][react:index.js] (1) file where the context parameters
 are checked based on the [douane's schema][react:douaneSchemaIndex.js] (2).
