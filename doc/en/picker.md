@@ -67,145 +67,153 @@ Widen asset as a JCR node. This link is done through a Javascript interface.
 
 <img src="../images/pickerArch.png" width="775px"/>
 
-The jContent widen picker is composed of three main elements:
-1. A Javascript interface written in the [widen-asset-picker.js][widenAssetPicker.js] file.
-2. A content view for an *nt:base* node, and named [hidden.widenPicker.jsp][hidden.widenPicker.jsp].
-This view displays through a *main resource display* template named `widen-asset-edit-picker`.
+The Content editor extension **Widen Picker**  is mainly composed of a [React application][react:index.js] named `WidenPicker`.
+To be loaded, this application must register with jContent. For that purpose, Jahia has created
+an npm/yarn module named `ui-extender`, which is a part of the `Webpack App Shell`
+project in Jahia ([read more about App Shell][medium:AppShell]).
 
-3. A [React application][react:index.js].
+### Application build and registration
+First of all, keep in mind that the **Widen Picker** is a React application built on the fly when
+the module is deployed.
+When the build is done, the application is loaded and the registration process starts.
 
+#### Build the front application
+In this documentation, we will not dig to much into details about how to build a front application
+in a Jahia module, but just give you an overview of it.
 
-#### Data flow
-1. The user clicks the GWT form field *Media Content*.
-2. The iframe with the *nt:base* node view is loaded.
-3. The React application is launched by the view. Depending on the configuration (lazy-loading is possible), the application
-requests the last updated content from Widen.
+To deploy [nodejs], to install [yarn] packages and to build the React application from maven,
+the module uses the [frontend-maven-plugin].
+To build the module the plugin has to excute three steps:
+* Install the binary for node v11.15.0 and yarn v1.12.3.
+* Upload and install the yarn packages referenced in the [packages.json] file.
+* Run the build command `yarn webpack`.
 
-    > The picker uses the Widen API:
-    [Assets - List by search query][widenAPI:AssetByQuery].
-4. The React application displays the assets returned by the API.
-5. The contributor selects a Widen asset.
+To execute these steps, the plugin is configured in the [pom.xml] file as follows:
 
-### Javascript interface
-The Javascript interface is the bridge between the content form and the picker for exchanging data.
-It is split in two parts, one from the jContent side ([widen-asset-picker.js][widenAssetPicker.js])
-and the other one from the React app ([widenPickerInterface object][react:index.js]).
-
-#### Architecture
-
-From jContent side, the interface is composed by the following main functions: 
-* `widenPickerInit()`
-* `widenPickerLoad(data)`
-* `widenPickerGet()`
-
-##### widenPickerInit()
-
-This function creates and returns an iframe HTML tag.
-
-```js
-const iframe = `<iframe 
-    id="${__widenFrameID__}" width="100%" height="100%" frameborder="0"
-    src="${jahiaGWTParameters.contextPath}${jahiaGWTParameters.servletPath}/editframe/default/${jahiaGWTParameters.lang}/sites/${jahiaGWTParameters.siteKey}.widen-asset-edit-picker.html"/>`
-return $.parseHTML(iframe)[0];
+```xml
+<plugin>
+    <groupId>com.github.eirslett</groupId>
+    <artifactId>frontend-maven-plugin</artifactId>
+    <version>1.6</version>
+    <!-- executions go here -->
+    <executions>
+        <execution>
+            <id>npm install node and yarn</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>install-node-and-yarn</goal>
+            </goals>
+            <configuration>
+                <nodeVersion>v11.15.0</nodeVersion>
+                <yarnVersion>v1.12.3</yarnVersion>
+            </configuration>
+        </execution>
+        <execution>
+            <id>yarn install</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>yarn</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>yarn post-install</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>yarn</goal>
+            </goals>
+            <configuration>
+                <arguments>${yarn.arguments}</arguments>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 ```
 
-The **src** attribute value of the iframe is the url of the *main resource display* template named `widen-asset-edit-picker`.
-This template calls the [hidden.widenPicker.jsp][hidden.widenPicker.jsp] view.
+Yarn arguments are:
 
-![template]
-
-The view loads the build of the picker React application and runs the script
-```jsp
-<%-- Load the build --%>
-<template:addResources type="javascript" resources="REACTBuildApp/2.4ff4ff0b.chunk.js" />
-<template:addResources type="javascript" resources="REACTBuildApp/main.8e3d683f.chunk.js" />
-
-...
-
-<%-- Run the app --%>
-!function(e){function r(r){for(var n,i,l=r[0],p=r[1],f=r[2],...
+```
+<yarn.arguments>build -p</yarn.arguments>
+<yarn.arguments>webpack</yarn.arguments>
 ```
 
-##### widenPickerLoad(data)
-This function returns the current value of the form field to the `widenPickerInterface` object.
+`App Shell` has also to be declare in the [pom.xml] file as follows:
 
-##### widenPickerGet()
-This function is called when the contributor clicks the **Save** button in the picker iframe.
-The function gets the node path of the selected asset from the `widenPickerInterface` object and returns the path to jContent.
+```xml
+<dependency>
+    <groupId>org.jahia.modules</groupId>
+    <artifactId>app-shell</artifactId>
+    <version>2.0.0</version>
+    <type>json</type>
+    <classifier>manifest</classifier>
+    <scope>provided</scope>
+</dependency>
+```
+It is used to build a manifest of common libraries.
+This manifest is then used by webpack through the `DllReferencePlugin` as written
+in the [webpack.config] file:
 
 ```js
-//called when click the picker save button
-function widenPickerGet() {
-    const pickerInterface = getCustomWidenPickerInterface();
-    if(pickerInterface !== undefined) {
-        return pickerInterface.data;
-    }
+plugins: [
+    new webpack.DllReferencePlugin({
+        manifest: require(manifest)
+    }),
+]
+```
+
+### Registration flow
+
+As written previously, this application must register with jContent to be available in a content form.
+The registration process is part of the the `Webpack App Shell` project.
+As defined in the [webpack.config] file, the main entry of the application is the 
+[src/javascript/index.js][react.src.index.js] file:
+
+```js
+entry: {
+    main: [
+        path.resolve(__dirname, 'src/javascript/publicPath'),
+        path.resolve(__dirname, 'src/javascript/index.js')
+    ]
 }
 ```
-
-The `widenPickerInterface` object called in the function above is declared in the [index][react:index.js]
-of the React application.
+In this file, we register a `callback` named `contentEditorExtensions` which is executed during
+the initialisation of the Jahia UI with a priority of 20. The callback function execute the code in
+the [ContentEditorExtensions.register][] file. 
 
 ```js
-const widenPickerInterface = {
-    _context: {},
-    _data: [],
+import {registry} from '@jahia/ui-extender';
+import register from './ContentEditorExtensions.register';
 
-    get context() {
-        return this._context;
-    },
-    get data(){
-        return this._data;
-    },
-    ...
-}
-...
+registry.add('callback', 'contentEditorExtensions', {
+    targets: ['jahiaApp-init:20'],
+    callback: register
+});
 ```
-Finally, the object is defined as a global Javascript variable attached to the window JS object.
-Like this, the `widenPickerInterface` is accessible at the iframe level.
+> the registry object comes from the yarn module `@jahia/ui-extender`
+
+The code of the register above is just a a pipe to the file [SelectorTypes.js]:
+
 ```js
-...
-window.widenPickerInterface = widenPickerInterface;
+import DamWidenPickerCmp from './DamWidenPicker';
+import {registerWidenPickerActions} from "./DamWidenPicker/components/actions";
+
+export const registerSelectorTypes = registry => {
+    registry.add('selectorType', 'WidenPicker', {cmp: DamWidenPickerCmp, supportMultiple: false});
+    registerWidenPickerActions(registry);
+};
 ```
 
-#### Configuration
-The picker is used by the `j:node` property of the `wdennt:widenReference` node type to reference a node which extends
-the mixin `wdenmix:widenAsset` ([+][contentDef.md]). This is written in the [content definition file][definition.cnd] as follows:
-```cnd
-[wdennt:widenReference] > jnt:content,jmix:nodeReference, jmix:multimediaContent
- - j:node (weakreference, picker[type='custom',config='widenPicker']) < 'wdenmix:widenAsset'
-```
-Based on this definition, jContent knows that it must use a custom picker configured by the **bean** with the id: `widenPicker`.
-This **bean** is declared in the spring configuration file [widen-picker.xml][widenPicker.xml].
+The code of this file is the one to register our application as a `selectorType` named `WidenPicker`.
+Our selector cannot be used by a content property which allows multiple values, and 
+the application to used to render the selector is the `DamWidenPickerCmp` component.
+This component is the main entry of our Widen picker React application.
 
-First, the interface functions written in the [widen-asset-picker.js][widenAssetPicker.js]
-file must be set in the javascriptResources pool for GWT. This is done with the configuration below:
-```xml
-<bean class="org.jahia.ajax.gwt.helper.ModuleGWTResources">
-    <property name="javascriptResources">
-        <list>
-            <value>/modules/widen-picker/javascript/edit-mode/widen-asset-picker.js</value>
-        </list>
-    </property>
-</bean>
-```
-Then, the interface functions can be used in the `widenPicker` configuration.
-```xml
-<bean id="widenPicker" class="org.jahia.services.uicomponents.bean.contentmanager.ManagerConfiguration">
-    <property name="titleKey" value="label.wdenAsset@resources.widen-picker"/>
-    <property name="customPickerConfiguration">
-        <bean class="org.jahia.ajax.gwt.client.widget.content.CustomPickerConfiguration">
-            <property name="initMethodName" value="widenPickerInit"/>
-            <property name="loadFieldValueMethodName" value="widenPickerLoad"/>
-            <property name="getFieldValueFromPickerMethodName" value="widenPickerGet"/>
-        </bean>
-    </property>
-</bean>
-```
+
+
+
 
 
 ### Widen picker React application
-The core of the Widen Picker is a standalone application used like a front end of the Widen API.
+The core of the Widen Picker is a Readt application used like a front end of the Widen API.
 The application directly requests the Widen API and uses its search capabilities so the
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
@@ -337,24 +345,6 @@ to the end of the view.
 [reactAppArch]: ../images/reactAppArch.png
 [appComponent]:  ../images/appComponent.png
 
-[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
-[widenAssetPicker.js]: ../../src/main/resources/javascript/edit-mode/widen-asset-picker.js
-[hidden.widenPicker.jsp]: ../../src/main/resources/nt_base/html/base.hidden.widenPicker.jsp
-[react:index.js]: ../../src/REACT/src/index.js
-[react:douaneSchemaIndex.js]: ../../src/REACT/src/douane/lib/schema/index.js
-[react:env.js]: ../../src/REACT/.env
-[react:store.jsx]: ../../src/REACT/src/Store/Store.jsx
-[react:index.html]: ../../src/REACT/public/index.html
-[widenPicker.xml]: ../../src/main/resources/META-INF/spring/widen-picker.xml
-[src/REACT/build/static/css]: ../../src/REACT/build/static/css
-[src/REACT/build/static/js]: ../../src/REACT/build/static/js
-[src/REACT/build/static/media]: ../../src/REACT/build/static/media
-[rootReact]: ../../src/REACT
-
-[src/main/resources/css/REACTBuildApp]: ../../src/main/resources/css/REACTBuildApp
-[src/main/resources/javascript/REACTBuildApp]: ../../src/main/resources/javascript/REACTBuildApp
-[src/main/resources/icons]: ../../src/main/resources/icons
-
 [README.md]: ../../README.md
 [prerequisites]: ../../README.md#prerequisites
 [quickstart]: ../../README.md#quick-start
@@ -363,19 +353,48 @@ to the end of the view.
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
 [react.org:CreateNewApp]: https://reactjs.org/docs/create-a-new-react-app.html
+[medium:AppShell]: https://medium.com/jahia-techblog/create-a-modular-ui-with-a-webpack-app-shell-396fa69c9851
 
-
-[image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
-[video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
-[video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
-[video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp
-[pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
-[pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
-[pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
-
-
-
-[videojs.com]: https://videojs.com
+[frontend-maven-plugin]: https://github.com/eirslett/frontend-maven-plugin
+[nodejs]: https://nodejs.org/
+[yarn]: https://yarnpkg.com/
+[webpack.config]: ../../content-editor-extensions/webpack.config.js
 
 [widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
+
+[react.src.index.js]: ../../content-editor-extensions/src/javascript/index.js
+[ContentEditorExtensions.register]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions.register.jsx
+[SelectorTypes.js]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/SelectorTypes.js
+
+[pom.xml]: ../../content-editor-extensions/pom.xml
+[packages.json]: ../../content-editor-extensions/package.json
+
+<!-- still use ?-->
+[definition.cnd]: ../../content-editor-extensions/src/main/resources/META-INF/definitions.cnd
+[widenAssetPicker.js]: ../../content-editor-extensions/src/main/resources/javascript/edit-mode/widen-asset-picker.js
+[hidden.widenPicker.jsp]: ../../content-editor-extensions/src/main/resources/nt_base/html/base.hidden.widenPicker.jsp
+[react:index.js]: ../../content-editor-extensions/src/REACT/src/index.js
+[react:douaneSchemaIndex.js]: ../../content-editor-extensions/src/REACT/src/douane/lib/schema/index.js
+[react:env.js]: ../../content-editor-extensions/src/REACT/.env
+[react:store.jsx]: ../../content-editor-extensions/src/REACT/src/Store/Store.jsx
+
+
+[src/main/resources/css/REACTBuildApp]: ../../content-editor-extensions/src/main/resources/css/REACTBuildApp
+[src/main/resources/javascript/REACTBuildApp]: ../../content-editor-extensions/src/main/resources/javascript/REACTBuildApp
+[src/main/resources/icons]: ../../content-editor-extensions/src/main/resources/icons
+
+
+
+
+
+
+#### Data flow
+1. The user clicks the GWT form field *Media Content*.
+2. The iframe with the *nt:base* node view is loaded.
+3. The React application is launched by the view. Depending on the configuration (lazy-loading is possible), the application
+requests the last updated content from Widen.
+
+    > The picker uses the Widen API:
+    [Assets - List by search query][widenAPI:AssetByQuery].
+4. The React application displays the assets returned by the API.
+5. The contributor selects a Widen asset.
