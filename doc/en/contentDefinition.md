@@ -1,6 +1,6 @@
 \[[<< back][README.md]\]
 # Widen asset in jContent
-For each ex To pick an external Widen asset,
+For each external Widen asset that a user picks,
 jContent must create a JCR node equivalent of this Widen asset.
 A node is also useful for creating a dedicated rendering through a set of views.
 

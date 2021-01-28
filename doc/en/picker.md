@@ -32,7 +32,7 @@ With a picker, a contributor can:
 1. Browse a content tree (internal or external).
 
     ![01_defaultPicker]
-2. Run a fulltext search through metadata like **name** or **tags** (Sort By).
+2. Run a fulltext search through metadata like **name** or **tags**.
 
     ![02_defaultPicker]
 3. Upload a binary (such as a text file, image, or video) from the file system.
@@ -209,7 +209,7 @@ The core of the Widen Picker is a standalone application used like a front end o
 The application directly requests the Widen API and uses its search capabilities so the
 assets returned are always synchronized with the Widen catalog.
 #### Architecture
-
+![reactAppArch]
 <img src="../images/reactAppArch.png" width="775px"/>
 
 The application starts in the [index.js][react:index.js] (1) file where the context parameters
@@ -332,7 +332,7 @@ to the end of the view.
 [01_defaultPicker]: ../images/default_picker_1.png
 [02_defaultPicker]: ../images/default_Picker_2.png
 [003]: ../images/003_widenPicker.png
-[pickerArch]: ../images/pickerarch.png
+[pickerArch]: ../images/pickerArch.png
 [template]: ../images/template.png
 [reactAppArch]: ../images/reactAppArch.png
 [appComponent]:  ../images/appComponent.png

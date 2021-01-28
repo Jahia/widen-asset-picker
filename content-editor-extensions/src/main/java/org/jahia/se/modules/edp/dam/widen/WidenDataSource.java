@@ -2,7 +2,6 @@ package org.jahia.se.modules.edp.dam.widen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
-import net.sf.ehcache.Element;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpsURL;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -13,8 +12,6 @@ import org.jahia.modules.external.ExternalDataSource;
 import org.jahia.osgi.BundleUtils;
 import org.jahia.se.modules.edp.dam.widen.cache.WidenCacheManager;
 import org.jahia.se.modules.edp.dam.widen.model.WidenAsset;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -76,35 +73,27 @@ public class WidenDataSource implements ExternalDataSource{
 
     @Override
     public List<String> getChildren(String s) throws RepositoryException {
-        LOGGER.info("***** WidenDataSource ***** getChildren is called with params : "+s);
         List<String> child = new ArrayList<String>();
         return child;
     }
 
     @Override
     public ExternalData getItemByIdentifier(String identifier) throws ItemNotFoundException {
-        LOGGER.info("***** WidenDataSource ***** getItemByIdentifier is called with identifier : "+identifier);
         try {
             if (identifier.equals("root")) {
                 return new ExternalData(identifier, "/", "jnt:contentFolder", new HashMap<String, String[]>());
             }else{
                 WidenAsset widenAsset = widenCacheManager.getWidenAsset(identifier);
                 if(widenAsset == null){
-                    LOGGER.info("***** WidenDataSource ***** no cacheEntry for : "+identifier);
+                    LOGGER.debug("no cacheEntry for : "+identifier);
                     String path = "/"+wdenStoreMountPoint.getVersion()+"/"+ASSET_ENTRY+"/"+identifier;
                     Map<String, String> query = new LinkedHashMap<String, String>();
                     query.put("expand",ASSET_ENTRY_EXPAND);
                     widenAsset = queryWiden(path,query);
                     widenCacheManager.cacheWidenAsset(widenAsset);
                 }
-                LOGGER.debug("***** WidenDataSource ***** widenAsset : "+widenAsset);
 
                 ExternalData data = new ExternalData(identifier, "/"+identifier, widenAsset.getJahiaNodeType(), widenAsset.getProperties());
-
-//                LOGGER.info("***** WidenDataSource ***** getItemByIdentifier data.getId() : "+data.getId());
-//                LOGGER.info("***** WidenDataSource ***** getItemByIdentifier data.getPath() : "+data.getPath());
-//                LOGGER.info("***** WidenDataSource ***** getItemByIdentifier data.getName() : "+data.getName());
-//                LOGGER.info("***** WidenDataSource ***** getItemByIdentifier data.getType() : "+data.getType());
                 return data;
             }
         } catch (Exception e) {
@@ -114,7 +103,6 @@ public class WidenDataSource implements ExternalDataSource{
 
     @Override
     public ExternalData getItemByPath(String path) throws PathNotFoundException {
-//        LOGGER.info("***** WidenDataSource ***** getItemByPath is called with path : "+path);
         String[] splitPath = path.split("/");
         try {
             if (path.endsWith("j:acl")) {
@@ -136,30 +124,26 @@ public class WidenDataSource implements ExternalDataSource{
 
     @Override
     public Set<String> getSupportedNodeTypes() {
-//        LOGGER.info("***** WidenDataSource ***** getSupportedNodeTypes is called ");
         return Sets.newHashSet("jnt:contentFolder", "wdennt:image","wdennt:video","wdennt:pdf","wdennt:document","wdennt:widen");
     }
 
     @Override
     public boolean isSupportsHierarchicalIdentifiers() {
-//        LOGGER.info("***** WidenDataSource ***** isSupportsHierarchicalIdentifiers is called ");
         return false;
     }
 
     @Override
     public boolean isSupportsUuid() {
-//        LOGGER.info("***** WidenDataSource ***** isSupportsUuid is called ");
         return false;
     }
 
     @Override
     public boolean itemExists(String s) {
-//        LOGGER.info("***** WidenDataSource ***** itemExists is called with params : "+s);
         return false;
     }
 
     private WidenAsset queryWiden(String path, Map<String, String> query) throws RepositoryException {
-        LOGGER.info("***** WidenDataSource ***** queryWiden is called for path : "+path+" and query : "+query);
+        LOGGER.info("Query Widen with path : {} and query : {}",path,query);
         try {
             String endpoint = wdenStoreMountPoint.getEndpoint();
             String widenSite = wdenStoreMountPoint.getSite();
@@ -182,7 +166,6 @@ public class WidenDataSource implements ExternalDataSource{
 //            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
 //            getMethod.setRequestHeader("Accept-Charset","UTF-8");
 
-            LOGGER.debug("***** WidenDataSource ***** getMethod.getRequestHeaders : "+Arrays.deepToString(getMethod.getRequestHeaders()));
             try {
                 httpClient.executeMethod(getMethod);
 
@@ -200,7 +183,7 @@ public class WidenDataSource implements ExternalDataSource{
 
             } finally {
                 getMethod.releaseConnection();
-                LOGGER.info("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));
+                LOGGER.debug("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));
             }
         } catch (Exception e) {
             LOGGER.error("Error while querying Widen", e);
