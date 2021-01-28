@@ -343,7 +343,7 @@ to the end of the view.
 [pickerArch]: ../images/pickerArch.png
 [template]: ../images/template.png
 [reactAppArch]: ../images/reactAppArch.png
-[appComponent]:  ../images/appComponent.png
+[appComponent]:  ../images/appComponent_picker.png
 
 [README.md]: ../../README.md
 [prerequisites]: ../../README.md#prerequisites
