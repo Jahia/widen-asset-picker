@@ -202,15 +202,10 @@ export const registerSelectorTypes = registry => {
 };
 ```
 
-The code of this file is the one to register our application as a `selectorType` named `WidenPicker`.
+The code of this file is to register our application as a `selectorType` named `WidenPicker`.
 Our selector cannot be used by a content property which allows multiple values, and 
-the application to used to render the selector is the `DamWidenPickerCmp` component.
+the application used to render the selector is the `DamWidenPickerCmp` component.
 This component is the main entry of our Widen picker React application.
-
-
-
-
-
 
 ### Widen picker React application
 The core of the Widen Picker is a Readt application used like a front end of the Widen API.
@@ -220,23 +215,25 @@ assets returned are always synchronized with the Widen catalog.
 
 <img src="../images/reactAppArch.png" width="850px"/>
 
-The application starts in the [index.js][react:index.js] (1) file where the context parameters
+The registration process enable the application which starts in the
+[DamWidenPickerCmp][react:DamWidenPickerCmp] (1) file where the context parameters
 are checked based on the [douane's schema][react:douaneSchemaIndex.js] (2).
-If a parameter is missing, a default value is set based on the value declared in the [.env][react:env.js] file.
+If a required parameter is missing, an error is returned.
 
 Then, the cleaned context is send to the [store][react:store.jsx] (3). The `store` is
 a key part of the application. The `store` is the place where:
 * all the actions are defined
 * all the updates are made
-* the `widenPickerInterface` is updated with the selected value:
+* the `onChange` function (provided by *Content Editor*) is called with the selected value:
 
     ```js
-    case "UPDATE_SELECTED_ITEM": {
+    case 'UPDATE_SELECTED_ITEM_UUID': {
+        const {uuid} = payload;
+        const {editorOnChange} = state;
+        const editorValue = uuid;
+        editorOnChange(editorValue);
         ...
-        window.widenPickerInterface.removeAll();
-        window.widenPickerInterface.add(`${state.mountPoint}/${id}`);
-        ...
-    },
+    }
     ```
 
 The `store` is used by all the application components (4). These components are in charge of the UI rendering,
@@ -363,20 +360,25 @@ to the end of the view.
 [widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
 
 [react.src.index.js]: ../../content-editor-extensions/src/javascript/index.js
+[react:DamWidenPickerCmp]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/DamWidenPickerCmp.jsx
+[react:douaneSchemaIndex.js]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/douane/lib/schema/index.js
+[react:store.jsx]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/Store/Store.jsx
+
+
+
 [ContentEditorExtensions.register]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions.register.jsx
 [SelectorTypes.js]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/SelectorTypes.js
 
 [pom.xml]: ../../content-editor-extensions/pom.xml
 [packages.json]: ../../content-editor-extensions/package.json
 
+
+
 <!-- still use ?-->
 [definition.cnd]: ../../content-editor-extensions/src/main/resources/META-INF/definitions.cnd
 [widenAssetPicker.js]: ../../content-editor-extensions/src/main/resources/javascript/edit-mode/widen-asset-picker.js
 [hidden.widenPicker.jsp]: ../../content-editor-extensions/src/main/resources/nt_base/html/base.hidden.widenPicker.jsp
-[react:index.js]: ../../content-editor-extensions/src/REACT/src/index.js
-[react:douaneSchemaIndex.js]: ../../content-editor-extensions/src/REACT/src/douane/lib/schema/index.js
-[react:env.js]: ../../content-editor-extensions/src/REACT/.env
-[react:store.jsx]: ../../content-editor-extensions/src/REACT/src/Store/Store.jsx
+
 
 
 [src/main/resources/css/REACTBuildApp]: ../../content-editor-extensions/src/main/resources/css/REACTBuildApp

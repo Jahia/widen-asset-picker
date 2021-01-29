@@ -142,7 +142,7 @@ const reducer = (state, action) => {
             const editorValue = uuid;
             console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - payload: ', payload);
             editorOnChange(editorValue);
-            console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - coming showPickerDialog: ', !state.showPickerDialog);
+            // console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - coming showPickerDialog: ', !state.showPickerDialog);
             return {
                 ...state,
                 editorValue,
@@ -153,7 +153,7 @@ const reducer = (state, action) => {
 
         case 'UPDATE_SELECTED_ITEM': {
             const {widenID} = payload;
-            const {editorOnChange,mountPoint} = state;
+            const {mountPoint} = state;
             console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
             //TODO do a graphQL call to the EDP to get uuid and return this jContent
             // const editorValue = `${mountPoint}/${widenID}`;
