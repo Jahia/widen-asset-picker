@@ -18,7 +18,6 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(service = WidenCacheManager.class, immediate = true)
 public class WidenCacheManager {
     private static final String CACHE_NAME = "cacheWiden";
-    //Should be in cfg?
     private static final int TIME_TO_LIVE_SECONDS = 28800;
     private static final int TIME_TO_IDLE_SECONDS = 3600;
 

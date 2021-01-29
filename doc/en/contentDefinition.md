@@ -30,6 +30,7 @@ A node is also useful for creating a dedicated rendering through a set of views.
 - [wdennt:document](#wdenntdocument)
     - [Definition](#definition-4)
     - [Views](#views-4)
+- [wdennt:mountPoint](#wdenntmountpoint)
 
 ## Architecture overview
 The node type architecture, implemented in this module, is designed to be easily extended
@@ -583,6 +584,13 @@ The node type doesn't have specific property. All properties come from supertype
 ### Views
 The module provides a default empty view. *Feel free to customize it*.
 
+
+## wdennt:mountPoint
+This node type is used to defined the Widen mount point in jContent. The main purpose
+of this node type is to host the configuration needed to request the Widen API endpoint.
+The properties of the mount point are a subset of the variables written
+in the file [mount-widen.cfg][mount.cfg].
+
 \[[< back][README.md]\]
 
 <!--
@@ -601,6 +609,7 @@ The module provides a default empty view. *Feel free to customize it*.
 [pdf.link.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.link.jsp
 [pdf.viewerHTML5.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
 [pdf.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.jsp
+[mount.cfg]:  ../../content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
 
 [README.md]: ../../README.md
 [provider.md]: ./provider.md

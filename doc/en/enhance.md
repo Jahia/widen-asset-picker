@@ -68,7 +68,7 @@ you should:
 
 Now you should be able to use your new Widen asset type in jContent.
 
-[WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java
+[WidenAssetDeserializer.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAssetDeserializer.java
 
 [contentDefinition.md]: ./contentDefinition.md
 [picker.md]: ./picker.md

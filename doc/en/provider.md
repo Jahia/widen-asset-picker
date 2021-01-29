@@ -7,7 +7,7 @@
         - [Before to Query check the cache](#before-to-query-check-the-cache-)
         - [Query Widen API](#query-widen-api)
     - [JSON to JCRNodeWrapper](#json-to-jcrnodewrapper)
-- [Configuration](#configuration)
+- [Mount Point](#mount-point)
 
 The provider is an implementation of an External Data Provider (EDP).
 In jContent, an EDP is used to:
@@ -57,8 +57,7 @@ This method:
 #### Before to Query check the cache!
 To avoid unnecessary calls, the module uses a dedicated
 cache to store the JCR node created after a Widen call. The name of this cache is "cacheWiden".
-The cache is set up in the function:
-[start()][WidenDataSource.java].
+The cache is set up in the [WidenCacheManager.java] class.
 
 This cache is configured to keep an idle object for 1 hour (3600s) and to remove an object after 8 hours (28800s).
 The configuration looks like this:
@@ -89,46 +88,22 @@ public class WidenAsset {
 }
 ```
 
-## Configuration
-The provider is configured via a Spring configuration file, named [widen-picker.xml][widenPicker.xml].
-In this file, there are two main configuration parts, one for the picker and the other one for the provider.
-For the provider, two beans are configured:
- 1. One to configure the provider itsef.
- 
-    ```xml
-    <osgi:reference id="ExternalProviderInitializerService" interface="org.jahia.modules.external.ExternalProviderInitializerService"/>
-    ...
-    <bean id="WidenProvider" class="org.jahia.modules.external.ExternalContentStoreProvider"
-              parent="AbstractJCRStoreProvider">
-        <property name="key" value="WidenProvider"/>
-        <property name="mountPoint" value="${jahia.widen.edp.mountPoint:/sites/systemsite/contents/dam-widen}"/>
-        <property name="externalProviderInitializerService" ref="ExternalProviderInitializerService"/>
-        <property name="extendableTypes">
-            <list>
-                <value>nt:base</value>
-            </list>
-        </property>
-        <property name="dataSource" ref="WidenDataSource"/>
-    </bean>
-    ```
-2. Another to configure the data source used by the provider. This configuration maps
-variables declared in the jahia.properties file (see [prerequisites]).
+## Mount Point
+The main purpose of the [MountPoint.java] class is to support the configuration of the provider
+and to enable the creation of new instance of the [WidenDataSource][WidenDataSource.java].
 
-    ```xml
-    <bean name="WidenDataSource" class="org.jahia.se.modules.widenprovider.WidenDataSource" init-method="start">
-        <property name="cacheProvider" ref="ehCacheProvider"/>
-        <property name="widenEndpoint" value="${jahia.widen.api.endPoint:api.widencollective.com}"/>
-        <property name="widenSite" value="${jahia.widen.api.site:}"/>
-        <property name="widenToken" value="${jahia.widen.api.token:}"/>
-        <property name="widenVersion" value="${jahia.widen.api.version:v2}"/>
-    </bean>
-    ```
+> The properties of the mount point are a subset of the variables written
+in the file [mount-widen.cfg][mount.cfg].
+
 \[[<< back][README.md]\]
 
-[WidenDataSource.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/WidenDataSource.java
-[WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAssetDeserializer.java
-[WidenAsset.java]: ../../src/main/java/org/jahia/se/modules/widenprovider/model/WidenAsset.java
-[widenPicker.xml]: ../../src/main/resources/META-INF/spring/widen-picker.xml
+[WidenDataSource.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
+[WidenAssetDeserializer.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAssetDeserializer.java
+[WidenAsset.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAsset.java
+[WidenCacheManager.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/cache/WidenCacheManager.java
+[MountPoint.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
+[mount.cfg]:  ../../content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+
 
 [README.md]: ../../README.md
 [dataFlow]: ../../README.md#data-flow
