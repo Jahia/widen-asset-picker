@@ -169,7 +169,7 @@ entry: {
 }
 ```
 In this file, we register a `callback` named `contentEditorExtensions` which is executed during
-the initialisation of the Jahia UI with a priority of 20. The callback function execute the code in
+the initialisation of the Jahia UI with a priority of 20. The callback function executes the code in
 the [ContentEditorExtensions.register][] file. 
 
 ```js
@@ -183,7 +183,7 @@ registry.add('callback', 'contentEditorExtensions', {
 ```
 > the registry object comes from the yarn module `@jahia/ui-extender`
 
-The code of the register above is just a a pipe to the file [SelectorTypes.js]:
+The code of the register above is just a pipe to the file [SelectorTypes.js]:
 
 ```js
 import DamWidenPickerCmp from './DamWidenPicker';

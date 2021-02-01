@@ -1,5 +1,4 @@
 import React from 'react';
-//import 'src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/index.css.disabled';
 import AjvError from './components/Error/Ajv';
 import {WidenPicker} from './components/WidenPicker';
 import {Store} from './Store';
@@ -34,11 +33,10 @@ const DamWidenPickerCmp = ({field, id, value, editorContext,setActionContext, on
     try {
 
         context = contextValidator(context);
-        // console.debug("context : ",context);
 
         return (
             <Store context={context}>
-                <WidenPicker />
+                <WidenPicker initEditorValue={context.editor.value}/>
             </Store>
         );
     } catch (e) {

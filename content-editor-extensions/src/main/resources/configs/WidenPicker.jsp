@@ -19,7 +19,7 @@
                 lazyLoad:${mountPoint.properties['wden:lazyLoad']},
                 resultPerPage:${mountPoint.properties['wden:resultPerPage']}
             }
-            console.debug("contextJsParameters.config",contextJsParameters.config);
+            console.debug("%c Widen config is added to contextJsParameters.config", 'color: #3c8cba');
         </c:when>
         <c:otherwise>
             <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>

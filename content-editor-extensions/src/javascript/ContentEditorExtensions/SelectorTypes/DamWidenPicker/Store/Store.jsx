@@ -37,8 +37,8 @@ const init = context => {
     //     return config;
     // });
     const {lazyLoad,resultPerPage,mountPoint} = context.widen;
-    const {value, onChange, field,editorContext,setActionContext} = context.editor;
-    console.debug('[STORE] init -> value: ', value);
+    const {onChange, field,editorContext,setActionContext} = context.editor;//value,
+
     //TODO check I have the path to get the widen ID
     // const selectedId = Array.isArray(window.widenPickerInterface.data) && window.widenPickerInterface.data.length >=1 ?
     //     window.widenPickerInterface.data[0].split("/").slice(-1)[0]:null;
@@ -48,7 +48,7 @@ const init = context => {
         //TODO upadte when above is ready
         // editorValue:selectedId?{id:selectedId}:{},
         editorField:field,
-        editorValue:value,
+        editorValue:null,//value,
         editorOnChange:onChange,
         editorContext,
         editorSetActionContext:setActionContext,
@@ -133,6 +133,16 @@ const reducer = (state, action) => {
                 searchQueryExecuted:true,
                 searchResultPageIndex: 1, // New search reset paging
                 needToFetch: true
+            };
+        }
+
+        case 'INIT_SELECTED_ITEM_UUID': {
+            const {uuid} = payload;
+            const editorValue = uuid;
+            console.debug('[STORE] INIT_SELECTED_ITEM_UUID - payload: ', payload);
+            return {
+                ...state,
+                editorValue
             };
         }
 
@@ -396,6 +406,7 @@ const reducer = (state, action) => {
 };
 
 export const Store = props => {
+
     const [state, dispatch] = React.useReducer(
         reducer,
         props.context,

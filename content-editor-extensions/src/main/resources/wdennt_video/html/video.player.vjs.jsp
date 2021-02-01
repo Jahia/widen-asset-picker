@@ -23,8 +23,8 @@
 <c:set var="poster" value="${currentNode.properties['wden:videoPoster'].string}"/>
 
 
-<utility:logger level="INFO" value="*** widen asset player vjs : ${player}"/>
-<utility:logger level="INFO" value="*** widen asset poster vjs : ${poster}"/>
+<utility:logger level="DEBUG" value="*** widen asset player vjs : ${player}"/>
+<utility:logger level="DEBUG" value="*** widen asset poster vjs : ${poster}"/>
 
 
 <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />

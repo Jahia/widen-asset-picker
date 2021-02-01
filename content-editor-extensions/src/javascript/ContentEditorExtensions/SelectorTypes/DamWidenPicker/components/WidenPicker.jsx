@@ -60,7 +60,7 @@ const styles = theme => ({
     },
 });
 
-const WidenPickerCmp = ({classes}) => {
+const WidenPickerCmp = ({initEditorValue,classes}) => {
     // console.debug("[WidenPickerCmp] start ");
     const {state, dispatch} = React.useContext(StoreContext);
     const {t} = useTranslation();
@@ -72,7 +72,18 @@ const WidenPickerCmp = ({classes}) => {
         editorValue,
         widenPath4EDP
     } = state;
-    // console.log("[WidenPicker] editorValue : ",editorValue);
+
+    //init the value bug fix 'translate from'
+    if(!editorValue && initEditorValue){
+        dispatch({
+            case:'INIT_SELECTED_ITEM_UUID',
+            payload:{
+                uuid:initEditorValue
+            }
+        });
+    }
+
+
     GetUuid();
 
     const variables={
@@ -166,6 +177,7 @@ const WidenPickerCmp = ({classes}) => {
     );
 };
 WidenPickerCmp.propTypes={
+    initEditorValue: PropTypes.string,
     classes: PropTypes.object.isRequired,
 }
 WidenPickerCmp.displayName = 'WidenPicker';
