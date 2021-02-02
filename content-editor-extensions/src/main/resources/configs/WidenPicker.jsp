@@ -23,7 +23,7 @@
         </c:when>
         <c:otherwise>
             <utility:logger level="warn" value="no content of wdennt:mountPoint available"/>
-            console.log("no content of wdennt:mountPoint available");
+            console.warn("no content of wdennt:mountPoint available");
         </c:otherwise>
     </c:choose>
 </c:forEach>
