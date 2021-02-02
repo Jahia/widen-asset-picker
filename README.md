@@ -1,6 +1,6 @@
 # widen-asset-picker
 
-This module contains the implementation of the Widen Content Picker for Jahia v7.3.x.
+This module contains the implementation of the Widen Content Picker for Jahia `v7.3.x`.
 
 With this module, a contributor can easily add a Widen media asset to a Jahia page.
 
@@ -59,7 +59,7 @@ Before deploying the module, you must make the following changes to the jahia.pr
     jahia.widen.api.protocol = https
     jahia.widen.api.endPoint = api.widencollective.com
     jahia.widen.api.site = acme
-    jahia.widen.api.token = ba2d0a71907a17sff9eb9dc1fc91fd3a
+    jahia.widen.api.token = b-------------------------------a
     jahia.widen.api.version = v2
     jahia.widen.edp.mountPoint = /sites/systemsite/contents/dam-widen
     ```
