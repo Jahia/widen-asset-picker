@@ -9,6 +9,9 @@ With this module, a contributor can easily add a Widen media asset to a Jahia pa
 
 - [Module content](#module-content)
 - [Quick Start](#quick-start)
+    - [Prerequisites](#prerequisites)
+    - [Deploy the module](#deploy-the-module)
+    - [Post Install (optional)](#post-install-optional)
 - [Module details](#module-details)
     - [Data flow](#data-flow)
     - [Widen assets in jContent](#widen-assets-in-jcontent)
