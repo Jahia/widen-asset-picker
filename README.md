@@ -54,10 +54,10 @@ Click hte Jackrabbit max name size entry, update the value, save you configurati
 ### Deploy the module
 The module can be installed in 2 ways, from the source or from the store (available soon).
 #### From the source
-1. Clone or download the zip archive of the latest release.
+1. Download the zip archive of the latest release.
 2. If you already know your Widen configuration (api key, site, host) you can update the default
-configuration about Widen. Update Properties starting with `mount.wden_` in the file 
-[mount-widen.cfg][mount.cfg]. 
+configuration about Widen. Update Properties starting with `mount.wden_` in the  
+[mount-widen.cfg][mount.cfg] file. 
 1. Go to the root of the repository.
 1. Run the command `mvn clean install`. This create a jar file in the *target* repository.
     > you must have a **java sdk** and **maven** installed
@@ -69,10 +69,23 @@ configuration about Widen. Update Properties starting with `mount.wden_` in the 
     ![][030]
 
 #### From the store
-Available soon.
+1. In jContent, go to `Administration` panel.
+2. In the `Server` section expand the `Modules and Extensions` entry and click `Modules`.
+3. From the right panel, click `Available modules` and search for **widen**.
+
+    ![][033]
+    
+4. Click the icon ![201] in the right of the package to download and install the module.
+5. Wait until the module is loading.
+
+    ![][034]
 
 #### Check install
 If the module is properly deployed:
+1. You should find it in the `Installed modules` section
+
+    ![][035]
+    
 1. You should see the `dam-widen` in the list of Mount points
 
     ![][032]
@@ -86,24 +99,29 @@ If the module is properly deployed:
     <img src="./doc/images/0011_menuSelect.png" width="375px"/>
 
 ### Post Install (optional)
-If you didn't update the Widen default configuration (see item 2 of this [section](#from-the-source)),
-you have to configure the module with your Widen API access information. This configuration doesn't require
-a server restart. To set up your Widen API access got to the jahia tools
+>Skip this section of you have already configured the [mount-widen.cfg][mount.cfg] file during the *install from the source*
+process.
+
+To request the Widen server, you have to configure the module with your Widen API access information.
+
+To set up your Widen API access got to the jahia tools
 (*https://\<jahia host\>/tools*). From the tools UI, click `OSGI console` in the **Administration and Guidance**
 fieldset.
 
 ![][0070]
 
-In the top menu expand the entry **OSGI** and click **Configuration**
+In the top menu expand the entry **OSGI** and click **Configuration**.
 
 ![][0072]
 
-Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click. If you have more than one entry like this
+Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click on it. If you have more than one entry like this
 be sure to select the right, the filename must contain **org.jahia.modules.external.mount-widen.cfg**.
 
 Finally, update Properties starting with `mount.wden_` and save your change.
 
 ![][0071]
+
+>This configuration doesn't require a server restart.
 ## Module details
 
 To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud instance, you need to implement:
@@ -192,6 +210,10 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 [030]: ./doc/images/030_install.png
 [031]: ./doc/images/031_install_completed.png
 [032]: ./doc/images/032_install_completed.png
+[033]: ./doc/images/033_module_widen.png
+[034]: ./doc/images/034_module_install_completed.png
+[035]: ./doc/images/035_module_install_done.png
+
 [010]: ./doc/images/010_archi.png
 <!--[001]: ./doc/images/001_menu-select.png
 [0011]: ./doc/images/0011_menuSelect2.png-->
@@ -203,6 +225,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 [0071]: ./doc/images/0071_OSGIConfig.png
 [0072]: ./doc/images/0072_OSGIConfig.png
 [100]: ./doc/images/100_prequisiteCloud.png
+[201]: ./doc/images/201_modules_download_icon.png
 
 [contentDefinition.md]: ./doc/en/contentDefinition.md
 [picker.md]: ./doc/en/picker.md

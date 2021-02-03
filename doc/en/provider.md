@@ -93,7 +93,7 @@ The main purpose of the [MountPoint.java] class is to support the configuration 
 and to enable the creation of new instance of the [WidenDataSource][WidenDataSource.java].
 
 > The properties of the mount point are a subset of the variables written
-in the file [mount-widen.cfg][mount.cfg].
+in the [mount-widen.cfg][mount.cfg] file.
 
 \[[<< back][README.md]\]
 
