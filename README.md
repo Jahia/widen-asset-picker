@@ -58,38 +58,37 @@ Click hte Jackrabbit max name size entry, update the value, save you configurati
 The module can be installed in 2 ways, from the source or from the store (available soon).
 #### From the source
 1. Download the zip archive of the latest release.
-2. If you already know your Widen configuration (api key, site, host) you can update the default
-configuration about Widen. Update Properties starting with `mount.wden_` in the  
-[mount-widen.cfg][mount.cfg] file. 
+2. If you already know your Widen configuration (API key, site, and host) you can update the default
+configuration about Widen. Update properties starting with `mount.wden_` in the [mount-widen.cfg][mount.cfg] file. 
 1. Go to the root of the repository.
-1. Run the command `mvn clean install`. This create a jar file in the *target* repository.
+1. Run the `mvn clean install` command. This create a jar file in the *target* repository.
     > you must have a **java sdk** and **maven** installed
 1. In jContent, go to `Administration` panel.
-1. In the `Server` section expand the `Modules and Extensions` entry and click `Modules`.
+1. In the `Server` section, expand `Modules and Extensions` and click `Modules`.
 1. From the right panel, click `SELECT MODULE` and select the jar file in the *target* repository.
 1. Finaly click `UPLOAD`.
 
     ![][030]
 
 #### From the store
-1. In jContent, go to `Administration` panel.
-2. In the `Server` section expand the `Modules and Extensions` entry and click `Modules`.
+1. In jContent,navigate to `Administration`.
+2. In the `Server` section, expand the `Modules and Extensions` entry and click `Modules`.
 3. From the right panel, click `Available modules` and search for **widen**.
 
     ![][033]
     
-4. Click the icon ![201] in the right of the package to download and install the module.
+4. Click the install icon ![201] in the right of the package to download and install the module.
 5. Wait until the module is loading.
 
     ![][034]
 
 #### Check install
 If the module is properly deployed:
-1. You should find it in the `Installed modules` section
+1. You should find it in the `Installed modules` section.
 
     ![][035]
     
-1. You should see the `dam-widen` in the list of Mount points
+1. You should see the `dam-widen` in the list of Mount points.
 
     ![][032]
 
@@ -107,20 +106,20 @@ process.
 
 To request the Widen server, you have to configure the module with your Widen API access information.
 
-To set up your Widen API access got to the jahia tools
-(*https://\<jahia host\>/tools*). From the tools UI, click `OSGI console` in the **Administration and Guidance**
-fieldset.
+To set up your Widen API access:
+1. Go to  jahia tools (*https://\<jahia host\>/tools*).
+1. From the tools UI, click `OSGI console` under **Administration and Guidance**.
 
 ![][0070]
 
-In the top menu expand the entry **OSGI** and click **Configuration**.
+1. In the top menu expand the entry **OSGI** and click **Configuration**.
 
 ![][0072]
 
-Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click on it. If you have more than one entry like this
-be sure to select the right, the filename must contain **org.jahia.modules.external.mount-widen.cfg**.
+1. Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click on it. If you have more than one entry like this
+be sure to select the correct one. The filename must contain **org.jahia.modules.external.mount-widen.cfg**.
 
-Finally, update Properties starting with `mount.wden_` and save your change.
+1. Finally, update the approprite properties starting with `mount.wden_` and save your changes.
 
 ![][0071]
 
@@ -138,7 +137,7 @@ To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud in
 
 ![][010]
 
-The data flow is composed by 10 actions of which 4 are optional and depend on the cache. 
+The data flow is composed of 10 actions of which 4 are optional and depend on the cache. 
 
 1. The user creates a new `Widen` content (aka a `Widen Reference`).
 
@@ -153,44 +152,44 @@ The data flow is composed by 10 actions of which 4 are optional and depend on th
 
     ![][002]
 
-2. When user clicks the **Media Content** field, the picker component of the React application is launched into a modal. 
+1. When user clicks the **Media Content** field, the picker component of the React application is launched into a modal. 
     By default, the lazy-loading is set to false, and the application executes an AJAX call to the widen API endpoint to populate the picker. For
     more details see [the Widen Picker][picker.md] section.
     
     > The picker uses the Widen API: [Assets - List by search query][widenAPI:AssetByQuery].
 
-3. The Widen endpoint returns a JSON file uses by the app to render the search contents. The user can refine the search or select a Widen asset.
+1. The Widen endpoint returns a JSON file used by the app to render the search contents. The user can refine the search or select a Widen asset.
 
     ![][0041]
 
-4. When the user saves their choice from the picker, a content path is created. This path is built with the value of
-    the properties `mount.j_path`, `mount.j_nodename` and the `id` of the Widen asset.
+1. When the user saves their choice from the picker, a content path is created. This path is built with the value of
+    the properties `mount.j_path`, `mount.j_nodename`, and the `id` of the Widen asset.
     
     jContent cannot use this path directly as it expects to receive a node id. 
-    Thus, the picker executes a GraphQL call to create the node and get its id back.
+    Therefore, the picker executes a GraphQL call to create the node and get its id back.
     During this call, the path is resolved and mapped to a Jahia node 
     with the help of the `Widen Provider`.
     
-5. If the selected asset is not in the jContent cache,
+1. If the selected asset is not in the jContent cache,
     the provider calls the Widen API endpoint to get the relevant properties
     about the selected asset. For more details, see [the Widen Provider][provider.md] section.
         
     > The provider uses the Widen API: [Assets - Retrieve by id][widenAPI:AssetById].
 
-6. The JSON response returned by the API is mapped to a Jahia node and cached into an Ehcache instance named `cacheWiden`.
+1. The JSON response returned by the API is mapped to a Jahia node and cached into an Ehcache instance named `cacheWiden`.
     By default, the cache is configured to keep the content for a maximum of 8 hours and to drop the content if it is idle for more than 1 hour. 
     
-7. If the path provided in step 4 is correct, the provider return a Jahia reference node, and the user can save their `Widen Reference`
+1. If the path provided in step 4 is correct, the provider return a Jahia reference node, and the user can save their `Widen Reference`
     content.
     
     ![][005]
     
-8. The content can be used by a jContent Page. This module provides jContent views for different type of widen assets (for example images and videos).
+1. The content can be used by a jContent Page. This module provides jContent views for different type of widen assets (for example images and videos).
 
-9. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
+1. The jContent views use the widen CDN URL (aka *embeds.templated.url* property) to get and render the content in a webpage.
 The Widen CDN improves performance when assets load and allows Widen to collect statistics.
 
-10. The Widen asset is rendered into the website.
+1. The Widen asset is rendered into the website.
 
     ![][0061]
     > you can select the view of the content in reference.
