@@ -36,7 +36,6 @@
         "@jahia/data-helper": "^1.0.0",
         "@jahia/design-system-kit": "^1.1.11",
         "@jahia/icons": "^1.1.1",
-        "@jahia/data-helper": "^0.0.26",
         "@jahia/moonstone": "^0.16.2",
         "@jahia/react-material": "^3.0.1",
         "@jahia/ui-extender": "^1.0.0",
@@ -55,7 +54,6 @@
         "react-dom": "^16.13.1",
         "react-i18next": "^11.7.3",
         "react-scripts": "^3.4.3"
-        "react-i18next": "^11.7.3"
     },
     "devDependencies": {
         "@babel/compat-data": "^7.9.0",
