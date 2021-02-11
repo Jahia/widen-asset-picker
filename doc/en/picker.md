@@ -15,28 +15,28 @@
 This section presents details about the picker that contributors use to search and select Widen content from
 a jContent node.
 
-Before a deep dive into the Widen picker, you should understand the basics of the default jContent picker.
+Before taking a deep dive into the Widen picker, you should understand the basics of the default jContent picker.
 
-## Reminder about picker
+## About the jContent picker
 A picker is a user interface (UI) used by a jContent contributor to search and select a referenced node or content from
   a master node or content form field. In other words, this is how to create a reference between two nodes or content.
   
 With a picker, a contributor can:
-1. Browse a content tree (internal or external).
+* Browse an internal or external content tree.
 
     ![01_defaultPicker]
-2. Run a fulltext search through metadata like **name** or **tags**.
+* Run a fulltext search with metadata like **name** or **tags**.
 
     ![02_defaultPicker]
-3. Upload a binary (such as a text file, image, or video) from the file system.
-4. Select the content to reference.
+* Upload a binary (such as a text file, image, or video) from the file system.
+* Select content to reference.
 
 jContent provides a default picker that works with all JCR nodes and there is a dedicated section where
 a contributor can browse external repositories.
 
-However, this module doesn't use the default picker because:
-* The search UI of the default picker doesn't support search facets.
-* The search UI is a bit complex to extend if you want to support facets.
+However, this module doesn't use the default picker because the search UI:
+* of the default picker doesn't support search facets.
+* is a bit complex to extend if you want to support facets.
 
 So, we have decided to create our own picker, named `Widen Picker`: 
 
@@ -50,7 +50,7 @@ the picker is ready to use one and is easy to extend.
 The picker is based on a standalone REACT application.
 This application is the frontend of the Widen Asset API. The Widen picker is used to:
 * search and select the appropriate media content in the Widen assets catalog.
-* create and return a node path to jContent. This path is resolved later by the [provider][provider.md]
+* create and return a node path to jContent. This path is resolved later by the [Widen provider][provider.md]
 to create the node.
 
 Even if the picker is a standalone REACT application, it must be linked to jContent to reference the selected
@@ -60,8 +60,8 @@ Widen asset as a JCR node. This link is done through a Javascript interface.
 
 <img src="../images/pickerArch.png" width="775px"/>
 
-The Content editor extension **Widen Picker**  is mainly composed of a [React application][react:index.js] named `WidenPicker`.
-To be loaded, this application must register with jContent. For that purpose, Jahia has created
+The Content Editor extension **Widen Picker**  is mainly composed of a [React application][react:index.js] named `WidenPicker`.
+To be loaded, this application must be registered with jContent. For this purpose, Jahia has created
 an npm/yarn module named `ui-extender`, which is a part of the `Webpack App Shell`
 project in Jahia ([read more about App Shell][medium:AppShell]).
 
@@ -71,15 +71,15 @@ the module is deployed.
 When the build is done, the application is loaded and the registration process starts.
 
 #### Build the front application
-In this documentation, we will not dig to much into details about how to build a front application
-in a Jahia module, but just give you an overview of it.
+In this documentation, we do not dig too much into details about how to build a front application
+in a Jahia module, but rather give you an overview.
 
-To deploy [nodejs], to install [yarn] packages and to build the React application from maven,
+To deploy [nodejs], install [yarn] packages, and build the React application from Maven,
 the module uses the [frontend-maven-plugin].
 To build the module the plugin has to excute three steps:
-* Install the binary for node v11.15.0 and yarn v1.12.3.
-* Upload and install the yarn packages referenced in the [packages.json] file.
-* Run the build command `yarn webpack`.
+1. Install the binary for node v11.15.0 and yarn v1.12.3.
+2. Upload and install the yarn packages referenced in the [packages.json] file.
+3. Run the build command `yarn webpack`.
 
 To execute these steps, the plugin is configured in the [pom.xml] file as follows:
 
@@ -122,14 +122,14 @@ To execute these steps, the plugin is configured in the [pom.xml] file as follow
 </plugin>
 ```
 
-Yarn arguments are:
+The Yarn arguments are:
 
 ```
 <yarn.arguments>build -p</yarn.arguments>
 <yarn.arguments>webpack</yarn.arguments>
 ```
 
-`App Shell` has also to be declare in the [pom.xml] file as follows:
+You must also declare `App Shell` in the [pom.xml] file as follows:
 
 ```xml
 <dependency>
@@ -155,7 +155,7 @@ plugins: [
 
 #### Registration flow
 
-As written previously, this application must register with jContent to be available in a content form.
+As mentioned previously, this application must be registered with jContent to be available in a content form.
 The registration process is part of the the `Webpack App Shell` project.
 As defined in the [webpack.config] file, the main entry of the application is the 
 [src/javascript/index.js][react.src.index.js] file:
@@ -169,7 +169,7 @@ entry: {
 }
 ```
 In this file, we register a `callback` named `contentEditorExtensions` which is executed during
-the initialisation of the Jahia UI with a priority of 20. The callback function executes the code in
+the initialization of the Jahia UI with a priority of 20. The callback function executes the code in
 the [ContentEditorExtensions.register][] file. 
 
 ```js
@@ -195,8 +195,8 @@ export const registerSelectorTypes = registry => {
 };
 ```
 
-The code of this file is to register our application as a `selectorType` named `WidenPicker`.
-Our selector cannot be used by a content property which allows multiple values, and 
+The code in this file registers the application as a `selectorType` named `WidenPicker`.
+The selector cannot be used by a content property which allows multiple values, and 
 the application used to render the selector is the `DamWidenPickerCmp` component.
 This component is the main entry of our Widen picker React application.
 
