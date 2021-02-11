@@ -1,6 +1,6 @@
 # widen-asset-picker
 
-This module contains the implementation of the Widen Content Picker for Jahia v8.0.1.x
+This module contains the implementation of the Widen Content Picker for Jahia 8.0.1.x
 
 With this module, a contributor can easily add a Widen media asset to a Jahia page.
 
@@ -30,27 +30,30 @@ This module contains:
     `Widen Provider` ([WidenDataSource.java]).
 
 Not covered in this module:
-* CKEditor widen media picker
+* CKEditor Widen media picker
 
 ## Quick Start
 ### Prerequisites
-Before deploying the module, you must make the following changes to the jahia.properties.
+Before deploying the module, you must make the following changes to the *jahia.properties* file.
 * The size of the **System name** `jahia.jcr.maxNameSize` must be greater than the default 32 characters to allow you to save a Widen *asset id* in it.
 
-#### jahia.properties On Premise 
-The file to update is located in *digital-factory-config/jahia/jahia.properties* :
-    
-uncomment line 260 and change value 32 to 64
+#### Update the jahia.properties file on premise 
+To update the jahia.properties file on premise:
+1. Naviage to *digital-factory-config/jahia/jahia.properties*.
+1. Uncomment line 260 and change the value 32 to 64.
 ```
 (-) #jahia.jcr.maxNameSize = 32
 (+) jahia.jcr.maxNameSize = 64
 ```  
 > You must restart jContent to have these properties available in your environment.
 
-#### jahia.properties On Cloud
-From the admin page select your environment in the left panel. Then, click **Configuration** in the main panel.
-Expand the **Jahia Configuration** entry and search for *max name*
-Click hte Jackrabbit max name size entry, update the value, save you configuration and restart.
+#### Update the jahia.properties file on Jahia Cloud
+To update the jahia.properties file on Jahia Cloud:
+1. From the admin page, select your environment in the left navigation pane.
+1. Select the **Configuration** tab in the main pane.
+1. Expand **Jahia Configuration** and search for *max name*.
+1. Select **Jackrabbit max name size** and update the value to `64`.
+1. Save your configuration and restart.
 
 ![][100]
 
