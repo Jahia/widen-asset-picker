@@ -1,9 +1,9 @@
 \[[<< back][README.md]\]
 # Widen Picker
 
-- [Reminder about picker](#module-content)
-- [Components](#quick-start)
-    - [Overview](#data-flow)
+- [About the jContent picker](#about-the-jcontent-picker)
+- [Components](#components)
+    - [Overview](#overview)
     - [Application build and registration](#application-build-and-registration)
         - [Build the front application](#build-the-front-application)
         - [Registration flow](#registration-flow)
