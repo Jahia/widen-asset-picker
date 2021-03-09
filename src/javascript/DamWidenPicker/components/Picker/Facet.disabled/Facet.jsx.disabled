@@ -1,0 +1,65 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import FilterJsx from 'src/javascript/DamWidenPicker/components/Picker/Facet.disabled/FilterJsx';
+import ColorFilterJsx from 'src/javascript/DamWidenPicker/components/Picker/Facet.disabled/ColorFilterJsx';
+
+const Facet = ({facet}) => {
+    // Const { state, dispatch } = React.useContext(StoreContext);
+    // const {} = state
+
+    return (
+        <>
+            {facet.id === 'facette_coloris_generique' &&
+            <li>
+                <h5>{facet.name}</h5>
+                <ul className="color-filter">
+                    {facet.list &&
+                    facet.list.map(filter => (
+                        <ColorFilterJsx
+                                key={filter.id}
+                                filter={filter}
+                            />
+                      )
+                    )}
+                </ul>
+            </li>}
+
+            {facet.id === 'facette_taille' &&
+            <li>
+                <h5>{facet.name}</h5>
+                <ul className="size-filter">
+                    {facet.list &&
+                    facet.list.map(filter => (
+                        <FilterJsx
+                            key={filter.id}
+                            filter={filter}
+                        />
+                      )
+                    )}
+                </ul>
+            </li>}
+
+            {facet.id !== 'facette_coloris_generique' && facet.id !== 'facette_taille' &&
+            <li>
+                <h5>{facet.name}</h5>
+                <ul>
+                    {facet.list &&
+                    facet.list.map(filter => (
+                        <FilterJsx
+                            key={filter.id}
+                            filter={filter}
+                        />
+                      )
+                    )}
+                </ul>
+            </li>}
+        </>
+
+    );
+};
+
+Facet.propTypes = {
+    facet: PropTypes.object.isRequired
+};
+
+export default Facet;

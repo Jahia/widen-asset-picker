@@ -53,21 +53,17 @@
     </parent>
 
     <groupId>org.jahia.se.modules</groupId>
-    <artifactId>widen-picker-parent</artifactId>
-    <name>Widen Picker Parent Project</name>
+    <artifactId>widen-picker</artifactId>
+    <name>Widen Picker</name>
     <version>2.0.2-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>bundle</packaging>
+    <description>This is the custom module (Widen Picker) for running on a Jahia server.</description>
 
-    <modules>
-        <module>content-editor-extensions</module>
-    </modules>
-
-    <scm>
-        <connection>scm:git:git@github.com:Jahia/widen-asset-picker.git</connection>
-        <developerConnection>scm:git:git@github.com:Jahia/widen-asset-picker.git</developerConnection>
-        <url>https://github.com/Jahia/widen-asset-picker</url>
-      <tag>HEAD</tag>
-  </scm>
+    <properties>
+        <yarn.arguments>build -p</yarn.arguments>
+        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
+<!--        <jahia-module-signature>MC0CFAEuaB6jAtl51r3VEMwsDIs3LJ4QAhUAkURnn9pU415xebqVwI8RHCoc9eo=</jahia-module-signature>-->
+    </properties>
 
     <repositories>
         <repository>
@@ -84,18 +80,134 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jahia-public</id>
-            <name>Jahia Public Repository</name>
-            <url>https://devtools.jahia.com/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>app-shell</artifactId>
+            <version>2.0.0</version>
+            <type>json</type>
+            <classifier>manifest</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.jahia.modules</groupId>-->
+<!--            <artifactId>app-shell</artifactId>-->
+<!--            <version>2.0.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>external-provider</artifactId>
+<!--            <version>${external-provider.version}</version>-->
+            <version>4.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.osgi.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <_dsannotations>*</_dsannotations>
+                        <Jahia-Depends>default,external-provider</Jahia-Depends>
+                    </instructions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/resources/javascript/apps</directory>
+                            <includes>
+                                <include>*</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+                <!-- executions go here -->
+                <executions>
+                    <execution>
+                        <id>npm install node and yarn</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-node-and-yarn</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v11.15.0</nodeVersion>
+                            <yarnVersion>v1.12.3</yarnVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>yarn install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>yarn post-install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>${yarn.arguments}</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>org.jahia.modules</groupId>
+                            <artifactId>app-shell</artifactId>
+                            <type>json</type>
+                            <classifier>manifest</classifier>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <yarn.arguments>webpack</yarn.arguments>
+            </properties>
+        </profile>
+    </profiles>
 </project>
