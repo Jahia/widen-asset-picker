@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.yahoo.platform.yui:yuicompressor:standalone:2.4.9-20161014">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/yahoo/platform/yui/yuicompressor/2.4.9-20161014/yuicompressor-2.4.9-20161014-standalone.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/yahoo/platform/yui/yuicompressor/2.4.9-20161014/yuicompressor-2.4.9-20161014-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/yahoo/platform/yui/yuicompressor/2.4.9-20161014/yuicompressor-2.4.9-20161014-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

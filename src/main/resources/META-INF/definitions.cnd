@@ -14,6 +14,17 @@
  - wden:lazyLoad (boolean) mandatory
  - wden:resultPerPage (long) mandatory
 
+[wdenmix:mediaPickerWd] > jmix:dynamicFieldset mixin
+ extends = wdenmix:mediaReference
+ - wden:mediaNode (weakreference) internationalized < wdenmix:widenAsset
+
+[wdenmix:mediaPickerJc] > jmix:dynamicFieldset mixin
+ extends = wdenmix:mediaReference
+ - wden:mediaNode (weakreference) internationalized < jnt:file
+
+[wdenmix:mediaReference] mixin
+ - wden:mediaPicker (string, choicelist) indexed=no
+
 [wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
  - wden:id (string) fulltextsearchable=no
  - wden:externalId (string) fulltextsearchable=no
@@ -53,7 +64,6 @@
  - wden:duration (double)
 
 [wdenmix:pdfFileProperties] > wdenmix:fileProperties mixin
-
 
 [wdenmix:imageMediaSettings] mixin
  extends = wdennt:widenReference

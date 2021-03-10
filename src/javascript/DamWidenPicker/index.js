@@ -1,3 +1,3 @@
-import DamWidenPickerCmp from 'src/javascript/DamWidenPicker/DamWidenPickerCmp';
+import DamWidenPickerCmp from './DamWidenPickerCmp';
 
 export default DamWidenPickerCmp;

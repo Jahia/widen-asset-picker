@@ -42,8 +42,8 @@ export default {
                     setActionContext: {},
                     field: {
                         type: 'object',
-                        properties: {}, // TODO fix the expected properties
-                        required: []// TODO update based on propeties
+                        properties: {}, // Note: fix the expected properties
+                        required: []// Note: update based on propeties
                         // additionalProperties:false
                     },
                     value: { // Should be the uuid or null
@@ -51,8 +51,8 @@ export default {
                     },
                     editorContext: {
                         type: 'object',
-                        properties: {}, // TODO fix the expected properties
-                        required: []// TODO update based on propeties
+                        properties: {}, // Note: fix the expected properties
+                        required: []// Note: update based on propeties
                         // additionalProperties:false
                     }
                 },

@@ -159,7 +159,7 @@ const ReferenceCardCmp = ({
                 <article
                     className={classnames(
                         classes.fieldContainer,
-                        (readOnly ? classes.fieldContainerReadOnly : ''),
+                        (isReadOnly ? classes.fieldContainerReadOnly : ''),
                         (isDraggable ? classes.draggableIcon : '')
                     )}
                     data-sel-field-picker="filled"
@@ -168,7 +168,7 @@ const ReferenceCardCmp = ({
                     tabIndex="0"
                     aria-labelledby={labelledBy}
                     onClick={() => {
-                        if (readOnly) {
+                        if (isReadOnly) {
                             return;
                         }
 
@@ -206,19 +206,19 @@ const ReferenceCardCmp = ({
         <button
             data-sel-media-picker="empty"
             data-sel-field-picker-action="openPicker"
-            className={`${classes.add} ${readOnly ? classes.addReadOnly : ''}`}
+            className={`${classes.add} ${isReadOnly ? classes.addReadOnly : ''}`}
             type="button"
-            aria-disabled={readOnly}
+            aria-disabled={isReadOnly}
             aria-labelledby={labelledBy}
             onClick={() => {
-                if (readOnly) {
+                if (isReadOnly) {
                     return;
                 }
 
                 onClick(true);
             }}
         >
-            {!readOnly &&
+            {!isReadOnly &&
             <div className={classes.referenceButtonEmptyContainer}>
                 {emptyIcon}
                 <Typography variant="omega" color="beta" component="span">
@@ -231,7 +231,7 @@ const ReferenceCardCmp = ({
 
 ReferenceCardCmp.defaultProps = {
     isDraggable: false,
-    readOnly: false,
+    isReadOnly: false,
     fieldData: null,
     emptyLabel: '',
     emptyIcon: null,

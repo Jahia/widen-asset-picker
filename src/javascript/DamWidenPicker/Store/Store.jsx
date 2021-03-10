@@ -1,5 +1,5 @@
 import React from 'react';
-import {StoreContext} from './contexts';
+import {StoreContext} from '../contexts';
 import axios from 'axios';
 import * as PropTypes from 'prop-types';
 

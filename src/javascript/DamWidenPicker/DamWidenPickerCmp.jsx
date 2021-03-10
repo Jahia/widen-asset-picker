@@ -46,7 +46,7 @@ const DamWidenPickerCmp = ({field, id, value, editorContext, setActionContext, o
         // Note: create a generic error handler
         return (
             <AjvError
-                item={e.item}
+                item={e.message}
                 errors={e.errors}
             />
         );

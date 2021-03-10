@@ -55,8 +55,8 @@ const SortCmp = ({classes}) => {
                 >
                     {/* <MenuItem value=""><em>None</em></MenuItem> */}
 
-                    {searchSortList.map((item, i) =>
-                        <MenuItem key={i} value={item.value}>{item.label}</MenuItem>
+                    {searchSortList.map(item =>
+                        <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
                 )}
                 </Select>
             </li>

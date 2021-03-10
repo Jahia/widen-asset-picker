@@ -1,0 +1,9 @@
+{
+  "name": "wdenmix:mediaPickerWd",
+  "fields": [
+    {
+      "name": "wden:mediaNode",
+      "selectorType": "WidenPicker"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.atmosphere:atmosphere-runtime:2.5.4-jahia">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.5.4-jahia/atmosphere-runtime-2.5.4-jahia.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.5.4-jahia/atmosphere-runtime-2.5.4-jahia-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/atmosphere/atmosphere-runtime/2.5.4-jahia/atmosphere-runtime-2.5.4-jahia-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

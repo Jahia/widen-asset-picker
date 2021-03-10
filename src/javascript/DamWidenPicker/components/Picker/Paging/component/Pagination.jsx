@@ -2,7 +2,7 @@ import React from 'react';
 import {StoreContext} from '../../../../contexts';
 import PropTypes from 'prop-types';
 import {withStyles, IconButton} from '@material-ui/core';
-import {PageLink} from './component/PageLink';
+import {PageLink} from './PageLink';
 
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -69,9 +69,10 @@ const PaginationCmp = ({classes}) => {
 
                     {searchResultMaxPage <= 5 &&
                     <>
-                        {[...Array(searchResultMaxPage)].map((e, i) =>
-                            <PageLink key={i} index={i + 1}/>
-                        )}
+                        {[...Array(searchResultMaxPage)].map((e, i) => {
+                            const index = i + 1;
+                            return <PageLink key={index} index={index}/>;
+                        })}
                     </>}
 
                     {searchResultMaxPage > 5 &&

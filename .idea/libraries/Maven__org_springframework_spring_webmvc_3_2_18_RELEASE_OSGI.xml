@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework:spring-webmvc:3.2.18.RELEASE_OSGI">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/3.2.18.RELEASE_OSGI/spring-webmvc-3.2.18.RELEASE_OSGI.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/3.2.18.RELEASE_OSGI/spring-webmvc-3.2.18.RELEASE_OSGI-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/3.2.18.RELEASE_OSGI/spring-webmvc-3.2.18.RELEASE_OSGI-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

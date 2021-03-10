@@ -1,0 +1,15 @@
+{
+  "name": "wdenmix:mediaPickerJc",
+  "fields": [
+    {
+      "name": "wden:mediaNode",
+      "selectorType": "Picker",
+      "selectorOptions": [
+        {
+          "name": "type",
+          "value": "image"
+        }
+      ]
+    }
+  ]
+}

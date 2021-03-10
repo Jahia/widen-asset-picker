@@ -20,7 +20,7 @@ import {widenUUIDQuery} from './WidenUUID.gql-queries';
 import get from 'lodash.get';
 import {withStyles} from '@material-ui/core';
 
-const GetUuid = () => {
+const _GetUuid = () => {
     const {state, dispatch} = React.useContext(StoreContext);
     const {
         widenPath4EDP
@@ -81,12 +81,12 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
         });
     }
 
-    GetUuid();
+    _GetUuid();
 
     const variables = {
         uuid: editorValue || '',
         language: locale,
-        // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
+        // Note: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
         needToFetch: Boolean(editorValue)
     };
     // Console.log("[WidenPicker] variables for WidenPickerFilledQuery : ",variables);
