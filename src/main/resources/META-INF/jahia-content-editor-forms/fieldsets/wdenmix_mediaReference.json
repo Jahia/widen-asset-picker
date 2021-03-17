@@ -1,12 +1,10 @@
 {
   "name": "wdenmix:mediaReference",
-  "displayName": "Media Content",
   "description": "",
   "dynamic": false,
   "fields": [
     {
-      "name": "ti:mediaPicker",
-      "displayName": "Media Source",
+      "name": "wden:mediaPicker",
       "valueConstraints": [
         {
           "value": {
