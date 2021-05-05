@@ -60,8 +60,8 @@ Widen asset as a JCR node. This link is done through a Javascript interface.
 
 <img src="../images/pickerArch.png" width="775px"/>
 
-The Content Editor extension **Widen Picker**  is mainly composed of a [React application][react:index.js] named `WidenPicker`.
-To be loaded, this application must be registered with jContent. For this purpose, Jahia has created
+The Content Editor extension **Widen Picker**  is mainly composed of a [React application][react:DamWidenPickerCmp] known as `WidenPicker`.
+To be loaded, this application must be registered to jContent. For this purpose, Jahia has created
 an npm/yarn module named `ui-extender`, which is a part of the `Webpack App Shell`
 project in Jahia ([read more about App Shell][medium:AppShell]).
 
@@ -129,79 +129,62 @@ The Yarn arguments are:
 <yarn.arguments>webpack</yarn.arguments>
 ```
 
-You must also declare `App Shell` in the [pom.xml] file as follows:
+The current release uses `webpack 5` and the new `ModuleFederationPlugin` to share libraries ([wepback.shared][wepback.shared.js]) between the picker module
+and the jContent UI as written in the [webpack.config] file.
 
-```xml
-<dependency>
-    <groupId>org.jahia.modules</groupId>
-    <artifactId>app-shell</artifactId>
-    <version>2.0.0</version>
-    <type>json</type>
-    <classifier>manifest</classifier>
-    <scope>provided</scope>
-</dependency>
-```
-It is used to build a manifest of common libraries.
-This manifest is then used by webpack through the `DllReferencePlugin` as written
-in the [webpack.config] file:
+> Note: `ModuleFederationPlugin` replaces `DllReferencePlugin`.
 
 ```js
-plugins: [
-    new webpack.DllReferencePlugin({
-        manifest: require(manifest)
-    }),
-]
+new ModuleFederationPlugin({
+    name: "widenPickerPlugin",
+    library: { type: "assign", name: "appShell.remotes.widenPickerPlugin" },
+    filename: "remoteEntry.js",
+    exposes: {
+        './init': './src/javascript/init'
+    },
+    remotes: {
+        '@jahia/app-shell': 'appShellRemote'
+    },
+    shared
+})
 ```
+The code above references the `widenPickerPlugin` and exposes the [./src/javascript/init][react.src.init.js] file as the
+init entry point for the registration process
 
 #### Registration flow
 
 As mentioned previously, this application must be registered with jContent to be available in a content form.
 The registration process is part of the the `Webpack App Shell` project.
 As defined in the [webpack.config] file, the main entry of the application is the 
-[src/javascript/index.js][react.src.index.js] file:
-
-```js
-entry: {
-    main: [
-        path.resolve(__dirname, 'src/javascript/publicPath'),
-        path.resolve(__dirname, 'src/javascript/index.js')
-    ]
-}
-```
-In this file, we register a `callback` named `contentEditorExtensions` which is executed during
-the initialization of the Jahia UI with a priority of 20. The callback function executes the code in
-the [ContentEditorExtensions.register][] file. 
+[./src/javascript/init][react.src.init.js] file:
 
 ```js
 import {registry} from '@jahia/ui-extender';
-import register from './ContentEditorExtensions.register';
-
-registry.add('callback', 'contentEditorExtensions', {
-    targets: ['jahiaApp-init:20'],
-    callback: register
-});
-```
-> the registry object comes from the yarn module `@jahia/ui-extender`
-
-The code of the register above is just a pipe to the file [SelectorTypes.js]:
-
-```js
 import DamWidenPickerCmp from './DamWidenPicker';
-import {registerWidenPickerActions} from "./DamWidenPicker/components/actions";
 
-export const registerSelectorTypes = registry => {
-    registry.add('selectorType', 'WidenPicker', {cmp: DamWidenPickerCmp, supportMultiple: false});
-    registerWidenPickerActions(registry);
-};
+export default function () {
+    registry.add('callback', 'widenPickerEditor', {
+        targets: ['jahiaApp-init:20'],
+        callback: () => {
+            registry.add('selectorType', 'WidenPicker', {cmp: DamWidenPickerCmp, supportMultiple: false});
+            console.debug('%c WidenPicker Editor Extensions  is activated', 'color: #3c8cba');
+        }
+    });
+}
 ```
+In this file, we register a `'callback'` named `'widenPickerEditor'` which is executed during
+the initialization of the Jahia UI with a priority of 20.
 
-The code in this file registers the application as a `selectorType` named `WidenPicker`.
-The selector cannot be used by a content property which allows multiple values, and 
-the application used to render the selector is the `DamWidenPickerCmp` component.
+After the registration the `callback` property is executed.
+It is a function which registers as a `'selectorType'` named `'WidenPicker'`.
+The application used to render the selector is the `DamWidenPickerCmp` component.
+The selector cannot be used by a content property which allows multiple values.
 This component is the main entry of our Widen picker React application.
 
+> the registry object comes from the yarn module `@jahia/ui-extender`
+
 ### Widen picker React application
-The core of the Widen Picker is a Readt application used like a front end of the Widen API.
+The core of the Widen Picker is a React application used like a front end of the Widen API.
 The application directly requests the Widen API and uses its search capabilities so the
 assets returned are always synchronized with the Widen catalog.
 
@@ -217,7 +200,7 @@ The registration process enable the application which starts in the
 are checked based on the [douane's schema][react:douaneSchemaIndex.js] (2).
 If a required parameter is missing, an error is returned.
 
-Then, the cleaned context is send to the [store][react:store.jsx] (3). The `store` is
+Then, the sanitized context is sent to the [store][react:store.jsx] (3). The `store` is
 a key part of the application. The `store` is the place where:
 * all the actions are defined
 * all the updates are made
@@ -307,7 +290,7 @@ The React application is automatically built and deployed when the module is com
 [README.md]: ../../README.md
 [postInstall]: ../../README.md#post-install-optional
 [provider.md]: ./provider.md
-[mount.cfg]:  ../../content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
 
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
@@ -316,18 +299,17 @@ The React application is automatically built and deployed when the module is com
 [nodejs]: https://nodejs.org/
 [yarn]: https://yarnpkg.com/
 
-[webpack.config]: ../../content-editor-extensions/webpack.config.js
-[react.src.index.js]: ../../content-editor-extensions/src/javascript/index.js
-[react:DamWidenPickerCmp]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/DamWidenPickerCmp.jsx
-[react:douaneSchemaIndex.js]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/douane/lib/schema/index.js
-[react:store.jsx]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/Store/Store.jsx
-[WidenPicker.jsp]: ../../content-editor-extensions/src/main/resources/configs/WidenPicker.jsp
+[webpack.config]: ../../webpack.config.js
+[react.src.init.js]: ../../src/javascript/init.js
+[react:DamWidenPickerCmp]: ../../src/javascript/DamWidenPicker/DamWidenPickerCmp.jsx
+[react:douaneSchemaIndex.js]: ../../src/javascript/DamWidenPicker/douane/lib/schema/index.js
+[react:store.jsx]: ../../src/javascript/DamWidenPicker/Store/Store.jsx
+[WidenPicker.jsp]: ../../src/main/resources/configs/WidenPicker.jsp
 
-[ContentEditorExtensions.register]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions.register.jsx
-[SelectorTypes.js]: ../../content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/SelectorTypes.js
+[wepback.shared.js]: ../../webpack.shared.js
 
-[pom.xml]: ../../content-editor-extensions/pom.xml
-[packages.json]: ../../content-editor-extensions/package.json
+[pom.xml]: ../../pom.xml
+[packages.json]: ../../package.json
 
-[definition.cnd]: ../../content-editor-extensions/src/main/resources/META-INF/definitions.cnd
-[MountPoint.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
+[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
+[MountPoint.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java

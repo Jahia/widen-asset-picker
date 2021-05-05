@@ -97,12 +97,12 @@ in the [mount-widen.cfg][mount.cfg] file.
 
 \[[<< back][README.md]\]
 
-[WidenDataSource.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
-[WidenAssetDeserializer.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAssetDeserializer.java
-[WidenAsset.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAsset.java
-[WidenCacheManager.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/cache/WidenCacheManager.java
-[MountPoint.java]: ../../content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
-[mount.cfg]:  ../../content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[WidenDataSource.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
+[WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAssetDeserializer.java
+[WidenAsset.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAsset.java
+[WidenCacheManager.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/cache/WidenCacheManager.java
+[MountPoint.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
 
 
 [README.md]: ../../README.md

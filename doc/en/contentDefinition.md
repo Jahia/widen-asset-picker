@@ -31,6 +31,7 @@ A node is also useful for creating a dedicated rendering through a set of views.
     - [Definition](#definition-4)
     - [Views](#views-4)
 - [wdennt:mountPoint](#wdenntmountpoint)
+- [wdenmix:mediaReference](#wdenmixmediareference)
 
 ## Architecture overview
 The node type architecture, implemented in this module, is designed to be easily extended
@@ -591,6 +592,16 @@ of this node type is to host the configuration needed to request the Widen API e
 The properties of the mount point are a subset of the variables written
 in the file [mount-widen.cfg][mount.cfg].
 
+##wdenmix:mediaReference
+This mixin can be used by tiers modules to add a custom selector, named **Media Source**, to select the source
+of the media content to pick. The source could be Widen or jContent.
+When the source is selected, the user picks a media (**Media Content**) and store the value of the selected content
+in a property named `wden:mediaNode` (weakreference).
+
+![100]
+![101]
+
+
 \[[< back][README.md]\]
 
 <!--
@@ -598,18 +609,20 @@ in the file [mount-widen.cfg][mount.cfg].
 [0011]: ../images/0011_menuSelect2.png
 -->
 [005]: ../images/005_widenReferenceSelected.png
+[100]: ../images/100_MediaReferenceMixin.png
+[101]: ../images/101_MediaReferenceMixin.png
 
-[definition.cnd]: ../../content-editor-extensions/src/main/resources/META-INF/definitions.cnd
-[widenReference.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_widenReference/html/widenReference.jsp
-[image.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
-[video.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.jsp
-[video.player.vjs.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.player.vjs.jsp
-[video.stream.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_video/html/video.stream.jsp
-[pdf.link.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.link.jsp
-[pdf.viewerHTML5.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
-[pdf.jsp]: ../../content-editor-extensions/src/main/resources/wdennt_pdf/html/pdf.jsp
-[mount.cfg]:  ../../content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
+[widenReference.jsp]: ../../src/main/resources/wdennt_widenReference/html/widenReference.jsp
+[image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
+[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
+[video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
+[video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp
+[pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
+[pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
+[pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
 
 [README.md]: ../../README.md
 [provider.md]: ./provider.md
