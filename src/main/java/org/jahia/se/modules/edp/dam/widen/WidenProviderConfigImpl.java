@@ -108,5 +108,4 @@ public class WidenProviderConfigImpl implements ManagedService, WidenProviderCon
     @Override
     public int getResultPerPage() { return Integer.parseInt((String) properties.get("widen_provider.resultPerPage")); }
 
-
 }
