@@ -290,7 +290,7 @@ The React application is automatically built and deployed when the module is com
 [README.md]: ../../README.md
 [postInstall]: ../../README.md#post-install-optional
 [provider.md]: ./provider.md
-[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query

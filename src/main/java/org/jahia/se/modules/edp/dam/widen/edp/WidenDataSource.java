@@ -1,4 +1,4 @@
-package org.jahia.se.modules.edp.dam.widen;
+package org.jahia.se.modules.edp.dam.widen.edp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
@@ -6,17 +6,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpsURL;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.http.HttpHeaders;
-import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.external.ExternalData;
 import org.jahia.modules.external.ExternalDataSource;
-import org.jahia.osgi.BundleUtils;
-import org.jahia.se.modules.edp.dam.widen.cache.WidenCacheManager;
 import org.jahia.se.modules.edp.dam.widen.model.WidenAsset;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.jahia.se.modules.edp.dam.widen.service.WidenProviderConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,48 +21,54 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 //,ExternalDataSource.Searchable.class not used for now, needed if you want to use AugSearch with external asset
-@Component(service = {WidenDataSource.class, ExternalDataSource.class}, immediate = true)
 public class WidenDataSource implements ExternalDataSource{
     private static final Logger LOGGER = LoggerFactory.getLogger(WidenDataSource.class);
 
     private static final String ASSET_ENTRY = "assets";
     private static final String ASSET_ENTRY_EXPAND = "embeds,thumbnails,file_properties";
 
-    private WidenCacheManager widenCacheManager;
-    private MountPoint wdenStoreMountPoint;
-    private HttpClient httpClient;
-    private JahiaTemplatesPackage jahiaTemplatesPackage;
+//    private JahiaTemplatesPackage jahiaTemplatesPackage;
 
-    public WidenDataSource() {
-        // instantiate HttpClient
-        httpClient = new HttpClient();
-    }
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final WidenProviderConfig widenProviderConfig;
+    private final WidenCacheManager widenCacheManager;
+    private final HttpClient httpClient;
 
-    @Reference(service = WidenCacheManager.class)
-    public void setStoreCacheManager(WidenCacheManager widenCacheManager) {
+//    private MountPoint wdenStoreMountPoint;
+
+
+    public WidenDataSource(WidenProviderConfig widenProviderConfig, WidenCacheManager widenCacheManager) {
+        this.widenProviderConfig = widenProviderConfig;
         this.widenCacheManager = widenCacheManager;
+        // instantiate HttpClient
+        this.httpClient = new HttpClient();
     }
 
-    @Activate
-    public void onActivate(BundleContext bundleContext) {
-        jahiaTemplatesPackage = BundleUtils.getModule(bundleContext.getBundle());
-    }
+//    @Reference(service = WidenCacheManager.class)
+//    public void setStoreCacheManager(WidenCacheManager widenCacheManager) {
+//        this.widenCacheManager = widenCacheManager;
+//    }
+//
+//    @Activate
+//    public void onActivate(BundleContext bundleContext) {
+//        jahiaTemplatesPackage = BundleUtils.getModule(bundleContext.getBundle());
+//    }
+//
+//    @Deactivate
+//    public void onDeactivate() {
+//    }
+//
+//    public MountPoint getStoreMountPoint() {
+//        return wdenStoreMountPoint;
+//    }
+//
+//    public void reload(MountPoint wdenStoreMountPoint){
+//        this.wdenStoreMountPoint = wdenStoreMountPoint;
+//    }
 
-    @Deactivate
-    public void onDeactivate() {
-    }
-
-    public MountPoint getStoreMountPoint() {
-        return wdenStoreMountPoint;
-    }
-
-    public void reload(MountPoint wdenStoreMountPoint){
-        this.wdenStoreMountPoint = wdenStoreMountPoint;
-    }
-
-    public void setHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-    }
+//    public void setHttpClient(HttpClient httpClient) {
+//        this.httpClient = httpClient;
+//    }
 
     @Override
     public List<String> getChildren(String s) throws RepositoryException {
@@ -86,7 +85,7 @@ public class WidenDataSource implements ExternalDataSource{
                 WidenAsset widenAsset = widenCacheManager.getWidenAsset(identifier);
                 if(widenAsset == null){
                     LOGGER.debug("no cacheEntry for : "+identifier);
-                    String path = "/"+wdenStoreMountPoint.getVersion()+"/"+ASSET_ENTRY+"/"+identifier;
+                    String path = "/"+widenProviderConfig.getApiVersion()+"/"+ASSET_ENTRY+"/"+identifier;
                     Map<String, String> query = new LinkedHashMap<String, String>();
                     query.put("expand",ASSET_ENTRY_EXPAND);
                     widenAsset = queryWiden(path,query);
@@ -124,7 +123,14 @@ public class WidenDataSource implements ExternalDataSource{
 
     @Override
     public Set<String> getSupportedNodeTypes() {
-        return Sets.newHashSet("jnt:contentFolder", "wdennt:image","wdennt:video","wdennt:pdf","wdennt:document","wdennt:widen");
+        return Sets.newHashSet(
+                "jnt:contentFolder",
+                "wdennt:image",
+                "wdennt:video",
+                "wdennt:pdf",
+                "wdennt:document",
+                "wdennt:widen"
+        );
     }
 
     @Override
@@ -145,9 +151,9 @@ public class WidenDataSource implements ExternalDataSource{
     private WidenAsset queryWiden(String path, Map<String, String> query) throws RepositoryException {
         LOGGER.info("Query Widen with path : {} and query : {}",path,query);
         try {
-            String endpoint = wdenStoreMountPoint.getEndpoint();
-            String widenSite = wdenStoreMountPoint.getSite();
-            String widenToken = wdenStoreMountPoint.getToken();
+            String endpoint = widenProviderConfig.getApiEndPoint();
+            String widenSite = widenProviderConfig.getApiSite();
+            String widenToken = widenProviderConfig.getApiToken();
 
             HttpsURL url = new HttpsURL(endpoint, 443, path);
 
@@ -176,7 +182,6 @@ public class WidenDataSource implements ExternalDataSource{
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
 
-                ObjectMapper mapper = new ObjectMapper();
                 WidenAsset widenAsset = mapper.readValue(responseStrBuilder.toString(),WidenAsset.class);
 
                 return widenAsset;

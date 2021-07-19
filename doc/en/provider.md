@@ -102,7 +102,7 @@ in the [mount-widen.cfg][mount.cfg] file.
 [WidenAsset.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAsset.java
 [WidenCacheManager.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/cache/WidenCacheManager.java
 [MountPoint.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
-[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 
 
 [README.md]: ../../README.md

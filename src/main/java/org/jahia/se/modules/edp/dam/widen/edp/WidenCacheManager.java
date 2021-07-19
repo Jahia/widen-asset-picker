@@ -1,4 +1,4 @@
-package org.jahia.se.modules.edp.dam.widen.cache;
+package org.jahia.se.modules.edp.dam.widen.edp;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -23,11 +23,7 @@ public class WidenCacheManager {
 
     private Ehcache cache;
 
-    @Activate
-    public void onActivate() {
-        EhCacheProvider cacheProvider = (EhCacheProvider) SpringContextSingleton.getBean("ehCacheProvider");
-        cache = initCache(cacheProvider, CACHE_NAME);
-    }
+
 
     private static Ehcache initCache(EhCacheProvider cacheProvider, String cacheName) {
         CacheManager cacheManager = cacheProvider.getCacheManager();
@@ -53,6 +49,12 @@ public class WidenCacheManager {
         // Cache name has been set now we can initialize it by putting it in the manager.
         // Only Cache manager is initializing caches.
         return cacheManager.addCacheIfAbsent(cache);
+    }
+
+    @Activate
+    public void onActivate() {
+        EhCacheProvider cacheProvider = (EhCacheProvider) SpringContextSingleton.getBean("ehCacheProvider");
+        cache = initCache(cacheProvider, CACHE_NAME);
     }
 
     @Deactivate

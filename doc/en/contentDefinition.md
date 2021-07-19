@@ -622,7 +622,7 @@ in a property named `wden:mediaNode` (weakreference).
 [pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
 [pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
 [pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
-[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
+[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 
 [README.md]: ../../README.md
 [provider.md]: ./provider.md
