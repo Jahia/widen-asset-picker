@@ -609,24 +609,24 @@ in a property named `wden:mediaNode` (weakreference).
 [040]: ../images/040_nodeArch.png
 [0011]: ../images/0011_menuSelect2.png
 -->
-[005]: doc/images/005_widenReferenceSelected.png
-[100]: doc/images/100_MediaReferenceMixin.png
-[101]: doc/images/101_MediaReferenceMixin.png
+[005]: /doc/images/005_widenReferenceSelected.png
+[100]: /doc/images/100_MediaReferenceMixin.png
+[101]: /doc/images/101_MediaReferenceMixin.png
 
-[definition.cnd]: src/main/resources/META-INF/definitions.cnd
-[widenReference.jsp]: src/main/resources/wdennt_widenReference/html/widenReference.jsp
-[image.jsp]: src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
-[video.jsp]: src/main/resources/wdennt_video/html/video.jsp
-[video.player.vjs.jsp]: src/main/resources/wdennt_video/html/video.player.vjs.jsp
-[video.stream.jsp]: src/main/resources/wdennt_video/html/video.stream.jsp
-[pdf.link.jsp]: src/main/resources/wdennt_pdf/html/pdf.link.jsp
-[pdf.viewerHTML5.jsp]: src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
-[pdf.jsp]: src/main/resources/wdennt_pdf/html/pdf.jsp
-[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
-[wdennt_widenReference.json]: src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
+[definition.cnd]: /src/main/resources/META-INF/definitions.cnd
+[widenReference.jsp]: /src/main/resources/wdennt_widenReference/html/widenReference.jsp
+[image.jsp]: /src/main/resources/wdennt_image/html/image.jsp
+[image.hidden.getSrc.jsp]: /src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[video.jsp]: /src/main/resources/wdennt_video/html/video.jsp
+[video.player.vjs.jsp]: /src/main/resources/wdennt_video/html/video.player.vjs.jsp
+[video.stream.jsp]: /src/main/resources/wdennt_video/html/video.stream.jsp
+[pdf.link.jsp]: /src/main/resources/wdennt_pdf/html/pdf.link.jsp
+[pdf.viewerHTML5.jsp]: /src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
+[pdf.jsp]: /src/main/resources/wdennt_pdf/html/pdf.jsp
+[mount.cfg]:  /src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
+[wdennt_widenReference.json]: /src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
 
-[README.md]: README.md
+[README.md]: /README.md
 [provider.md]: ./provider.md
 [picker.md]: ./picker.md
 
