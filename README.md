@@ -58,11 +58,11 @@ To update the jahia.properties file on Jahia Cloud:
 ![][100]
 
 ### Deploy the module
-The module can be installed in 2 ways, from the source or from the store (available soon).
+The module can be installed in 2 ways, from the source or from the store.
 #### From the source
 1. Download the zip archive of the latest release.
 2. If you already know your Widen configuration (API key, site, and host) you can update the default
-configuration about Widen. Update properties starting with `mount.wden_` in the [mount-widen.cfg][mount.cfg] file. 
+configuration about Widen. Update properties in the [widen_provider.cfg][mount.cfg] file. 
 1. Go to the root of the repository.
 1. Run the `mvn clean install` command. This create a jar file in the *target* repository.
     > you must have a **java sdk** and **maven** installed
@@ -74,7 +74,7 @@ configuration about Widen. Update properties starting with `mount.wden_` in the 
     ![][030]
 
 #### From the store
-1. In jContent,navigate to `Administration`.
+1. In jContent, navigate to `Administration`.
 2. In the `Server` section, expand the `Modules and Extensions` entry and click `Modules`.
 3. From the right panel, click `Available modules` and search for **widen**.
 
@@ -86,26 +86,18 @@ configuration about Widen. Update properties starting with `mount.wden_` in the 
     ![][034]
 
 #### Check install
-If the module is properly deployed:
-1. You should find it in the `Installed modules` section.
+If the module is properly deployed you should find it in the `Installed modules` section.
 
-    ![][035]
+![][035]
     
-1. You should see the `dam-widen` in the list of Mount points.
-
-    ![][032]
-
-    This mount point is used by an External provider. 
-    
-    ![][031]
-    
-2. You should be able to create a new `Widen Reference` content.
-
-    <img src="./doc/images/0011_menuSelect.png" width="375px"/>
+If you have installed the module from the store or if you didn't configure the properties
+in the [widen_provider.cfg][mount.cfg] file before to build the module, you must do the post install
+to have the Widen provider starting.
 
 ### Post Install (optional)
->Skip this section of you have already configured the [mount-widen.cfg][mount.cfg] file during the *install from the source*
-process.
+>Skip this section if you have already configured the [widen_provider.cfg][mount.cfg] file during the *install from the source*
+process. 
+> This configuration doesn't require a server restart.
 
 To request the Widen server, you have to configure the module with your Widen API access information.
 
@@ -113,20 +105,27 @@ To set up your Widen API access:
 1. Go to  jahia tools (*https://\<jahia host\>/tools*).
 1. From the tools UI, click `OSGI console` under **Administration and Guidance**.
 
-![][0070]
+    ![][0070]
 
 1. In the top menu expand the entry **OSGI** and click **Configuration**.
 
-![][0072]
+    ![][0072]
 
-1. Look for `org.jahia.modules.external.mount.xxxxxxxx-xxx` and click on it. If you have more than one entry like this
-be sure to select the correct one. The filename must contain **org.jahia.modules.external.mount-widen.cfg**.
+1. Look for `org.jahia.se.modules.widen_provider` and click on it.
 
-1. Finally, update the approprite properties starting with `mount.wden_` and save your changes.
+1. Finally, update the appropriate properties starting with `widen_provider` and save your changes.
 
-![][0071]
+    ![][0071]
 
->This configuration doesn't require a server restart.
+1. If all the properties are set correctly, the provider should start,
+   and you should see the `widen` key in the list of External providers.
+
+    ![][031]
+
+2. Now, you should be able to create a new `Widen Reference` content.
+
+    <img src="./doc/images/0011_menuSelect.png" width="375px"/>
+
 ## Module details
 
 To pick a widen asset (for example a video, image, or PDF) from a Widen Cloud instance, you need to implement:
@@ -165,8 +164,8 @@ The data flow is composed of 10 actions of which 4 are optional and depend on th
 
     ![][0041]
 
-1. When the user saves their choice from the picker, a content path is created. This path is built with the value of
-    the properties `mount.j_path`, `mount.j_nodename`, and the `id` of the Widen asset.
+1. When the user saves their choice from the picker, a content path is created. This path is built with 
+   a static part `/sites/systemsite/contents/dam-widen`, and the `id` of the Widen asset.
     
     jContent cannot use this path directly as it expects to receive a node id. 
     Therefore, the picker executes a GraphQL call to create the node and get its id back.
@@ -237,10 +236,10 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 [provider.md]: ./doc/en/provider.md
 [enhance.md]: ./doc/en/enhance.md
 
-[mount.cfg]: ./content-editor-extensions/src/main/resources/META-INF/configurations/org.jahia.modules.external.mount-widen.cfg
-[definition.cnd]: ./content-editor-extensions/src/main/resources/META-INF/definitions.cnd
-[react:index.js]: ./content-editor-extensions/src/javascript/ContentEditorExtensions/SelectorTypes/DamWidenPicker/DamWidenPickerCmp.jsx
-[WidenDataSource.java]: ./content-editor-extensions/src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
+[mount.cfg]: ./src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
+[definition.cnd]: ./src/main/resources/META-INF/definitions.cnd
+[react:index.js]: ./src/javascript/DamWidenPicker/DamWidenPickerCmp.jsx
+[WidenDataSource.java]: ./src/main/java/org/jahia/se/modules/edp/dam/widen/edp/WidenDataSource.java
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
 [widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id

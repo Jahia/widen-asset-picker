@@ -27,15 +27,10 @@ public class WidenDataSource implements ExternalDataSource{
     private static final String ASSET_ENTRY = "assets";
     private static final String ASSET_ENTRY_EXPAND = "embeds,thumbnails,file_properties";
 
-//    private JahiaTemplatesPackage jahiaTemplatesPackage;
-
     private final ObjectMapper mapper = new ObjectMapper();
     private final WidenProviderConfig widenProviderConfig;
     private final WidenCacheManager widenCacheManager;
     private final HttpClient httpClient;
-
-//    private MountPoint wdenStoreMountPoint;
-
 
     public WidenDataSource(WidenProviderConfig widenProviderConfig, WidenCacheManager widenCacheManager) {
         this.widenProviderConfig = widenProviderConfig;
@@ -43,32 +38,6 @@ public class WidenDataSource implements ExternalDataSource{
         // instantiate HttpClient
         this.httpClient = new HttpClient();
     }
-
-//    @Reference(service = WidenCacheManager.class)
-//    public void setStoreCacheManager(WidenCacheManager widenCacheManager) {
-//        this.widenCacheManager = widenCacheManager;
-//    }
-//
-//    @Activate
-//    public void onActivate(BundleContext bundleContext) {
-//        jahiaTemplatesPackage = BundleUtils.getModule(bundleContext.getBundle());
-//    }
-//
-//    @Deactivate
-//    public void onDeactivate() {
-//    }
-//
-//    public MountPoint getStoreMountPoint() {
-//        return wdenStoreMountPoint;
-//    }
-//
-//    public void reload(MountPoint wdenStoreMountPoint){
-//        this.wdenStoreMountPoint = wdenStoreMountPoint;
-//    }
-
-//    public void setHttpClient(HttpClient httpClient) {
-//        this.httpClient = httpClient;
-//    }
 
     @Override
     public List<String> getChildren(String s) throws RepositoryException {
