@@ -76,7 +76,7 @@ in a Jahia module, but rather give you an overview.
 
 To deploy [nodejs], install [yarn] packages, and build the React application from Maven,
 the module uses the [frontend-maven-plugin].
-To build the module the plugin has to excute three steps:
+To build the module the plugin has to execute three steps:
 1. Install the binary for node v11.15.0 and yarn v1.12.3.
 2. Upload and install the yarn packages referenced in the [packages.json] file.
 3. Run the build command `yarn webpack`.
@@ -185,7 +185,7 @@ This component is the main entry of our Widen picker React application.
 
 ### Widen picker React application
 The core of the Widen Picker is a React application used like a front end of the Widen API.
-The application directly requests the Widen API and uses its search capabilities so the
+The application directly requests the Widen API and uses its search capabilities, so the
 assets returned are always synchronized with the Widen catalog.
 
 > The picker uses the Widen API:
@@ -234,45 +234,60 @@ To execute a request, the application needs connexion parameters to join the Wid
 
 These parameters are provided to the application via the [WidenPicker.jsp] configuration file.
 
-First, we search for the mount point created by the module. The properties of the mount point are
-a subset of the variables written in the file [mount-widen.cfg][mount.cfg] 
-(see [post install][postInstall] to update the value of the property).
-
+First, we use a custom taglib `wden` to access to the properties written in the file [widen_provider.cfg][mount.cfg]
 ```jsp
-<jcr:sql
-    var="mountPoints"
-    sql="SELECT * FROM [wdennt:mountPoint]"
-/>
+<%@ taglib prefix="wden" uri="http://www.jahia.org/wden" %>
+
+<c:set var="widenProviderConfig" value="${wden:config()}"/>
 ```
 Then we create an **widen** object entry in the **contextJsParameters.config** object.
 ```js
-contextJsParameters.config.widen={
-    url:"${mountPoint.properties['wden:apiProtocol']}://${mountPoint.properties['wden:apiEndPoint']}",
-    version:"${mountPoint.properties['wden:apiVersion']}",
-    site:"${mountPoint.properties['wden:apiSite']}",
-    token:"${mountPoint.properties['wden:apiToken']}",
-    mountPoint:"${jcr:getChildrenOfType(mountPoint.properties.mountPoint.node,'jnt:contentFolder')[0].path}",
-    lazyLoad:${mountPoint.properties['wden:lazyLoad']},
-    resultPerPage:${mountPoint.properties['wden:resultPerPage']}
+ contextJsParameters.config.widen={
+    url:"${widenProviderConfig['widen_provider.apiProtocol']}://${widenProviderConfig['widen_provider.apiEndPoint']}",
+    version:"${widenProviderConfig['widen_provider.apiVersion']}",
+    site:"${widenProviderConfig['widen_provider.apiSite']}",
+    token:"${widenProviderConfig['widen_provider.apiToken']}",
+    lazyLoad:${widenProviderConfig['widen_provider.lazyLoad']},
+    resultPerPage:${widenProviderConfig['widen_provider.resultPerPage']},
+    mountPoint:"/sites/systemsite/contents/dam-widen"
 }
 ```
 > This widen object is checked
   by the douane component of the application (cf. step 2 of the [architecture](#architecture-1)).
 
-> You can add more properties in the context if you want to create new features or enhance current features
-in the React application. For example, you could expose the timeout variable of the Widen API call or
-the timout of the cache.
-
+##### Add a new property
+You can add more properties in the context if you want to create new features or enhance current features
+in the React application. For example, you could expose the timeout variable of the Widen API call. 
 
 To add more properties in the widen object:
-1. Add a new property to the `wdennt:mountPoint` node in the [definition.cnd] file.
-2. Create a new property in the [mount-widen.cfg][mount.cfg] properties file, based on the one you added in step 1.
-3. Update the [MountPoint.java] class to map your new property.
+2. Create a new property in the [widen_provider.cfg][mount.cfg] properties file.
 4. In the [WidenPicker.jsp] file, get the property and add it to the widen object.
-5. Declare this new property in the [validation schema][react:douaneSchemaIndex.js].
+5. Declare this new property in the application [validation schema][react:douaneSchemaIndex.js].
 6. Read/map/use the property to the [store][react:store.jsx].
 By default, the store exposes the context, so the property can be accessed where you want.
 
+> Note: here we provide new property to the front React webapp. To use this new property in the EDP you must
+> update the [WidenProviderConfig.java] java interface to map your new property.
+
+The properties
+in the [widen_provider.cfg][mount.cfg] are considered global by the picker webapp, that means all instances
+of the picker will use these values. Even if it is not implemented in this module, we can imagine providing
+a specific set of parameters for each Widen picker from a nodeType configuration file like [widenReference.json].
+To provide a set of local option the entry `selectorOptions` must be used. 
+```json
+...
+"name": "j:node",
+"selectorType": "WidenPicker",
+"selectorOptions":[
+    {
+      "name": "optionName",
+      "value" : "optionValue"
+    }
+]
+...
+```
+To see how to use the `selectorOptions` look at the file [codeMirror.jsx], and to see the configuration file of this
+selectorType look at this module [codeMirror.qa]
 
 #### Run and deploy the App
 The React application is automatically built and deployed when the module is compiled and deployed.
@@ -290,7 +305,7 @@ The React application is automatically built and deployed when the module is com
 [README.md]: ../../README.md
 [postInstall]: ../../README.md#post-install-optional
 [provider.md]: ./provider.md
-[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
@@ -305,6 +320,7 @@ The React application is automatically built and deployed when the module is com
 [react:douaneSchemaIndex.js]: ../../src/javascript/DamWidenPicker/douane/lib/schema/index.js
 [react:store.jsx]: ../../src/javascript/DamWidenPicker/Store/Store.jsx
 [WidenPicker.jsp]: ../../src/main/resources/configs/WidenPicker.jsp
+[widenReference.json]: ../../src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
 
 [wepback.shared.js]: ../../webpack.shared.js
 
@@ -312,4 +328,9 @@ The React application is automatically built and deployed when the module is com
 [packages.json]: ../../package.json
 
 [definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
-[MountPoint.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
+
+[codeMirror.jsx]: https://github.com/Jahia/content-editor-codeMirror/blob/main/src/javascript/CodeMirror/CodeMirrorCmp.jsx
+[codeMirror.qa]: https://github.com/Jahia/codemirror-editor-qa
+
+[WidenProviderConfig.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/service/WidenProviderConfig.java
+[WidenProviderConfigImpl.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/WidenProviderConfigImpl.java

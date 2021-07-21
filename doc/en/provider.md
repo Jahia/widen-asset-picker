@@ -31,7 +31,7 @@ EDP as Light EDP.
 
 As presented in the [data flow][dataFlow], the provider maps a Widen asset (JSON) to a jContent node (JCRNodeWrapper).
 The mapping is done in 3 steps:
-1. Resolve the node path returned by the picker `jahia.widen.edp.mountPoint`/`id` of the Widen asset.
+1. Resolve the node path returned by the picker **/sites/systemsite/contents/dam-widen/`id`** of the Widen asset.
 2. Query Widen API to get the properties of the asset.
 3. Map the JSON to a JCRNodeWrapper.
 
@@ -89,20 +89,20 @@ public class WidenAsset {
 ```
 
 ## Mount Point
-The main purpose of the [MountPoint.java] class is to support the configuration of the provider
+The main purpose of the [WidenMountPointServiceImpl.java] class is to support the configuration of the provider
 and to enable the creation of new instance of the [WidenDataSource][WidenDataSource.java].
 
-> The properties of the mount point are a subset of the variables written
-in the [mount-widen.cfg][mount.cfg] file.
+> The properties used by the WidenDataSource are written
+in the [widen_provider.cfg][mount.cfg] file.
 
 \[[<< back][README.md]\]
 
-[WidenDataSource.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/WidenDataSource.java
+[WidenDataSource.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/edp/WidenDataSource.java
 [WidenAssetDeserializer.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAssetDeserializer.java
 [WidenAsset.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/model/WidenAsset.java
-[WidenCacheManager.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/cache/WidenCacheManager.java
-[MountPoint.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/MountPoint.java
-[mount.cfg]:  src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
+[WidenCacheManager.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/edp/WidenCacheManager.java
+[WidenMountPointServiceImpl.java]: ../../src/main/java/org/jahia/se/modules/edp/dam/widen/edp/WidenMountPointServiceImpl.java
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 
 
 [README.md]: ../../README.md

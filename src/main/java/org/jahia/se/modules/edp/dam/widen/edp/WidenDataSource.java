@@ -118,7 +118,7 @@ public class WidenDataSource implements ExternalDataSource{
     }
 
     private WidenAsset queryWiden(String path, Map<String, String> query) throws RepositoryException {
-        LOGGER.info("Query Widen with path : {} and query : {}",path,query);
+        LOGGER.debug("Query Widen with path : {} and query : {}",path,query);
         try {
             String endpoint = widenProviderConfig.getApiEndPoint();
             String widenSite = widenProviderConfig.getApiSite();

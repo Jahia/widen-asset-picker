@@ -30,7 +30,6 @@ A node is also useful for creating a dedicated rendering through a set of views.
 - [wdennt:document](#wdenntdocument)
     - [Definition](#definition-4)
     - [Views](#views-4)
-- [wdennt:mountPoint](#wdenntmountpoint)
 - [wdenmix:mediaReference](#wdenmixmediareference)
 
 ## Architecture overview
@@ -46,7 +45,7 @@ The module provides multiple mixins (explained later) and the following node typ
 * `wdennt:pdf`
 * `wdennt:document`
 
-The hierarchy between the mixins is presented in the schema below:
+The hierarchy between the mixins and node types is presented in the schema below:
 
 <img src="../images/040_nodeArch.png" width="675px"/>
 
@@ -74,7 +73,7 @@ This node type is defined like this:
 1. `jmix:nodeReference` meaning the node is like a *wrapper* used to reference a subset of mutlimedia nodes.
     This mixin provides a default attribute `j:node` used to store the path of the referenced node.
 
->In this defintion, the property `j:node` is overwritten. Indeed, we want to restrict the allowed
+>In this definition, the property `j:node` is overwritten. Indeed, we want to restrict the allowed
 > node type to be picked to node types that extend `wdenmix:widenAsset`, and use a custom picker
 > named [widenPicker][picker.md]. The picker is configured in the file [wdennt_widenReference.json]
 
@@ -586,22 +585,19 @@ The node type doesn't have specific property. All properties come from supertype
 ### Views
 The module provides a default empty view. *Feel free to customize it*.
 
-
-## wdennt:mountPoint
-This node type is used to defined the Widen mount point in jContent. The main purpose
-of this node type is to host the configuration needed to request the Widen API endpoint.
-The properties of the mount point are a subset of the variables written
-in the file [mount-widen.cfg][mount.cfg].
-
 ##wdenmix:mediaReference
 This mixin can be used by tiers modules to add a custom selector, named **Media Source**, to select the source
 of the media content to pick. The source could be Widen or jContent.
+
+> This mixin is used in this [project][quiz:cnd] and the widen asset render both with a [jsp view][quiz:jsp.view] and with a
+[React component][quiz:react.view].
+
+
 When the source is selected, the user picks a media (**Media Content**) and store the value of the selected content
 in a property named `wden:mediaNode` (weakreference).
 
 ![100]
 ![101]
-
 
 \[[< back][README.md]\]
 
@@ -609,27 +605,31 @@ in a property named `wden:mediaNode` (weakreference).
 [040]: ../images/040_nodeArch.png
 [0011]: ../images/0011_menuSelect2.png
 -->
-[005]: /doc/images/005_widenReferenceSelected.png
-[100]: /doc/images/100_MediaReferenceMixin.png
-[101]: /doc/images/101_MediaReferenceMixin.png
+[005]: ../images/005_widenReferenceSelected.png
+[100]:../images/100_MediaReferenceMixin.png
+[101]: ../images/101_MediaReferenceMixin.png
 
-[definition.cnd]: /src/main/resources/META-INF/definitions.cnd
-[widenReference.jsp]: /src/main/resources/wdennt_widenReference/html/widenReference.jsp
-[image.jsp]: /src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: /src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
-[video.jsp]: /src/main/resources/wdennt_video/html/video.jsp
-[video.player.vjs.jsp]: /src/main/resources/wdennt_video/html/video.player.vjs.jsp
-[video.stream.jsp]: /src/main/resources/wdennt_video/html/video.stream.jsp
-[pdf.link.jsp]: /src/main/resources/wdennt_pdf/html/pdf.link.jsp
-[pdf.viewerHTML5.jsp]: /src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
-[pdf.jsp]: /src/main/resources/wdennt_pdf/html/pdf.jsp
-[mount.cfg]:  /src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
-[wdennt_widenReference.json]: /src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
+[definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
+[widenReference.jsp]: ../../src/main/resources/wdennt_widenReference/html/widenReference.jsp
+[image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
+[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
+[video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
+[video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp
+[pdf.link.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.link.jsp
+[pdf.viewerHTML5.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.viewerHTML5.jsp
+[pdf.jsp]: ../../src/main/resources/wdennt_pdf/html/pdf.jsp
+[mount.cfg]:  ../../src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
+[wdennt_widenReference.json]: ../../src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
 
-[README.md]: /README.md
+[README.md]: ../../README.md
 [provider.md]: ./provider.md
 [picker.md]: ./picker.md
 
 [videojs.com]: https://videojs.com
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query
 [widenAPI:AssetById]: https://widenv2.docs.apiary.io/#reference/assets/assets/retrieve-by-id
+
+[quiz:cnd]: https://github.com/hduchesne/game-4-jcustomer-modules/blob/main/game-4-jcustomer-components-quiz/src/main/resources/META-INF/definitions.cnd
+[quiz:jsp.view]: https://github.com/hduchesne/game-4-jcustomer-modules/blob/main/game-4-jcustomer-components-quiz/src/main/resources/game4nt_quiz/html/quiz.content.jsp
+[quiz:react.view]: https://github.com/hduchesne/game-4-jcustomer-modules/blob/main/game-4-jcustomer-components-quiz-react/src/components/Media/components/widen/WidenImage.jsx
