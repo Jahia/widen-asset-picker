@@ -585,7 +585,7 @@ The node type doesn't have specific property. All properties come from supertype
 ### Views
 The module provides a default empty view. *Feel free to customize it*.
 
-##wdenmix:mediaReference
+## wdenmix:mediaReference
 This mixin can be used by tiers modules to add a custom selector, named **Media Source**, to select the source
 of the media content to pick. The source could be Widen or jContent.
 
