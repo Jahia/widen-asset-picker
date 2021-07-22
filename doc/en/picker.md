@@ -260,10 +260,10 @@ You can add more properties in the context if you want to create new features or
 in the React application. For example, you could expose the timeout variable of the Widen API call. 
 
 To add more properties in the widen object:
-2. Create a new property in the [widen_provider.cfg][mount.cfg] properties file.
-4. In the [WidenPicker.jsp] file, get the property and add it to the widen object.
-5. Declare this new property in the application [validation schema][react:douaneSchemaIndex.js].
-6. Read/map/use the property to the [store][react:store.jsx].
+1. Create a new property in the [widen_provider.cfg][mount.cfg] properties file.
+1. In the [WidenPicker.jsp] file, get the property and add it to the widen object.
+1. Declare this new property in the application [validation schema][react:douaneSchemaIndex.js].
+1. Read/map/use the property to the [store][react:store.jsx].
 By default, the store exposes the context, so the property can be accessed where you want.
 
 > Note: here we provide new property to the front React webapp. To use this new property in the EDP you must
