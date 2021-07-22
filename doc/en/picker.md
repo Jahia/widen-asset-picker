@@ -267,7 +267,7 @@ To add more properties in the widen object:
 By default, the store exposes the context, so the property can be accessed where you want.
 
 > Note: here we provide new property to the front React webapp. To use this new property in the EDP you must
-> update the [WidenProviderConfig.java] java interface to map your new property.
+> update the [WidenProviderConfig.java] interface to map your new property.
 
 The properties
 in the [widen_provider.cfg][mount.cfg] are considered global by the picker webapp, that means all instances
