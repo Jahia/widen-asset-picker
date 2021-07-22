@@ -596,7 +596,10 @@ of the media content to pick. The source could be Widen or jContent.
 When the source is selected, the user picks a media (**Media Content**) and store the value of the selected content
 in a property named `wden:mediaNode` (weakreference).
 
+Pick a media content from jContent
 ![100]
+
+Pick a media content from Widen
 ![101]
 
 \[[< back][README.md]\]
