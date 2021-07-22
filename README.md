@@ -1,6 +1,6 @@
 # widen-asset-picker
 
-This module contains the implementation of the Widen Content Picker for Jahia 8.0.1.x
+This module contains the implementation of the Widen Content Picker for Jahia 8.0.2.x
 
 With this module, a contributor can easily add a Widen media asset to a Jahia page.
 
