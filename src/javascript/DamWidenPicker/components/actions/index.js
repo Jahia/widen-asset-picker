@@ -1,8 +1,8 @@
 import React from 'react';
 import {Edit, Cancel} from '@material-ui/icons';
 import {DotsVertical} from 'mdi-material-ui';
-import {unsetFieldAction} from 'src/javascript/DamWidenPicker/components/actions/unsetField.action';
-import {replaceAction} from 'src/javascript/DamWidenPicker/components/actions/replace.action';
+import {unsetFieldAction} from './unsetField.action';
+import {replaceAction} from './replace.action';
 
 export const registerWidenPickerActions = registry => {
     registry.add('action', 'WidenPickerMenu', registry.get('action', 'menuAction'), {
