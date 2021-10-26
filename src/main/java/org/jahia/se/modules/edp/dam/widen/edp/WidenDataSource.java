@@ -51,18 +51,19 @@ public class WidenDataSource implements ExternalDataSource{
             if (identifier.equals("root")) {
                 return new ExternalData(identifier, "/", "jnt:contentFolder", new HashMap<String, String[]>());
             }else{
-                WidenAsset widenAsset = widenCacheManager.getWidenAsset(identifier);
-                if(widenAsset == null){
-                    LOGGER.debug("no cacheEntry for : "+identifier);
-                    String path = "/"+widenProviderConfig.getApiVersion()+"/"+ASSET_ENTRY+"/"+identifier;
-                    Map<String, String> query = new LinkedHashMap<String, String>();
-                    query.put("expand",ASSET_ENTRY_EXPAND);
-                    widenAsset = queryWiden(path,query);
-                    widenCacheManager.cacheWidenAsset(widenAsset);
+                synchronized (this){
+                    WidenAsset widenAsset = widenCacheManager.getWidenAsset(identifier);
+                    if(widenAsset == null){
+                        LOGGER.debug("no cacheEntry for : "+identifier);
+                        String path = "/"+widenProviderConfig.getApiVersion()+"/"+ASSET_ENTRY+"/"+identifier;
+                        Map<String, String> query = new LinkedHashMap<String, String>();
+                        query.put("expand",ASSET_ENTRY_EXPAND);
+                        widenAsset = queryWiden(path,query);
+                        widenCacheManager.cacheWidenAsset(widenAsset);
+                    }
+                    ExternalData data = new ExternalData(identifier, "/"+identifier, widenAsset.getJahiaNodeType(), widenAsset.getProperties());
+                    return data;
                 }
-
-                ExternalData data = new ExternalData(identifier, "/"+identifier, widenAsset.getJahiaNodeType(), widenAsset.getProperties());
-                return data;
             }
         } catch (Exception e) {
             throw new ItemNotFoundException(e);
