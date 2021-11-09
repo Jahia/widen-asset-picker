@@ -2,10 +2,21 @@ package org.jahia.se.modules.edp.dam.widen.edp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpsURL;
-import org.apache.commons.httpclient.methods.GetMethod;
+//import org.apache.commons.httpclient.HttpClient;
+//import org.apache.commons.httpclient.HttpsURL;
+//import org.apache.commons.httpclient.methods.GetMethod;
+
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.net.URIBuilder;
 import org.apache.http.HttpHeaders;
+//import org.apache.http.impl.client.HttpClients;
+
 import org.jahia.modules.external.ExternalData;
 import org.jahia.modules.external.ExternalDataSource;
 import org.jahia.se.modules.edp.dam.widen.model.WidenAsset;
@@ -16,8 +27,9 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+//import java.io.BufferedReader;
+//import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.*;
 
 //,ExternalDataSource.Searchable.class not used for now, needed if you want to use AugSearch with external asset
@@ -30,13 +42,13 @@ public class WidenDataSource implements ExternalDataSource{
     private final ObjectMapper mapper = new ObjectMapper();
     private final WidenProviderConfig widenProviderConfig;
     private final WidenCacheManager widenCacheManager;
-    private final HttpClient httpClient;
+    private final CloseableHttpClient httpClient;
 
     public WidenDataSource(WidenProviderConfig widenProviderConfig, WidenCacheManager widenCacheManager) {
         this.widenProviderConfig = widenProviderConfig;
         this.widenCacheManager = widenCacheManager;
         // instantiate HttpClient
-        this.httpClient = new HttpClient();
+        this.httpClient = HttpClients.createDefault();
     }
 
     @Override
@@ -121,44 +133,64 @@ public class WidenDataSource implements ExternalDataSource{
     private WidenAsset queryWiden(String path, Map<String, String> query) throws RepositoryException {
         LOGGER.debug("Query Widen with path : {} and query : {}",path,query);
         try {
+            String schema = widenProviderConfig.getApiProtocol();
             String endpoint = widenProviderConfig.getApiEndPoint();
             String widenSite = widenProviderConfig.getApiSite();
             String widenToken = widenProviderConfig.getApiToken();
+            List<NameValuePair> parameters = new ArrayList<>(query.size());
 
-            HttpsURL url = new HttpsURL(endpoint, 443, path);
+            for (Map.Entry<String, String> entry : query.entrySet()) {
+                parameters.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            }
+//            HttpsURL url = new HttpsURL(endpoint, 443, path);
+            URIBuilder builder = new URIBuilder()
+                    .setScheme(schema)
+                    .setHost(endpoint)
+                    .setPath(path)
+                    .setParameters(parameters);
 
-            url.setQuery(
-                query.keySet().toArray(new String[query.size()]),
-                query.values().toArray(new String[query.size()])
-            );
+//            url.setQuery(
+//                query.keySet().toArray(new String[query.size()]),
+//                query.values().toArray(new String[query.size()])
+//            );
+
+            URI uri = builder.build();
 
             long l = System.currentTimeMillis();
-            GetMethod getMethod = new GetMethod(url.toString());
+            HttpGet getMethod = new HttpGet(uri);
+//            GetMethod getMethod = new GetMethod(url.toString());
+
 
             //NOTE Widen return content in ISO-8859-1 even if Accept-Charset = UTF-8 is set.
             //Need to use appropriate charset later to read the inputstream response.
-            getMethod.setRequestHeader(HttpHeaders.AUTHORIZATION,"Bearer "+widenSite+"/"+widenToken);
+            getMethod.setHeader(HttpHeaders.AUTHORIZATION,"Bearer "+widenSite+"/"+widenToken);
 //            getMethod.setRequestHeader("Content-Type","application/json");
 //            getMethod.setRequestHeader("Accept-Charset","ISO-8859-1");
 //            getMethod.setRequestHeader("Accept-Charset","UTF-8");
-
+            CloseableHttpResponse resp = null;
             try {
-                httpClient.executeMethod(getMethod);
+//                httpClient.executeMethod(getMethod);
+                resp = httpClient.execute(getMethod);
+//                return new JSONObject(EntityUtils.toString(resp.getEntity()));
+                WidenAsset widenAsset = mapper.readValue(EntityUtils.toString(resp.getEntity()),WidenAsset.class);
 
-                BufferedReader streamReader = new BufferedReader(new InputStreamReader(getMethod.getResponseBodyAsStream(),"UTF-8"));
-                StringBuilder responseStrBuilder = new StringBuilder();
-
-                String inputStr;
-                while ((inputStr = streamReader.readLine()) != null)
-                    responseStrBuilder.append(inputStr);
-
-                WidenAsset widenAsset = mapper.readValue(responseStrBuilder.toString(),WidenAsset.class);
+//                BufferedReader streamReader = new BufferedReader(new InputStreamReader(getMethod.getResponseBodyAsStream(),"UTF-8"));
+//                StringBuilder responseStrBuilder = new StringBuilder();
+//
+//                String inputStr;
+//                while ((inputStr = streamReader.readLine()) != null)
+//                    responseStrBuilder.append(inputStr);
+//
+//                WidenAsset widenAsset = mapper.readValue(responseStrBuilder.toString(),WidenAsset.class);
 
                 return widenAsset;
 
             } finally {
-                getMethod.releaseConnection();
-                LOGGER.debug("Request {} executed in {} ms",url, (System.currentTimeMillis() - l));
+                if (resp != null) {
+                    resp.close();
+                }
+//                getMethod.releaseConnection();
+                LOGGER.debug("Request {} executed in {} ms",uri, (System.currentTimeMillis() - l));
             }
         } catch (Exception e) {
             LOGGER.error("Error while querying Widen", e);
