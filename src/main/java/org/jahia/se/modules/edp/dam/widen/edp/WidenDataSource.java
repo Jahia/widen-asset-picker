@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 //import org.apache.commons.httpclient.HttpClient;
 //import org.apache.commons.httpclient.HttpsURL;
 //import org.apache.commons.httpclient.methods.GetMethod;
+//import org.apache.http.impl.client.HttpClients;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -15,7 +16,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
 import org.apache.http.HttpHeaders;
-//import org.apache.http.impl.client.HttpClients;
 
 import org.jahia.modules.external.ExternalData;
 import org.jahia.modules.external.ExternalDataSource;
