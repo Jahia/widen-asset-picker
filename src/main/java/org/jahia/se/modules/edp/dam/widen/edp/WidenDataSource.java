@@ -2,20 +2,16 @@ package org.jahia.se.modules.edp.dam.widen.edp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
-//import org.apache.commons.httpclient.HttpClient;
-//import org.apache.commons.httpclient.HttpsURL;
-//import org.apache.commons.httpclient.methods.GetMethod;
-//import org.apache.http.impl.client.HttpClients;
 
-//import org.apache.hc.client5.http.classic.methods.HttpGet;
+//import org.apache.http.HttpHeaders;
+//import org.apache.hc.core5.http.NameValuePair;
 //import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+//import org.apache.hc.client5.http.classic.methods.HttpGet;
+//import org.apache.hc.core5.net.URIBuilder;
 //import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 //import org.apache.hc.client5.http.impl.classic.HttpClients;
-//import org.apache.hc.core5.http.NameValuePair;
-//import org.apache.hc.core5.http.io.entity.EntityUtils;
 //import org.apache.hc.core5.http.message.BasicNameValuePair;
-//import org.apache.hc.core5.net.URIBuilder;
-//import org.apache.http.HttpHeaders;
+//import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
@@ -37,8 +33,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-//import java.io.BufferedReader;
-//import java.io.InputStreamReader;
+
 import java.net.URI;
 import java.util.*;
 
@@ -152,24 +147,17 @@ public class WidenDataSource implements ExternalDataSource{
             for (Map.Entry<String, String> entry : query.entrySet()) {
                 parameters.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
-//            HttpsURL url = new HttpsURL(endpoint, 443, path);
+
             URIBuilder builder = new URIBuilder()
                     .setScheme(schema)
                     .setHost(endpoint)
                     .setPath(path)
                     .setParameters(parameters);
 
-//            url.setQuery(
-//                query.keySet().toArray(new String[query.size()]),
-//                query.values().toArray(new String[query.size()])
-//            );
-
             URI uri = builder.build();
 
             long l = System.currentTimeMillis();
             HttpGet getMethod = new HttpGet(uri);
-//            GetMethod getMethod = new GetMethod(url.toString());
-
 
             //NOTE Widen return content in ISO-8859-1 even if Accept-Charset = UTF-8 is set.
             //Need to use appropriate charset later to read the inputstream response.
@@ -179,27 +167,14 @@ public class WidenDataSource implements ExternalDataSource{
 //            getMethod.setRequestHeader("Accept-Charset","UTF-8");
             CloseableHttpResponse resp = null;
             try {
-//                httpClient.executeMethod(getMethod);
                 resp = httpClient.execute(getMethod);
-//                return new JSONObject(EntityUtils.toString(resp.getEntity()));
                 WidenAsset widenAsset = mapper.readValue(EntityUtils.toString(resp.getEntity()),WidenAsset.class);
-
-//                BufferedReader streamReader = new BufferedReader(new InputStreamReader(getMethod.getResponseBodyAsStream(),"UTF-8"));
-//                StringBuilder responseStrBuilder = new StringBuilder();
-//
-//                String inputStr;
-//                while ((inputStr = streamReader.readLine()) != null)
-//                    responseStrBuilder.append(inputStr);
-//
-//                WidenAsset widenAsset = mapper.readValue(responseStrBuilder.toString(),WidenAsset.class);
-
                 return widenAsset;
 
             } finally {
                 if (resp != null) {
                     resp.close();
                 }
-//                getMethod.releaseConnection();
                 LOGGER.debug("Request {} executed in {} ms",uri, (System.currentTimeMillis() - l));
             }
         } catch (Exception e) {
