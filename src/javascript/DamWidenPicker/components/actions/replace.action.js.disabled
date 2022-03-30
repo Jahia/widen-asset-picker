@@ -1,3 +1,5 @@
+//TODO replace from code in githHub https://github.com/Jahia/content-editor/blob/9cf8432b36ffc8c79e0f4484ce07ec03c71b95d8/src/javascript/SelectorTypes/Picker/actions/replace.action.js#L10
+
 export const replaceAction = {
     init: context => {
         context.enabled = !context.field.readOnly;

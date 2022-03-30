@@ -67,7 +67,8 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
         showPickerDialog,
         editorField,
         locale,
-        editorSetActionContext,
+        // editorSetActionContext,
+        editorInputContext,
         editorValue
     } = state;
 
@@ -126,11 +127,16 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
             lastModified: get(widenJcrData, 'lastModified.value')
         };
     }
-
-    editorSetActionContext({
-        widenStoreDispatch: dispatch,
-        editorValue
-    });
+//Note
+//     editorInputContext.actionContext={
+//         widenStoreDispatch: dispatch,
+//         editorValue
+//     }
+    //KO
+    // editorSetActionContext({
+    //     widenStoreDispatch: dispatch,
+    //     editorValue
+    // });
 
     const dialogConfig = {
         fullWidth: true,
@@ -159,6 +165,14 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
                 fieldData={fieldData}
                 onClick={handleShow}
             />
+            {/*Note copy ButtonRenderer into designSystem*/}
+            {/*{editorInputContext.displayActions && editorValue &&*/}
+            {/*    <DisplayAction actionKey={'WidenPickerMenu'}*/}
+            {/*                   value={editorValue}*/}
+            {/*                   field={field}*/}
+            {/*                   formik={formik}*/}
+            {/*                   inputContext={inputContext}*/}
+            {/*                   render={ButtonRenderer}/>}*/}
             <Dialog
                 open={showPickerDialog}
                 fullWidth={dialogConfig.fullWidth}
@@ -170,12 +184,14 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
                     Widen Picker
                 </DialogTitle>
                 <DialogContent dividers={dialogConfig.dividers}>
-                    <Picker selectedItemId={fieldData ? fieldData.wdenid : null}/>
+                    <Picker selectedItemId={fieldData?.wdenid}/>
                 </DialogContent>
             </Dialog>
         </>
     );
 };
+
+//fieldData ? fieldData.wdenid : null
 
 WidenPickerCmp.propTypes = {
     initEditorValue: PropTypes.string,

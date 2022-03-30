@@ -38,7 +38,7 @@ const init = context => {
     //     return config;
     // });
     const {lazyLoad, resultPerPage, mountPoint} = context.widen;
-    const {onChange, field, editorContext, setActionContext} = context.editor;// Value,
+    const {onChange, field, editorContext, inputContext} = context.editor;// Value,
 
     return {
         context, // Note: see if needed
@@ -46,7 +46,7 @@ const init = context => {
         editorValue: null, // Value,
         editorOnChange: onChange,
         editorContext,
-        editorSetActionContext: setActionContext,
+        editorInputContext :inputContext,
         locale: editorContext.lang,
         error: null,
         isLoading: false,

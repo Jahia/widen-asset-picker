@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Functions {
+public final class Functions {
     private static final Logger logger = LoggerFactory.getLogger(Functions.class);
 
     private Functions() {

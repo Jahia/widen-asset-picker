@@ -5,11 +5,12 @@ import {Store} from './Store';
 import * as PropTypes from 'prop-types';
 import {contextValidator} from './douane';
 
-const DamWidenPickerCmp = ({field, id, value, editorContext, setActionContext, onChange}) => {
+const DamWidenPickerCmp = ({field, id, value, editorContext, inputContext, onChange}) => {
     // Console.debug('[DamWidenPickerCmp] field',field);
     // console.debug('[DamWidenPickerCmp] id',id);
     // console.debug('[DamWidenPickerCmp] value',value);
     // console.debug('[DamWidenPickerCmp] editorContext',editorContext);
+    // console.debug('[DamWidenPickerCmp] inputContext',inputContext);
 
     let context = {
         widen: {
@@ -26,7 +27,7 @@ const DamWidenPickerCmp = ({field, id, value, editorContext, setActionContext, o
             field,
             value,
             editorContext,
-            setActionContext
+            inputContext
         }
     };
 
@@ -59,7 +60,7 @@ DamWidenPickerCmp.propTypes = {
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    setActionContext: PropTypes.func.isRequired
+    inputContext: PropTypes.object.isRequired
 };
 
 DamWidenPickerCmp.displayName = 'DamWidenPicker';

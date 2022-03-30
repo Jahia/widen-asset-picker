@@ -39,7 +39,7 @@ export default {
                 type: 'object',
                 properties: {
                     onChange: {},
-                    setActionContext: {},
+                    inputContext:{},
                     field: {
                         type: 'object',
                         properties: {}, // Note: fix the expected properties
@@ -56,7 +56,7 @@ export default {
                         // additionalProperties:false
                     }
                 },
-                required: ['onChange', 'setActionContext', 'field', 'editorContext'],
+                required: ['onChange', 'inputContext', 'field', 'editorContext'],
                 additionalProperties: false
             }
         },
