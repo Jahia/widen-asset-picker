@@ -615,7 +615,7 @@ Pick a media content from Widen
 [definition.cnd]: ../../src/main/resources/META-INF/definitions.cnd
 [widenReference.jsp]: ../../src/main/resources/wdennt_widenReference/html/widenReference.jsp
 [image.jsp]: ../../src/main/resources/wdennt_image/html/image.jsp
-[image.hidden.getSrc.jsp]: ../../src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
+[image.hidden.getSrc.jsp]: src/main/resources/wdennt_image/html/image.hidden.getSrc.jsp
 [video.jsp]: ../../src/main/resources/wdennt_video/html/video.jsp
 [video.player.vjs.jsp]: ../../src/main/resources/wdennt_video/html/video.player.vjs.jsp
 [video.stream.jsp]: ../../src/main/resources/wdennt_video/html/video.stream.jsp

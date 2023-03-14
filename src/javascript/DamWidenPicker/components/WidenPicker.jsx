@@ -37,6 +37,7 @@ const _GetUuid = () => {
     });
 
     if (loading || error || !data || !widenPath4EDP) {
+        console.log("[_GetUuid] loading, error, !data, !widenPath4EDP",loading, error, !data, !widenPath4EDP)
         return; // {error, loading, notFound: Boolean(path)};
     }
 

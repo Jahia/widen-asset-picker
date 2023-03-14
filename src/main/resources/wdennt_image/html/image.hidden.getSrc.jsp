@@ -22,8 +22,8 @@
 
 <c:set var="url" value="${currentNode.properties['wden:templatedUrl'].string}"/>
 
-<c:set var="scale" value="${not empty currentResource.moduleParams.quality ?
-    currentResource.moduleParams.quality : '1'}"/>
+<c:set var="scale" value="${not empty currentResource.moduleParams.scale ?
+    currentResource.moduleParams.scale : '1'}"/>
 <c:set var="quality" value="${not empty currentResource.moduleParams.quality ?
     currentResource.moduleParams.quality : '72'}"/>
 <c:set var="widths" value="${not empty currentResource.moduleParams.widths ?

@@ -83,6 +83,7 @@ public class WidenDataSource implements ExternalDataSource{
                 }
             }
         } catch (Exception e) {
+            LOGGER.error("",e);
             throw new ItemNotFoundException(e);
         }
     }
