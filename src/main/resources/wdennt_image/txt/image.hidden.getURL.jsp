@@ -18,4 +18,5 @@
 <c:set var="url" value="${fn:replace(url, '{quality}', quality)}"/>
 <c:set var="url" value="${fn:replace(url, '{size}', size)}" />
 
-<c:out value="${url}" />
+<c:url value="${url}" />
+<%--<c:out value="${url}" />--%>
