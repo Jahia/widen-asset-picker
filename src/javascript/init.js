@@ -7,7 +7,11 @@ export default function () {
         callback: () => {
             registry.add('selectorType', 'WidenPicker', {cmp: DamWidenPickerCmp, supportMultiple: false});
             console.debug('%c WidenPicker Editor Extensions  is activated', 'color: #3c8cba');
-            registry.add('damSelectorConfiguration','WidenPicker',{types: ['wdenmix:widenAsset'],label:'Widen'});
+            registry.add('damSelectorConfiguration','WidenPicker',{
+                types: ['wdenmix:widenAsset'],
+                label:'Widen',
+                module:'widen-picker'
+            });
         }
     });
 }
