@@ -1,6 +1,0 @@
-node
-node_modules
-target
-src/main/resources/javascript/apps
-webpack.config.js
-webpack.shared.js

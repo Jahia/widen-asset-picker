@@ -2,8 +2,10 @@ const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 const shared = require('./webpack.shared');
+
 
 module.exports = (env, argv) => {
     let config = {
@@ -24,12 +26,7 @@ module.exports = (env, argv) => {
             rules: [
                 {
                     test: /\.m?js$/,
-                    //test: /\.m?jsx?$/,
-                    resolve: {
-                        fullySpecified: false
-                    },
-                    //type: 'javascript/auto',
-                    //exclude: /node_modules/
+                    type: 'javascript/auto'
                 },
                 {
                     test: /\.jsx?$/,
@@ -58,6 +55,7 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.scss$/i,
+                    include: [path.join(__dirname, 'src')],
                     sideEffects: true,
                     use: [
                         'style-loader',
@@ -71,22 +69,25 @@ module.exports = (env, argv) => {
                             }
                         },
                         // Compiles Sass to CSS
-                        'sass-loader'
+                        // 'sass-loader'
                     ]
                 },
                 {
                     test: /\.(png|svg|gif)$/,
-                    use: ['file-loader']
+                    type: 'asset/resource'
+                    // use: ['file-loader']
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/'
-                        }
-                    }]
+                    type: 'asset/resource',
+                    dependency: { not: ['url'] }
+                    // use: [{
+                    //     loader: 'file-loader',
+                    //     options: {
+                    //         name: '[name].[ext]',
+                    //         outputPath: 'fonts/'
+                    //     }
+                    // }]
                 }
             ]
         },
@@ -103,8 +104,17 @@ module.exports = (env, argv) => {
                 },
                 shared
             }),
-            new CleanWebpackPlugin({verbose: false}),
-            new CopyWebpackPlugin([{from: './package.json', to: ''}])
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
+                verbose: false
+            }),
+            new CopyWebpackPlugin({
+                patterns: [{
+                    from: './package.json',
+                    to: ''
+                }]
+            }),
+            new CaseSensitivePathsPlugin()
         ],
         mode: 'development'
     };

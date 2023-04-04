@@ -38,11 +38,7 @@ const VideoInfoCmp = ({properties, locale}) => {
     };
 
     return (
-        <Typography
-            data-sel-field-picker-info
-            variant="omega"
-            color="gamma"
-        >
+        <Typography variant="body">
             {width} x {height} px (r:{aspectRatio}) | {formatDuration() }
         </Typography>
     );

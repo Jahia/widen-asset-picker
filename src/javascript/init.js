@@ -1,5 +1,6 @@
 import {registry} from '@jahia/ui-extender';
 import DamWidenPickerCmp from './DamWidenPicker';
+import svgWidenLogo from './asset/widen.svg';
 
 export default function () {
     registry.add('callback', 'widenPickerEditor', {
@@ -10,7 +11,8 @@ export default function () {
             registry.add('damSelectorConfiguration','WidenPicker',{
                 types: ['wdenmix:widenAsset'],
                 label:'Widen',
-                module:'widen-picker'
+                module:'widen-picker',
+                icon: svgWidenLogo
             });
         }
     });

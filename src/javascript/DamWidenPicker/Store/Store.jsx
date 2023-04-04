@@ -38,12 +38,12 @@ const init = context => {
     //     return config;
     // });
     const {lazyLoad, resultPerPage, mountPoint} = context.widen;
-    const {onChange, field, editorContext, inputContext} = context.editor;// Value,
+    const {onChange, field, editorContext, inputContext, value} = context.editor;// Value,
 
     return {
         context, // Note: see if needed
         editorField: field,
-        editorValue: null, // Value,
+        editorValue: value,
         editorOnChange: onChange,
         editorContext,
         editorInputContext :inputContext,
@@ -132,15 +132,15 @@ const reducer = (state, action) => {
             };
         }
 
-        case 'INIT_SELECTED_ITEM_UUID': {
-            const {uuid} = payload;
-            const editorValue = uuid;
-            console.debug('[STORE] INIT_SELECTED_ITEM_UUID - payload: ', payload);
-            return {
-                ...state,
-                editorValue
-            };
-        }
+        // case 'INIT_SELECTED_ITEM_UUID': {
+        //     const {uuid} = payload;
+        //     const editorValue = uuid;
+        //     console.debug('[STORE] INIT_SELECTED_ITEM_UUID - payload: ', payload);
+        //     return {
+        //         ...state,
+        //         editorValue
+        //     };
+        // }
 
         case 'UPDATE_SELECTED_ITEM_UUID': {
             const {uuid} = payload;

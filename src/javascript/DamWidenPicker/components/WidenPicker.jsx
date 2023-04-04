@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import {ProgressOverlay} from '@jahia/react-material';
+import {LoaderOverlay} from '../../DesignSystem/LoaderOverlay';
 
 import {StoreContext} from '../contexts';
 import {ReferenceCard} from './Viewer';
@@ -19,36 +19,8 @@ import {WidenPickerFilledQuery} from './WidenPicker.gql-queries';
 import {widenUUIDQuery} from './WidenUUID.gql-queries';
 import get from 'lodash.get';
 import {withStyles} from '@material-ui/core';
-
-const _GetUuid = () => {
-    const {state, dispatch} = React.useContext(StoreContext);
-    const {
-        widenPath4EDP
-    } = state;
-
-    const variables = {
-        widenEDPPath: widenPath4EDP,
-        needToFetch: Boolean(widenPath4EDP)
-    };
-
-    // Call the EDP to get uuid and send to the store
-    const {loading, error, data} = useQuery(widenUUIDQuery, {
-        variables
-    });
-
-    if (loading || error || !data || !widenPath4EDP) {
-        console.log("[_GetUuid] loading, error, !data, !widenPath4EDP",loading, error, !data, !widenPath4EDP)
-        return; // {error, loading, notFound: Boolean(path)};
-    }
-
-    // Note: GraphQL return 200 even if error, need to check in json returned if error
-    return dispatch({
-        case: 'UPDATE_SELECTED_ITEM_UUID',
-        payload: {
-            uuid: get(data, 'jcr.result.uuid')
-        }
-    });
-};
+import svgWidenLogo from '../../asset/widen.svg';
+import {toIconComponent} from "@jahia/moonstone";
 
 const styles = () => ({
     dialogPaper: {
@@ -60,42 +32,34 @@ const styles = () => ({
     }
 });
 
-const WidenPickerCmp = ({initEditorValue, classes}) => {
-    // Console.debug("[WidenPickerCmp] start ");
+const WidenPickerCmp = ({classes}) => {
     const {state, dispatch} = React.useContext(StoreContext);
     const {t} = useTranslation();
     const {
         showPickerDialog,
         editorField,
         locale,
-        // editorSetActionContext,
-        editorInputContext,
-        editorValue
+        editorValue,
+        widenPath4EDP
     } = state;
 
-    // Init the value bug fix 'translate from'
-    if (!editorValue && initEditorValue) {
-        dispatch({
-            case: 'INIT_SELECTED_ITEM_UUID',
-            payload: {
-                uuid: initEditorValue
-            }
-        });
-    }
-
-    _GetUuid();
-
-    const variables = {
-        uuid: editorValue || '',
-        language: locale,
-        // Note: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
-        needToFetch: Boolean(editorValue)
-    };
-    // Console.log("[WidenPicker] variables for WidenPickerFilledQuery : ",variables);
-
-    const {loading, error, data} = useQuery(WidenPickerFilledQuery, {
-        variables
+    const selectedNodeUUID = useQuery(widenUUIDQuery, {
+        variables:{
+            widenEDPPath: widenPath4EDP,
+            skip: !widenPath4EDP
+        }
     });
+
+    const widenNodeInfo = useQuery(WidenPickerFilledQuery, {
+        variables : {
+            uuid: editorValue || '',
+            language: locale,
+            skip: !editorValue
+        }
+    });
+
+    const error = selectedNodeUUID?.error || widenNodeInfo?.error;
+    const loading = selectedNodeUUID?.loading || widenNodeInfo?.loading;
 
     if (error) {
         const message = t(
@@ -107,8 +71,19 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
     }
 
     if (loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
+
+    if(selectedNodeUUID?.data?.jcr?.result?.uuid){
+        dispatch({
+            case: 'UPDATE_SELECTED_ITEM_UUID',
+            payload: {
+                uuid: selectedNodeUUID.data.jcr.result.uuid
+            }
+        });
+    }
+
+    const {data} = widenNodeInfo;
 
     let fieldData = null;
     const widenJcrData = get(data, 'jcr.result', null);
@@ -161,7 +136,7 @@ const WidenPickerCmp = ({initEditorValue, classes}) => {
             <ReferenceCard
                 isReadOnly={editorField.readOnly}
                 emptyLabel="Add Widen Asset"
-                emptyIcon={<Image/>}
+                emptyIcon={toIconComponent(svgWidenLogo)}
                 labelledBy={`${editorField.name}-label`}
                 fieldData={fieldData}
                 onClick={handleShow}

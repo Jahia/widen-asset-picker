@@ -1,24 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'clsx';
+import clsx from 'clsx';
 import {withStyles} from '@material-ui/core';
 import {HandleDrag, Typography} from '@jahia/moonstone';
 import {StoreContext} from '../../contexts';
 import {ItemInfo} from './ItemInfo/ItemInfo';
+import {getFileFormatIcon} from "./ItemInfo/utils";
 
 const unitIndex = 12;// Prev 9
 
 const styles = theme => ({
     container: {
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
     },
     add: {
         width: '100%',
-        height: theme.spacing.unit * unitIndex,
+        color: 'var(--color-gray_dark60)',
+        height: theme.spacing.unit * 9,
         backgroundColor: theme.palette.ui.epsilon,
-        border: `1px ${theme.palette.ui.zeta} dashed`,
+        border: '1px var(--color-gray40) dashed',
         fontSize: '0.875rem',
         borderRadius: '2px',
         display: 'flex',
@@ -26,26 +29,42 @@ const styles = theme => ({
         justifyContent: 'center',
         cursor: 'pointer',
         '&:hover': {
-            border: `1px solid ${theme.palette.ui.zeta}`
+            border: '1px var(--color-gray40) solid'
         },
         '&:focus': {
             outline: 'none',
-            border: `1px solid ${theme.palette.brand.beta}`
+            border: '1px var(--color-gray40) solid'
         },
         '& svg': {
-            margin: theme.spacing.unit,
-            color: theme.palette.ui.zeta
+            marginBottom: 'var(--spacing-nano)'
+            // margin: theme.spacing.unit,
+            // color: theme.palette.ui.zeta
+        }
+    },
+    addError: {
+        border: '1px var(--color-warning) solid',
+        '&:hover': {
+            border: '1px var(--color-warning) solid'
+        },
+        '&:focus': {
+            border: '1px var(--color-warning) solid'
         }
     },
     addReadOnly: {
         outline: 'none',
         background: theme.palette.ui.alpha,
-        border: `1px solid ${theme.palette.ui.alpha}!important`,
+        border: '1px var(--color-gray40) solid',
+        '&:hover': {
+            border: '1px var(--color-gray40) solid'
+        },
+        '&:focus': {
+            border: '1px var(--color-gray40) solid'
+        },
         cursor: 'default'
     },
     fieldContainer: {
         width: '100%',
-        height: theme.spacing.unit * unitIndex,
+        height: theme.spacing.unit * 9,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -67,16 +86,16 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: `calc(${theme.spacing.unit * unitIndex}px - 2px)`,
-        width: theme.spacing.unit * unitIndex,
+        height: `calc(${theme.spacing.unit * 9}px - 2px)`,
+        width: theme.spacing.unit * 9,
         overflow: 'hidden',
         backgroundColor: theme.palette.ui.omega
     },
     fieldImage: {
         textAlign: 'center',
         margin: 0,
-        maxWidth: theme.spacing.unit * unitIndex,
-        maxHeight: `calc(${theme.spacing.unit * unitIndex}px - 2px)`,
+        maxWidth: theme.spacing.unit * 9,
+        maxHeight: `calc(${theme.spacing.unit * 9}px - 2px)`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain'
@@ -97,6 +116,9 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    error: {
+        color: 'var(--color-warning)'
     },
     draggableIcon: {
         cursor: 'grab'
@@ -157,13 +179,11 @@ const ReferenceCardCmp = ({
                 </div>}
 
                 <article
-                    className={classnames(
+                    className={clsx(
                         classes.fieldContainer,
                         (isReadOnly ? classes.fieldContainerReadOnly : ''),
                         (isDraggable ? classes.draggableIcon : '')
                     )}
-                    data-sel-field-picker="filled"
-                    data-sel-field-picker-action="openPicker"
                     role="button"
                     tabIndex="0"
                     aria-labelledby={labelledBy}
@@ -172,7 +192,7 @@ const ReferenceCardCmp = ({
                             return;
                         }
 
-                        onClick(true);
+                        onClick();
                     }}
                 >
                     <div className={classes.fieldFigureContainer}>
@@ -180,20 +200,11 @@ const ReferenceCardCmp = ({
                     </div>
                     <div className={classes.fieldSelectedMetadata}>
                         {/* <ItemInfo properties={fieldData} labelledBy={labelledBy}/> */}
-                        <Typography
-                            data-sel-field-picker-name
-                            variant="zeta"
-                            color="alpha"
-                            id={nameId}
-                        >
-                            {filename}
+                        <Typography variant="caption" id={nameId}>
+                            {getFileFormatIcon(fieldData.type,classes)} {filename}
                         </Typography>
                         <ItemInfo properties={fieldData} locale={locale}/>
-                        <Typography
-                            data-sel-field-picker-info
-                            variant="omega"
-                            color="gamma"
-                        >
+                        <Typography variant="caption">
                             last updated : {updatedDate}
                         </Typography>
                     </div>

@@ -1,9 +1,9 @@
-import {gql} from 'apollo-boost';
+import {gql} from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 const widenUUIDQuery = gql`
-    query widenUUIDQuery($widenEDPPath: String!,$needToFetch: Boolean!) {
-        jcr @include(if: $needToFetch) {
+    query widenUUIDQuery($widenEDPPath: String!) {
+        jcr{
             result: nodeByPath(path: $widenEDPPath) {
                 ...NodeCacheRequiredFields
             }
