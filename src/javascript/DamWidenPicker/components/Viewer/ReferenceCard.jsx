@@ -7,8 +7,6 @@ import {StoreContext} from '../../contexts';
 import {ItemInfo} from './ItemInfo/ItemInfo';
 import {getFileFormatIcon} from "./ItemInfo/utils";
 
-const unitIndex = 12;// Prev 9
-
 const styles = theme => ({
     container: {
         flex: 1,
@@ -128,9 +126,20 @@ const styles = theme => ({
     }
 });
 
+const formatDate = ({date,locale}) => {
+    if (!date) {
+        return;
+    }
+
+    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    date = new Date(date);
+    return date.toLocaleDateString(locale, options);
+};
+
 const ReferenceCardCmp = ({
     classes,
     isReadOnly,
+    isError,
     emptyLabel,
     emptyIcon,
     fieldData,
@@ -156,18 +165,10 @@ const ReferenceCardCmp = ({
             // lastModified
         } = fieldData;
 
-        const formatDate = date => {
-            if (!date) {
-                return;
-            }
 
-            const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-            date = new Date(date);
-            return date.toLocaleDateString(locale, options);
-        };
 
         // CreatedDate = formatDate(createdDate);
-        updatedDate = formatDate(updatedDate);
+        updatedDate = formatDate({date:updatedDate,locale});
         // DeletedDate = formatDate(deletedDate);
 
         const nameId = `${labelledBy}-name`;
@@ -215,24 +216,19 @@ const ReferenceCardCmp = ({
 
     return (
         <button
-            data-sel-media-picker="empty"
-            data-sel-field-picker-action="openPicker"
-            className={`${classes.add} ${isReadOnly ? classes.addReadOnly : ''}`}
+            className={clsx(classes.add, isReadOnly && classes.addReadOnly, isError && classes.addError)}
             type="button"
             aria-disabled={isReadOnly}
             aria-labelledby={labelledBy}
             onClick={() => {
-                if (isReadOnly) {
-                    return;
-                }
-
-                onClick(true);
+                if (isReadOnly) { return; }
+                onClick();
             }}
         >
             {!isReadOnly &&
-            <div className={classes.referenceButtonEmptyContainer}>
+            <div className={clsx(classes.referenceButtonEmptyContainer, isError && classes.error)}>
                 {emptyIcon}
-                <Typography variant="omega" color="beta" component="span">
+                <Typography variant="body" component="span">
                     {emptyLabel}
                 </Typography>
             </div>}

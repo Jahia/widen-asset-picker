@@ -1,0 +1,11 @@
+{
+  "label": {
+    "selectorConfig": {
+      "label": "Widen",
+      "description": "Pick a content from Widen digital asset manager"
+    },
+    "referenceCard": {
+      "emptyLabel": "Click to select a Widen asset"
+    }
+  }
+}

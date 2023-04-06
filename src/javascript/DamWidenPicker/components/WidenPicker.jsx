@@ -135,7 +135,7 @@ const WidenPickerCmp = ({classes}) => {
 
             <ReferenceCard
                 isReadOnly={editorField.readOnly}
-                emptyLabel="Add Widen Asset"
+                emptyLabel={t('widen-picker:label.referenceCard.emptyLabel')}
                 emptyIcon={toIconComponent(svgWidenLogo)}
                 labelledBy={`${editorField.name}-label`}
                 fieldData={fieldData}
