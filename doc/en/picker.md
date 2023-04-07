@@ -316,9 +316,9 @@ The React application is automatically built and deployed when the module is com
 
 [webpack.config]: ../../webpack.config.js
 [react.src.init.js]: ../../src/javascript/init.js
-[react:DamWidenPickerCmp]: ../../src/javascript/DamWidenPicker/DamWidenPickerCmp.jsx
-[react:douaneSchemaIndex.js]: ../../src/javascript/DamWidenPicker/douane/lib/schema/index.js
-[react:store.jsx]: ../../src/javascript/DamWidenPicker/Store/Store.jsx
+[react:DamWidenPickerCmp]: src/javascript/WidenPicker/DamWidenPickerCmp.jsx
+[react:douaneSchemaIndex.js]: src/javascript/WidenPicker/douane/lib/schema/index.js
+[react:store.jsx]: src/javascript/WidenPicker/Store/Store.jsx
 [WidenPicker.jsp]: ../../src/main/resources/configs/WidenPicker.jsp
 [widenReference.json]: ../../src/main/resources/META-INF/jahia-content-editor-forms/fieldsets/wdennt_widenReference.json
 

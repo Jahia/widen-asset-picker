@@ -238,7 +238,7 @@ The Widen CDN improves performance when assets load and allows Widen to collect 
 
 [mount.cfg]: ./src/main/resources/META-INF/configurations/org.jahia.se.modules.widen_provider.cfg
 [definition.cnd]: ./src/main/resources/META-INF/definitions.cnd
-[react:index.js]: ./src/javascript/DamWidenPicker/DamWidenPickerCmp.jsx
+[react:index.js]: src/javascript/WidenPicker/DamWidenPickerCmp.jsx
 [WidenDataSource.java]: ./src/main/java/org/jahia/se/modules/edp/dam/widen/edp/WidenDataSource.java
 
 [widenAPI:AssetByQuery]: https://widenv2.docs.apiary.io/#reference/assets/assets/list-by-search-query

@@ -1,0 +1,23 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+export const ErrorHandler = ({item, errors}) => {
+    return (
+        <div>
+            <h1>Validation errors</h1>
+            <p>An error occurred when validating <b>{item}</b></p>
+            <ul>
+                {errors.map(error => (
+                    <li key={error.dataPath}>
+                        {error.dataPath} : {error.message}
+                    </li>
+                  ))}
+            </ul>
+        </div>
+    );
+};
+
+ErrorHandler.propTypes = {
+    item: PropTypes.string.isRequired,
+    errors: PropTypes.array.isRequired
+};

@@ -1,5 +1,6 @@
 import {registry} from '@jahia/ui-extender';
-import DamWidenPickerCmp from './DamWidenPicker';
+import {WidenPickerContextInitializer} from './WidenPicker';
+import {registerWidenPickerActions} from './WidenPicker/components/actions/registerPickerActions';
 import svgWidenLogo from './asset/widen.svg';
 import i18next from 'i18next';
 
@@ -10,8 +11,9 @@ export default function () {
     registry.add('callback', 'widenPickerEditor', {
         targets: ['jahiaApp-init:20'],
         callback: () => {
-            registry.add('selectorType', 'WidenPicker', {cmp: DamWidenPickerCmp, supportMultiple: false});
+            registry.add('selectorType', 'WidenPicker', {cmp: WidenPickerContextInitializer, supportMultiple: false});
             console.debug('%c WidenPicker Editor Extensions  is activated', 'color: #3c8cba');
+            //NOTE should all the code below placed in the callback or outside ?
             registry.add('damSelectorConfiguration','WidenPicker',{
                 types: ['wdenmix:widenAsset'],
                 label:'widen-picker:label.selectorConfig.label',
@@ -19,6 +21,9 @@ export default function () {
                 module:'widen-picker',
                 icon: svgWidenLogo
             });
+
+            registerWidenPickerActions(registry);
         }
     });
+
 }
