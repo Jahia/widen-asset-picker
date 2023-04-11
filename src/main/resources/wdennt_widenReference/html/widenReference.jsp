@@ -45,10 +45,10 @@
     </c:otherwise>
 </c:choose>
 
-<c:if test="${renderContext.editMode}" >
-    <div>
-    <span style="color:#ccc;">Edit widen media</span>
-</c:if>
+<%--<c:if test="${renderContext.editMode}" >--%>
+<%--    <div>--%>
+<%--    <span style="color:#ccc;">Edit widen media</span>--%>
+<%--</c:if>--%>
 
     <template:module node="${widenNode}" editable="false" view="${referenceView}">
         <template:param name="widths" value="${widths}"/>
@@ -56,6 +56,6 @@
         <template:param name="pdfMinHeight" value="${pdfMinHeight}"/>
     </template:module>
 
-<c:if test="${renderContext.editMode}" >
-    </div>
-</c:if>
+<%--<c:if test="${renderContext.editMode}" >--%>
+<%--    </div>--%>
+<%--</c:if>--%>

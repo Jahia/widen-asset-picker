@@ -138,7 +138,7 @@ const PickerCmp = ({selectedItemId, classes}) => {
     }
 
     return (
-        <Grid container spacing={3}>
+        <Grid container>
             <Grid item container xs={12} className={classes.sticky}>
                 <Grid item container sm={12} md={6}>
                     <SearchForm/>

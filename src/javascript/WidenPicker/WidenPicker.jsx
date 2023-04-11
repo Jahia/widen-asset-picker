@@ -108,7 +108,7 @@ const WidenPickerCmp = ({classes}) => {
     const dialogConfig = {
         fullWidth: true,
         maxWidth: 'xl',
-        dividers: true
+        dividers: "true"
     };
 
     const handleShow = () =>
@@ -122,8 +122,7 @@ const WidenPickerCmp = ({classes}) => {
         });
 
     return (
-        <>
-
+        <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
                 isReadOnly={editorField.readOnly}
                 emptyLabel={t('widen-picker:label.referenceCard.emptyLabel')}
@@ -146,14 +145,14 @@ const WidenPickerCmp = ({classes}) => {
                 classes={{paper: classes.dialogPaper}}
                 onClose={handleClose}
             >
-                <DialogTitle closeButton>
+                <DialogTitle>
                     Widen Picker
                 </DialogTitle>
                 <DialogContent dividers={dialogConfig.dividers}>
                     <Picker selectedItemId={fieldData?.wdenid}/>
                 </DialogContent>
             </Dialog>
-        </>
+        </div>
     );
 };
 

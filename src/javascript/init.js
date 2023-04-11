@@ -11,9 +11,10 @@ export default function () {
     registry.add('callback', 'widenPickerEditor', {
         targets: ['jahiaApp-init:20'],
         callback: () => {
+
             registry.add('selectorType', 'WidenPicker', {cmp: WidenPickerContextInitializer, supportMultiple: false});
             console.debug('%c WidenPicker Editor Extensions  is activated', 'color: #3c8cba');
-            //NOTE should all the code below placed in the callback or outside ?
+
             registry.add('damSelectorConfiguration','WidenPicker',{
                 types: ['wdenmix:widenAsset'],
                 label:'widen-picker:label.selectorConfig.label',

@@ -47,7 +47,7 @@ const SortCmp = ({classes}) => {
         <>
             <li>
                 <Select
-                labelId={`sortBy_${_id_}_label`}
+                // labelId={`sortBy_${_id_}_label`}
                 id={`sortBy_${_id_}`}
                 value={sortByItem.value}
                 label="Sort by"

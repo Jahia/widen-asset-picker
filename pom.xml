@@ -11,7 +11,7 @@
     <groupId>org.jahia.se.modules</groupId>
     <artifactId>widen-picker</artifactId>
     <name>Widen Picker</name>
-    <version>2.4.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (Widen Picker) for running on a Jahia server.</description>
     <scm>

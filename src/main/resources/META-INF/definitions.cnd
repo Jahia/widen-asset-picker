@@ -4,6 +4,7 @@
 <wdennt = 'http://modules.se.jahia.org/wden/nt/1.0'>
 <wden = 'http://modules.se.jahia.org/wden/1.0'>
 
+// >>Deprecated use Dam Selector instead
 [wdenmix:mediaPickerWd] > jmix:dynamicFieldset mixin
  extends = wdenmix:mediaReference
  - wden:mediaNode (weakreference) internationalized < wdenmix:widenAsset
@@ -14,6 +15,7 @@
 
 [wdenmix:mediaReference] mixin
  - wden:mediaPicker (string, choicelist) indexed=no
+//<<
 
 [wdenmix:widenAsset] > jmix:structuredContent, jmix:tagged, jmix:keywords, mix:title mixin
  - wden:id (string) fulltextsearchable=no

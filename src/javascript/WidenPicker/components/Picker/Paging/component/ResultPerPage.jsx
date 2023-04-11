@@ -22,7 +22,7 @@ const ResultPerPageCmp = () => {
     return (
         <li>
             <Select
-                labelId={`resultPerPage_${_id_}_label`}
+                // labelId={`resultPerPage_${_id_}_label`}
                 id={`resultPerPage_${_id_}`}
                 value={searchResultPerPage}
                 label="Sort by"

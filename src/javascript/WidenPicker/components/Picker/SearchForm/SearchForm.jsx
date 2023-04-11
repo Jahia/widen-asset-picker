@@ -54,7 +54,7 @@ const SearchFormCmp = ({classes}) => {
             placeholder="Search for"
             // Variant="outlined"
             id="search-widen-media-content"
-            value={searchQuery}
+            value={searchQuery || ''}
             className={classes.input}
             endAdornment={
                 <InputAdornment position="end">

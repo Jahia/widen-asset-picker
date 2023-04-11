@@ -99,7 +99,7 @@ const reducer = (state, action) => {
 
     switch (action.case) {
         case 'UPDATE_TEXT_QUERY': {
-            console.debug('[STORE] UPDATE_TEXT_QUERY - query: ', payload.searchQuery);
+            // console.debug('[STORE] UPDATE_TEXT_QUERY - query: ', payload.searchQuery);
             return {
                 ...state,
                 searchQuery: payload.searchQuery
@@ -107,7 +107,7 @@ const reducer = (state, action) => {
         }
 
         case 'RESET_TEXT_QUERY': {
-            console.debug('[STORE] RESET_TEXT_QUERY');
+            // console.debug('[STORE] RESET_TEXT_QUERY');
             let needToFetch = false;
             // Reload catalog only if a query was made before
             if (state.searchQueryExecuted) {
@@ -133,21 +133,11 @@ const reducer = (state, action) => {
             };
         }
 
-        // case 'INIT_SELECTED_ITEM_UUID': {
-        //     const {uuid} = payload;
-        //     const editorValue = uuid;
-        //     console.debug('[STORE] INIT_SELECTED_ITEM_UUID - payload: ', payload);
-        //     return {
-        //         ...state,
-        //         editorValue
-        //     };
-        // }
-
         case 'UPDATE_SELECTED_ITEM_UUID': {
             const {uuid} = payload;
             const {editorOnChange, editorOnBlur} = state;
             const editorValue = uuid;
-            console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - payload: ', payload);
+            // console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - payload: ', payload);
             editorOnChange(editorValue);
             setTimeout(() => editorOnBlur(), 0);
             // Console.debug('[STORE] UPDATE_SELECTED_ITEM_UUID - coming showPickerDialog: ', !state.showPickerDialog);
@@ -162,7 +152,7 @@ const reducer = (state, action) => {
         case 'UPDATE_SELECTED_ITEM': {
             const {widenID} = payload;
             const {mountPoint} = state;
-            console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
+            // console.debug('[STORE] UPDATE_SELECTED_ITEM - payload: ', payload);
             // Note: do a graphQL call to the EDP to get uuid and return this jContent
             const widenPath4EDP = `${mountPoint}/${widenID}`;
 
@@ -173,7 +163,7 @@ const reducer = (state, action) => {
         }
 
         case 'UPDATE_SEARCH_RESULTS': {
-            console.debug('[STORE] UPDATE_SEARCH_RESULTS - searchResults: ', payload.searchResults);
+            // console.debug('[STORE] UPDATE_SEARCH_RESULTS - searchResults: ', payload.searchResults);
             // Sort,start_answer
             const {items, total_count: totalCount} = payload.searchResults;
             const {searchResultPerPage, searchResultPageIndex} = state;
@@ -210,7 +200,7 @@ const reducer = (state, action) => {
 
         case 'TOGGLE_FILTER': {
             const {filter} = payload;// Fitler is an element of  widen.catalogs.list
-            console.debug('[STORE] TOGGLE_ANSWER -> filter id :', filter.id);
+            // console.debug('[STORE] TOGGLE_ANSWER -> filter id :', filter.id);
 
             let [facet, index] = state.searchFacets.reduce((result, facet, index) => {
                 if (facet.id === filter.type) {
@@ -239,7 +229,7 @@ const reducer = (state, action) => {
             const searchFacets = state.searchFacets.slice();
             searchFacets.splice(index, 1, facet);
 
-            console.debug('[STORE] searchFacets :', searchFacets);
+            // console.debug('[STORE] searchFacets :', searchFacets);
 
             return {
                 ...state,
@@ -251,12 +241,12 @@ const reducer = (state, action) => {
 
         case 'REMOVE_FILTER': {
             const {filter} = payload;// Fitler is an element of  widen.filters
-            console.debug('[STORE] REMOVE_FILTER -> filter id :', filter.id);
+            // console.debug('[STORE] REMOVE_FILTER -> filter id :', filter.id);
 
             const searchFacets = state.searchFacets.filter(facet => facet.id !== filter.id);
             // SearchFacets.splice(index, 1,facet);
 
-            console.debug('[STORE] searchFacets :', searchFacets);
+            // console.debug('[STORE] searchFacets :', searchFacets);
             // #2 remove for existing filters
             const searchFilters = state.searchFilters.filter(_filter => _filter.id !== filter.id);
 
@@ -270,7 +260,7 @@ const reducer = (state, action) => {
         }
 
         case 'ERROR': {
-            console.debug('[STORE] ERROR - searchResults: ', payload.error);
+            // console.debug('[STORE] ERROR - searchResults: ', payload.error);
             return {
                 ...state,
                 error: payload.error
@@ -278,7 +268,7 @@ const reducer = (state, action) => {
         }
 
         case 'LOADING': {
-            console.debug('[STORE] LOADING - value: ', payload.value);
+            // console.debug('[STORE] LOADING - value: ', payload.value);
             return {
                 ...state,
                 isLoading: payload.value
@@ -286,7 +276,7 @@ const reducer = (state, action) => {
         }
 
         case 'PREVIOUS_RESULT_PAGE': {
-            console.debug('[STORE] PREVIOUS_RESULT_PAGE');
+            // console.debug('[STORE] PREVIOUS_RESULT_PAGE');
 
             if (state.searchResultPageIndex <= 1) {
                 return {
@@ -304,7 +294,7 @@ const reducer = (state, action) => {
         }
 
         case 'NEXT_RESULT_PAGE': {
-            console.debug('[STORE] NEXT_RESULT_PAGE');
+            // console.debug('[STORE] NEXT_RESULT_PAGE');
             const {searchResultMaxPage} = state;
 
             if (state.searchResultPageIndex >= searchResultMaxPage) {
@@ -323,7 +313,7 @@ const reducer = (state, action) => {
         }
 
         case 'GOTO_RESULT_PAGE': {
-            console.debug('[STORE] GOTO_RESULT_PAGE payload : ', payload);
+            // console.debug('[STORE] GOTO_RESULT_PAGE payload : ', payload);
             const index = Number(payload.index);
             const {searchResultMaxPage} = state;
 
@@ -341,7 +331,7 @@ const reducer = (state, action) => {
         }
 
         case 'UPDATE_RESULT_PER_PAGE': {
-            console.debug('[STORE] UPDATE_RESULT_PER_PAGE payload : ', payload);
+            // console.debug('[STORE] UPDATE_RESULT_PER_PAGE payload : ', payload);
             const {value} = payload;
 
             return {
@@ -353,7 +343,7 @@ const reducer = (state, action) => {
         }
 
         case 'UPDATE_SORT_ITEM': {
-            console.debug('[STORE] UPDATE_SORT_ITEM payload : ', payload);
+            // console.debug('[STORE] UPDATE_SORT_ITEM payload : ', payload);
             const {sortBy} = payload;
 
             return {
@@ -364,7 +354,7 @@ const reducer = (state, action) => {
         }
 
         case 'TOGGLE_SORT_DIRECTION': {
-            console.debug('[STORE] TOGGLE_SORT_DIRECTION');
+            // console.debug('[STORE] TOGGLE_SORT_DIRECTION');
             const {searchSortByDirection, searchSortListDirection} = state;
             const [sortDirectionItem] = searchSortListDirection.filter(item => item.value !== searchSortByDirection);
 
@@ -376,7 +366,7 @@ const reducer = (state, action) => {
         }
 
         case 'TOGGLE_SHOW_PICKER': {
-            console.debug('[STORE] TOGGLE_SHOW_PICKER');
+            // console.debug('[STORE] TOGGLE_SHOW_PICKER');
             return {
                 ...state,
                 showPickerDialog: !state.showPickerDialog
@@ -385,7 +375,7 @@ const reducer = (state, action) => {
 
         case 'DELETE_SELECTED_ASSET': {
             const {editorOnChange, editorOnBlur} = state;
-            console.debug('[STORE] DELETE_WIDEN_ASSET');
+            // console.debug('[STORE] DELETE_WIDEN_ASSET');
 
             editorOnChange(null);
             setTimeout(() => editorOnBlur(), 0);
