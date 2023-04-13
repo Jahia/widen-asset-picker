@@ -124,7 +124,7 @@ const reducer = (state, action) => {
         }
 
         case 'EXECUTE_QUERY': {
-            console.debug('[STORE] EXECUTE_QUERY');
+            // console.debug('[STORE] EXECUTE_QUERY');
             return {
                 ...state,
                 searchQueryExecuted: true,
