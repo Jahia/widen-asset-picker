@@ -11,12 +11,12 @@
     currentResource.moduleParams.scale : '1'}"/>
 <c:set var="quality" value="${not empty currentResource.moduleParams.quality ?
     currentResource.moduleParams.quality : '72'}"/>
-<c:set var="size" value="${not empty currentResource.moduleParams.size ?
-    currentResource.moduleParams.size : '768'}"/>
+<c:set var="size" value="${not empty currentResource.moduleParams.width ?
+    currentResource.moduleParams.width : '768'}"/>
 
 <c:set var="url" value="${fn:replace(url, '{scale}', scale)}"/>
 <c:set var="url" value="${fn:replace(url, '{quality}', quality)}"/>
-<c:set var="url" value="${fn:replace(url, '{size}', size)}" />
+<c:set var="url" value="${fn:replace(url, '{size}', width)}" />
 
 <c:url value="${url}" />
 <%--<c:out value="${url}" />--%>

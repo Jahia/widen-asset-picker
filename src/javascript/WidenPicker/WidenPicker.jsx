@@ -42,17 +42,17 @@ const WidenPickerCmp = ({classes}) => {
 
     const selectedNodeUUID = useQuery(edpWidenContentUUIDQuery, {
         variables:{
-            widenEDPPath: widenPath4EDP,
-            skip: !widenPath4EDP
-        }
+            widenEDPPath: widenPath4EDP
+        },
+        skip: !widenPath4EDP
     });
 
     const widenNodeInfo = useQuery(edpWidenContentPropsQuery, {
         variables : {
             uuid: editorValue || '',
-            language: locale,
-            skip: !editorValue
-        }
+            language: locale
+        },
+        skip: !editorValue
     });
 
     const error = selectedNodeUUID?.error || widenNodeInfo?.error;
